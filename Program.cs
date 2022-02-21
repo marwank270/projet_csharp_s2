@@ -10,7 +10,7 @@ using System.Threading;
 namespace Projet_CSharp_S2
 {
 
-    static class cc // Classe console color faite maison (inutile aux exercices c'est juste pour le fun et faire plus beau)
+    static class cc // Classe console color faite maison (inutile aux exercices c'est juste pour le fun et faire plus beau) (Marwan)#{
     {
         #region ConsoleColor
         /*
@@ -106,15 +106,19 @@ namespace Projet_CSharp_S2
             /*int x = matrice.GetLength(0);
             int y = matrice.GetLength(1);*/
 
+            Console.Write(cc.bgWhite + cc.black);   // Passage en blanc de la console pour laisser que la matrice soit de la bonne couleur au départ
+
             for (int i = 0; i < matrice.GetLength(0); i++)
             {
                 Console.WriteLine();
                 for (int j = 0; j < matrice.GetLength(1); j++)
                 {
-                    Console.Write(matrice[i, j]);
+                    Console.Write(matrice[i, j]);   // Dans cette ligne on écrit la case actuelle de notre matrice
                     
                 }
             }
+
+            Console.Write(cc.end);                  // Ici nous remettons la police et couleurs originelles de la console
         }
 
         #endregion Méthode Outils
@@ -175,22 +179,45 @@ namespace Projet_CSharp_S2
             string[,] mat = new string[19, 20];     // Déclaration et intialisation de la matrice qui sera utilisée.
 
             for (int i = 0; i < mat.GetLength(0); i++)  
-                for (int j = 0; j < mat.GetLength(1); j++)
             {
+                for (int j = 0; j < mat.GetLength(1); j++)
                 {
-                    mat[i, j] = "  |";              // Remplissage de la mattrice avec de quoi faire des cotés.
-                    }
+                    mat[i, j] = "   |";             // Remplissage de la mattrice avec de quoi faire des cotés.
+                }
             }
 
-            Console.Write(cc.bgWhite + cc.black);
             AffichageMatrice(mat);                  // Test d'affichage de la matrice
-            Console.Write(cc.end);
 
-            mat[19 / 2, 20 / 2] = "X";              // Tentative de cibler le millieu de la matrice
+            Console.WriteLine("\n\n\x1b[32mMatrice initialisée\x1b[0m. Appuyez sur une touche continuez ...");
 
             Console.ReadKey();
-        }
+            Console.Clear();
 
-       
+            #region Initialisation de la fourmi
+            Random direction = new Random();
+            int direc = direction.Next(1, 4);       // Choix aléatoire de la direction de la foumi (1, 4) pour nord sud est ouest
+
+            char fourmi = ' ';
+
+            if (direc == 1)
+                fourmi = '▲';       // Direction Nord
+            if (direc == 2)
+                fourmi = '►';       // Direction Est
+            if (direc == 3)
+                fourmi = '▼';       // Direction Sud
+            if (direc == 4)
+                fourmi = '◄';       // Direction Ouest
+
+            mat[19 / 2, 20 / 2] = $" {fourmi} |";
+
+            #endregion Initialisation de la fourmi
+
+            AffichageMatrice(mat);
+            
+            Console.ReadKey();
+
+            // end Time : 23:18 
+            // ajouter dans le readme : ciblage du centre réussi initialisation de la fourmi avec une direction aléatoire réussi 
+        }       
     }
 }
