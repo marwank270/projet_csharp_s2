@@ -20,3 +20,8 @@
 - Codage :
   - Rectification de la localisation du milieu de la matrice *(Charles)*
   - Création et initialisation du spawn aléatoire de la fourmi au centre de la matrice blanche *(Marwan)*
+
+## 21/02/22 :
+- Codage :
+  - Création d'une méthode de localisation des coordonnées et de la direction de la fourmi [Échec à ce jour] *(Marwan)*
+  - Création d'une classe `Stock` pour stocker les constantes dont nous aurons régulièrement besoin dans le code *(Marwan)*  
