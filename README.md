@@ -15,3 +15,13 @@
   - Création d'une méthode de Saisie de nombre *(Marwan)*
   - Creation d'une méthode de Saisie de matrice *(Charles)*
   - Tentative de localisation du millieu de la matrice [Échec à ce jour] *(Charles)*
+  
+## 20/02/22
+- Codage :
+  - Rectification de la localisation du milieu de la matrice *(Charles)*
+  - Création et initialisation du spawn aléatoire de la fourmi au centre de la matrice blanche *(Marwan)*
+
+## 21/02/22 :
+- Codage :
+  - Création d'une méthode de localisation des coordonnées et de la direction de la fourmi [Échec à ce jour] *(Marwan)*
+  - Création d'une classe `Stock` pour stocker les constantes dont nous aurons régulièrement besoin dans le code *(Marwan)*

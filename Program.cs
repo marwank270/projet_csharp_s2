@@ -10,7 +10,7 @@ using System.Threading;
 namespace Projet_CSharp_S2
 {
 
-    static class cc // Classe console color faite maison (inutile aux exercices c'est juste pour le fun et faire plus beau)
+    static class cc // Classe console color faite maison (inutile aux exercices c'est juste pour le fun et faire plus beau) (Marwan)#{
     {
         #region ConsoleColor
         /*
@@ -60,6 +60,12 @@ namespace Projet_CSharp_S2
          */
         #endregion ConsoleColor
     }
+
+    public static class Stock   // Classe de stockage de constante
+    {
+        public static char[] fourmis = { '▲', '►', '▼', '◄' };                      // Toutes les formes possible de la fourmi 
+        public static string[] directions = { "Nord", "Est", "Sud", "Ouest" };      // Toutes les directions possibles de la fourmi
+    }
     class Program
     {
         #region Méthode Outils
@@ -106,15 +112,56 @@ namespace Projet_CSharp_S2
             /*int x = matrice.GetLength(0);
             int y = matrice.GetLength(1);*/
 
+            Console.Write(cc.bgWhite + cc.black);   // Passage en blanc de la console pour laisser que la matrice soit de la bonne couleur au départ
+
             for (int i = 0; i < matrice.GetLength(0); i++)
             {
                 Console.WriteLine();
                 for (int j = 0; j < matrice.GetLength(1); j++)
                 {
-                    Console.Write(matrice[i, j]);
+                    Console.Write(matrice[i, j]);   // Dans cette ligne on écrit la case actuelle de notre matrice
                     
                 }
             }
+
+            Console.Write(cc.end);                  // Ici nous remettons la police et couleurs originelles de la console
+        }
+
+        static int[] PosFourmi(string[,] tab)
+        {
+            int[] pos = new int[3];     //Initialisé pour contenir les coordonnées x, y de la fourmi et sa direction 
+
+            for (int i = 0; i < tab.GetLength(0); i++)
+            {
+                for (int j = 0; j < tab.GetLength(1); j++)
+                {
+                    if (tab[i, j].Equals('▲'))
+                    {
+                        pos[0] = i; pos[1] = j; pos[2] = 1;     // 1 désigne direction nord
+                    }
+                    else if (tab[i, j].Equals('►'))
+                    {
+                        pos[0] = i; pos[1] = j; pos[2] = 2;     // 2 désigne direction est
+                    }
+                    else if (tab[i, j].Equals('▼'))
+                    {
+                        pos[0] = i; pos[1] = j; pos[2] = 3;     // 3 désigne direction sud
+                    }
+                    else if (tab[i, j].Equals('◄'))
+                    {
+                        pos[0] = i; pos[1] = j; pos[2] = 4;     // 4 désigne direction ouest
+                    }
+                }
+            }
+
+            return pos;
+        }
+
+        static void MouvementFourmi()
+        {
+            Thread.Sleep(1000);         // Pause de l'execution du programme d'une durée de 1000 ms soit d'une seconde
+
+
         }
 
         #endregion Méthode Outils
@@ -172,25 +219,71 @@ namespace Projet_CSharp_S2
 
         static void FourmiLangton()
         {
+            #region Initialisation de la Matrice
+
             string[,] mat = new string[19, 20];     // Déclaration et intialisation de la matrice qui sera utilisée.
 
             for (int i = 0; i < mat.GetLength(0); i++)  
-                for (int j = 0; j < mat.GetLength(1); j++)
             {
+                for (int j = 0; j < mat.GetLength(1); j++)
                 {
-                    mat[i, j] = "  |";              // Remplissage de la mattrice avec de quoi faire des cotés.
-                    }
+                    mat[i, j] = "   |";             // Remplissage de la mattrice avec de quoi faire des cotés.
+                }
             }
 
-            Console.Write(cc.bgWhite + cc.black);
             AffichageMatrice(mat);                  // Test d'affichage de la matrice
-            Console.Write(cc.end);
 
-            mat[19 / 2, 20 / 2] = "X";              // Tentative de cibler le millieu de la matrice
+            Console.WriteLine("\n\n\x1b[32mMatrice initialisée\x1b[0m. Appuyez sur une touche continuez ...");
+
+            #endregion Initialisation de la Matrice
 
             Console.ReadKey();
-        }
+            Console.Clear();
 
-       
+            #region Initialisation de la fourmi
+            Random direction = new Random();
+            int dir = direction.Next(1, 4);       // Choix aléatoire de la direction de la foumi (1, 4) pour nord sud est ouest
+
+            char fourmi = ' ';      // Initialisation de la fourmi qui sera dans la matrice
+
+            if (dir == 1)
+                fourmi = Stock.fourmis[0];       // Direction Nord
+            if (dir == 2)
+                fourmi = Stock.fourmis[1];       // Direction Est
+            if (dir == 3)
+                fourmi = Stock.fourmis[2];       // Direction Sud
+            if (dir == 4)
+                fourmi = Stock.fourmis[3];       // Direction Ouest
+
+            mat[19 / 2, 20 / 2] = $" {fourmi} |";   // Insertion de la fourmi avec une direction aléatoire dans la matrice
+
+            #endregion Initialisation de la fourmi
+
+            AffichageMatrice(mat);
+
+            int direc = PosFourmi(mat)[2];
+            string dirFourmi = "";
+            switch(direc)
+            {
+                case 1:
+                    dirFourmi = Stock.directions[0]; // Nord
+                    break;
+                case 2:
+                    dirFourmi = Stock.directions[1]; // Est
+                    break;
+                case 3:
+                    dirFourmi = Stock.directions[2]; // Sud
+                    break;
+                case 4:
+                    dirFourmi = Stock.directions[3]; // Ouest
+                    break;
+            }
+
+            Console.WriteLine($"\n\nLa fourmi est actuellement aux coordonnées : {PosFourmi(mat)[0]}, {PosFourmi(mat)[1]} et dans la direction {dirFourmi}");
+
+
+
+            Console.ReadKey();
+        }       
     }
 }
