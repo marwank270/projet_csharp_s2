@@ -135,19 +135,19 @@ namespace Projet_CSharp_S2
             {
                 for (int j = 0; j < tab.GetLength(1); j++)
                 {
-                    if (tab[i, j].Equals('▲'))
+                    if (tab[i, j] == " ▲ |")
                     {
                         pos[0] = i; pos[1] = j; pos[2] = 1;     // 1 désigne direction nord
                     }
-                    else if (tab[i, j].Equals('►'))
+                    else if (tab[i, j] == " ► |")
                     {
                         pos[0] = i; pos[1] = j; pos[2] = 2;     // 2 désigne direction est
                     }
-                    else if (tab[i, j].Equals('▼'))
+                    else if (tab[i, j] == " ▼ |")
                     {
                         pos[0] = i; pos[1] = j; pos[2] = 3;     // 3 désigne direction sud
                     }
-                    else if (tab[i, j].Equals('◄'))
+                    else if (tab[i, j] == " ◄ |")
                     {
                         pos[0] = i; pos[1] = j; pos[2] = 4;     // 4 désigne direction ouest
                     }
