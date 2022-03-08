@@ -65,9 +65,12 @@ namespace Projet_CSharp_S2
     {
         public static char[] fourmis = { '▲', '►', '▼', '◄' };                      // Toutes les formes possible de la fourmi 
         public static string[] directions = { "Nord", "Est", "Sud", "Ouest" };      // Toutes les directions possibles de la fourmi
+<<<<<<< HEAD
         public static int direction;
         public static string[,] matrice_principale;
         public static int[] coordonnees;
+=======
+>>>>>>> main
     }
     class Program
     {
@@ -94,14 +97,22 @@ namespace Projet_CSharp_S2
 
             return (int)input;  // On reconverti input en int pour simplifier le reste du code
         }
+<<<<<<< HEAD
         public static string[,] SaisieMatrice()   // Saisie des coordonnées des matrices
+=======
+        static int[,] SaisieMatrice()   // Saisie des coordonnées des matrices
+>>>>>>> main
         {
             int x, y;
             do
             {
+<<<<<<< HEAD
                 Console.Write("Saisir la hauteur de la matrice : ");
                 x = SaisieNombre();     // Saisie des valeurs
                 Console.Write("\nSaisir la largeur de la matrice : ");
+=======
+                x = SaisieNombre();     // Saisie des valeurs
+>>>>>>> main
                 y = SaisieNombre();
 
                 if (x % 2 == 0 && y % 2 == 0)   // Vérification de la parité des valeurs
@@ -109,7 +120,11 @@ namespace Projet_CSharp_S2
             } while  (x % 2 == 0 && y % 2 == 0);
             
 
+<<<<<<< HEAD
             string[,] matrice = new string[x, y];// Déclaration et initialisation de la matrice
+=======
+            int[,] matrice = new int[x, y];// Déclaration et initialisation de la matrice
+>>>>>>> main
             return matrice;
         }
         static void AffichageMatrice(string[,] matrice)
@@ -132,7 +147,11 @@ namespace Projet_CSharp_S2
             Console.Write(cc.end);                  // Ici nous remettons la police et couleurs originelles de la console
         }
 
+<<<<<<< HEAD
         public static int[] PosFourmi(string[,] tab)            // Définition de la matrice comme étant publique afin de la rendre accessible dans toutes les méthodes (donc d'avoir en permanance la position de la fourmi)
+=======
+        static int[] PosFourmi(string[,] tab)
+>>>>>>> main
         {
             int[] pos = new int[3];     //Initialisé pour contenir les coordonnées x, y de la fourmi et sa direction 
 
@@ -142,6 +161,7 @@ namespace Projet_CSharp_S2
                 {
                     if (tab[i, j] == " ▲ |")
                     {
+<<<<<<< HEAD
                         pos[0] = i; pos[1] = j; pos[2] = 1; Stock.direction = 1;     // 1 désigne direction nord
                     }
                     else if (tab[i, j] == " ► |")
@@ -155,16 +175,35 @@ namespace Projet_CSharp_S2
                     else if (tab[i, j] == " ◄ |")
                     {
                         pos[0] = i; pos[1] = j; pos[2] = 4; Stock.direction = 4;   // 4 désigne direction ouest
+=======
+                        pos[0] = i; pos[1] = j; pos[2] = 1;     // 1 désigne direction nord
+                    }
+                    else if (tab[i, j] == " ► |")
+                    {
+                        pos[0] = i; pos[1] = j; pos[2] = 2;     // 2 désigne direction est
+                    }
+                    else if (tab[i, j] == " ▼ |")
+                    {
+                        pos[0] = i; pos[1] = j; pos[2] = 3;     // 3 désigne direction sud
+                    }
+                    else if (tab[i, j] == " ◄ |")
+                    {
+                        pos[0] = i; pos[1] = j; pos[2] = 4;     // 4 désigne direction ouest
+>>>>>>> main
                     }
                 }
             }
 
+<<<<<<< HEAD
             Stock.coordonnees = pos;
+=======
+>>>>>>> main
             return pos;
         }
 
         static void MouvementFourmi()
         {
+<<<<<<< HEAD
             int[] position_fourmi = Stock.coordonnees;                                                      // Coordonnées de la fourmi récupérée à partir de la variable globale Stock.coordonnees
             int x = PosFourmi(Stock.matrice_principale)[0];                                                 //
             int y = PosFourmi(Stock.matrice_principale)[1];                                                 //
@@ -261,6 +300,11 @@ namespace Projet_CSharp_S2
 
 
             Thread.Sleep(1000);         // Pause de l'execution du programme d'une durée de 1000 ms soit d'une seconde
+=======
+            Thread.Sleep(1000);         // Pause de l'execution du programme d'une durée de 1000 ms soit d'une seconde
+
+
+>>>>>>> main
         }
 
         #endregion Méthode Outils
@@ -316,6 +360,7 @@ namespace Projet_CSharp_S2
             }
         }
 
+<<<<<<< HEAD
         public static void FourmiLangton()
         {
             #region Initialisation de la Matrice
@@ -323,6 +368,13 @@ namespace Projet_CSharp_S2
             string[,] mat = SaisieMatrice();     // Déclaration et intialisation de la matrice qui sera utilisée.
             Stock.matrice_principale = mat;
 
+=======
+        static void FourmiLangton()
+        {
+            #region Initialisation de la Matrice
+
+            string[,] mat = new string[19, 20];     // Déclaration et intialisation de la matrice qui sera utilisée.
+>>>>>>> main
 
             for (int i = 0; i < mat.GetLength(0); i++)  
             {
@@ -348,6 +400,7 @@ namespace Projet_CSharp_S2
             char fourmi = ' ';      // Initialisation de la fourmi qui sera dans la matrice
 
             if (dir == 1)
+<<<<<<< HEAD
                 fourmi = Stock.fourmis[0]; Stock.direction = 0;      // Direction Nord
             if (dir == 2)
                 fourmi = Stock.fourmis[1]; Stock.direction = 1;      // Direction Est
@@ -357,6 +410,17 @@ namespace Projet_CSharp_S2
                 fourmi = Stock.fourmis[3]; Stock.direction = 3;      // Direction Ouest
 
             mat[mat.GetLength(0) / 2, mat.GetLength(1) / 2] = $" {fourmi} |";   // Insertion de la fourmi avec une direction aléatoire dans la matrice
+=======
+                fourmi = Stock.fourmis[0];       // Direction Nord
+            if (dir == 2)
+                fourmi = Stock.fourmis[1];       // Direction Est
+            if (dir == 3)
+                fourmi = Stock.fourmis[2];       // Direction Sud
+            if (dir == 4)
+                fourmi = Stock.fourmis[3];       // Direction Ouest
+
+            mat[19 / 2, 20 / 2] = $" {fourmi} |";   // Insertion de la fourmi avec une direction aléatoire dans la matrice
+>>>>>>> main
 
             #endregion Initialisation de la fourmi
 
@@ -385,6 +449,7 @@ namespace Projet_CSharp_S2
 
 
             Console.ReadKey();
+<<<<<<< HEAD
 
             MouvementFourmi();
             Console.Clear();
@@ -397,6 +462,8 @@ namespace Projet_CSharp_S2
             MouvementFourmi();
             Console.Clear();
             MouvementFourmi();
+=======
+>>>>>>> main
         }       
     }
 }
