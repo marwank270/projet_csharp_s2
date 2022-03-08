@@ -24,7 +24,7 @@
 ## 21/02/22 :
 - Codage :
   - Création d'une méthode de localisation des coordonnées et de la direction de la fourmi [Échec à ce jour] *(Marwan)*
-  - Création d'une classe `Stock` pour stocker les constantes dont nous aurons régulièrement besoin dans le code *(Marwan)*
+  - Création d'une `class Stock` pour stocker les constantes dont nous aurons régulièrement besoin dans le code *(Marwan)*
 
 ## 27/02/22 : 
 - Codage :
@@ -35,5 +35,5 @@
 ## 08/03/22 : 
 - Codage :
   - Création de l'algo de Langton *(Marwan & Charles)*
-  - Correction et amélioration de la fonction `PosFourmi()` *(Marwan & Charles)*
+  - Correction et amélioration de la méthode `PosFourmi()` *(Marwan & Charles)*
   - A completer la flemme
