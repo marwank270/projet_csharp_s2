@@ -64,10 +64,10 @@ namespace Projet_CSharp_S2
     public static class Stock   // Classe de stockage de constante
     {
         public static char[] fourmis = { '▲', '►', '▼', '◄' };                      // Toutes les formes possible de la fourmi 
-        public static string[] directions = { "Nord", "Est", "Sud", "Ouest" };      // Toutes les directions possibles de la fourmi
-        public static int direction;
-        public static string[,] matrice_principale;
-        public static int[] coordonnees;
+        // [deprecated] //public static string[] directions = { "Nord", "Est", "Sud", "Ouest" };      // Toutes les directions possibles de la fourmi
+        public static int direction;                                                // Variable régulièrement mise à jour contenant la direction de la fourmi
+        public static string[,] matrice_principale;                                 // Variable régulièrement mise à jour contenant la matrice générale de l'algorithme
+        public static int[] coordonnees;                                            // Variable régulièrement mise à jour contenant les coordonnées x,y et direction de la fourmi
     }
     class Program
     {
@@ -75,7 +75,7 @@ namespace Projet_CSharp_S2
 
         static int SaisieNombre()
         {
-            short? input;   // On ne dépassera jamais 32767 comme valeur donc inutile de prendre un int
+            short? input;   // On ne dépassera jamais 32767 comme valeur donc inutile de prendre un int (et prendre un short permet d'optimiser le code)
             bool succes;
             do
             {
@@ -84,10 +84,10 @@ namespace Projet_CSharp_S2
                     input = Convert.ToInt16(Console.ReadLine());    // Le code essaye de convertir la saisie et si il réussi il passe la valeur de succes à true
                     succes = true;
                 }
-                catch
+                catch                                               // En cas d'echec, on affiche un message d'erreur et on recommence
                 {
                     Console.WriteLine($"{cc.badVal} : Vous devez saisir {cc.red}uniquement des nombres{cc.end} ici. Veuillez réessayer avec des nombres.");
-                    input = null;
+                    input = null;                                   // input ne peut pas rester sans valeur, en cas d'erreur comme il n'a toujours pas de valeur on le fait valoir null
                     succes = false;
                 }
             } while (input == null && succes == false);
@@ -100,31 +100,28 @@ namespace Projet_CSharp_S2
             do
             {
                 Console.Write("Saisir la hauteur de la matrice : ");
-                x = SaisieNombre();     // Saisie des valeurs
+                x = SaisieNombre();                                     // Saisie des valeurs par l'utilisateur
                 Console.Write("\nSaisir la largeur de la matrice : ");
                 y = SaisieNombre();
 
-                if (x % 2 == 0 && y % 2 == 0)   // Vérification de la parité des valeurs
-                    Console.WriteLine($"{cc.badVal} : Vous ne pouvez pas saisir {cc.yellow}plusieurs nombres pairs{cc.end} à cause du centre.");
+                if (x % 2 == 0 && y % 2 == 0)                           // Vérification de la parité des valeurs
+                    Console.WriteLine($"{cc.badVal} : Vous ne pouvez pas saisir {cc.yellow}deux nombres pairs{cc.end} sinon la matrice n'as pas de centre.");
             } while  (x % 2 == 0 && y % 2 == 0);
-            
 
-            string[,] matrice = new string[x, y];// Déclaration et initialisation de la matrice
+
+            string[,] matrice = new string[x, y];                       // Déclaration et initialisation de la matrice
             return matrice;
         }
         static void AffichageMatrice(string[,] matrice)
         {
-            /*int x = matrice.GetLength(0);
-            int y = matrice.GetLength(1);*/
-
             Console.Write(cc.bgWhite + cc.black);   // Passage en blanc de la console pour laisser que la matrice soit de la bonne couleur au départ
 
             for (int i = 0; i < matrice.GetLength(0); i++)
             {
-                Console.WriteLine();
+                Console.WriteLine();                // Retours à la ligne lorsque le bord de la matrice est atteint
                 for (int j = 0; j < matrice.GetLength(1); j++)
                 {
-                    Console.Write(matrice[i, j]);   // Dans cette ligne on écrit la case actuelle de notre matrice
+                    Console.Write(matrice[i, j]);   // Dans cette ligne on écrit la case actuelle de notre matrice dans la console
                     
                 }
             }
@@ -134,100 +131,102 @@ namespace Projet_CSharp_S2
 
         public static int[] PosFourmi(string[,] tab)            // Définition de la matrice comme étant publique afin de la rendre accessible dans toutes les méthodes (donc d'avoir en permanance la position de la fourmi)
         {
-            int[] pos = new int[3];     //Initialisé pour contenir les coordonnées x, y de la fourmi et sa direction 
+            int[] pos = new int[3];                             // Tableau initialisé pour contenir les coordonnées x, y de la fourmi et sa direction 
 
             for (int i = 0; i < tab.GetLength(0); i++)
             {
                 for (int j = 0; j < tab.GetLength(1); j++)
                 {
-                    if (tab[i, j] == " ▲ |")
+                    if (tab[i, j] == $" {Stock.fourmis[0]} |")  // Si le contenu au coordonnées vaut ce que l'on cherche (Stock.fourmis contient les différentes formes de la fourmi) on lance l'enregistrement des variables
                     {
-                        pos[0] = i; pos[1] = j; pos[2] = 1; Stock.direction = 1;     // 1 désigne direction nord
+                        pos[0] = i; pos[1] = j; pos[2] = 1; Stock.direction = 1;    // 1 désigne direction nord (sous la forme de x = 1, y = j, direction = 1)
                     }
-                    else if (tab[i, j] == " ► |")
+                    else if (tab[i, j] == $" {Stock.fourmis[1]} |")
                     {
                         pos[0] = i; pos[1] = j; pos[2] = 2; Stock.direction = 2;    // 2 désigne direction est
                     }
-                    else if (tab[i, j] == " ▼ |")
+                    else if (tab[i, j] == $" {Stock.fourmis[2]} |")
                     {
                         pos[0] = i; pos[1] = j; pos[2] = 3; Stock.direction = 3;    // 3 désigne direction sud
                     }
-                    else if (tab[i, j] == " ◄ |")
+                    else if (tab[i, j] == $" {Stock.fourmis[3]} |")
                     {
-                        pos[0] = i; pos[1] = j; pos[2] = 4; Stock.direction = 4;   // 4 désigne direction ouest
+                        pos[0] = i; pos[1] = j; pos[2] = 4; Stock.direction = 4;    // 4 désigne direction ouest
                     }
                 }
             }
 
-            Stock.coordonnees = pos;
+            Stock.coordonnees = pos;    // Cette ligne est très importante, elle nous permet d'envoyer les coordonnées et la direction de la fourmi dans une classe Stock qui contient les variables globales du programme
             return pos;
         }
-
-        static void MouvementFourmi()
+        static void DeplacementFourmi()
         {
-            int[] position_fourmi = Stock.coordonnees;                                                      // Coordonnées de la fourmi récupérée à partir de la variable globale Stock.coordonnees
+            /*int[] position_fourmi = Stock.coordonnees;                                                      // Coordonnées de la fourmi récupérée à partir de la variable globale Stock.coordonnees
             int x = PosFourmi(Stock.matrice_principale)[0];                                                 //
-            int y = PosFourmi(Stock.matrice_principale)[1];                                                 //
-            int direc = position_fourmi[2];
-            if (Console.BackgroundColor == ConsoleColor.Black)
+            int y = PosFourmi(Stock.matrice_principale)[1];*/                                                 //
+            int x = Stock.coordonnees[0];
+            int y = Stock.coordonnees[1];
+            int direc = Stock.coordonnees[2];                                                                 
+
+            if (Console.BackgroundColor == ConsoleColor.Black)  
             {
                 if (direc == 1)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    direc = 4;
-                    x -= 1;
-                    Stock.matrice_principale[x, y] = $" {Stock.fourmis[3]} |";
+                    Stock.matrice_principale[x, y] = $"{Console.BackgroundColor = ConsoleColor.Black}   {cc.end}{cc.bgWhite}{cc.black}|";     // Réécriture du contenu de la case pour le passage en noir
+                    direc = 4;      // Tourne de Nord à Ouest
+                    x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
+                    Stock.matrice_principale[x, y] = $" {Stock.fourmis[3]} |";                                  // Réécriture de la fourmi à sa nouvelle position
                 }
                 else if (direc == 2)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    direc -= 1;
-                    y -= 1;
-                    Stock.matrice_principale[x, y] = $" {Stock.fourmis[0]} |";
+                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+                    direc = 1;      // Tourne d'Est à Nord
+                    y += 1;// x- v+ // Monte vers le Nord donc de 1 sur l'axe y
+                    Stock.matrice_principale[x, y] = $" {Stock.fourmis[0]} |";                                  // --
                 }
                 else if (direc == 3)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    direc -= 1;
-                    x += 1;
-                    Stock.matrice_principale[x, y] = $" {Stock.fourmis[1]} |";
+                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+                    direc = 2;      // Tourne de Sud à Est
+                    x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
+                    Stock.matrice_principale[x, y] = $" {Stock.fourmis[1]} |";                                  // --
                 }
                 else if (direc == 4)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    direc -= 1;
-                    y += 1;
-                    Stock.matrice_principale[x, y] = $" {Stock.fourmis[2]} |";
+                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+                    direc = 3;      // Tourne d'Ouest à Sud
+                    y -= 1;// x+ v- // Descend vers le Sud donc de -1 sur l'axe y
+                    Stock.matrice_principale[x, y] = $" {Stock.fourmis[2]} |";                                  // --
                 }
             }
-            else
+            else        // Si la case est blanche
             {
                 if (direc == 1)
                 {
                     Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    direc += 1;
-                    x += 1;
+                    direc += 1;     // Tourne de Nord à Est
+                    x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[1]} |";
                 }
                 else if (direc == 2)
                 {
                     Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    direc += 1;
-                    y -= 1;
+                    direc += 1;     // Tourne de Est à Sud
+                    y -= 1;         // Descend vers le Sud donc de -1 sur l'axe y
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[2]} |";
                 }
                 else if (direc == 3)
                 {
                     Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    direc += 1;
-                    y -= 1;
+                    direc += 1;     // Tourne de Sud à Ouest
+                    x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[3]} |";
                 }
                 else if (direc == 4)
                 {
                     Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    direc = 1;
-                    x += 1;
+                    direc = 1;      // Tourne de Ouest à Nord
+                    y += 1;         // Monte vers le Nord donc de 1 sur l'axe x
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[0]} |";
                 }
 
@@ -238,29 +237,23 @@ namespace Projet_CSharp_S2
 
             AffichageMatrice(Stock.matrice_principale);
 
-            //int direct = PosFourmi(Stock.matrice_principale)[2];
             string dirFourmi = "";
             switch (direc)
             {
                 case 1:
-                    dirFourmi = Stock.directions[0]; // Nord
+                    dirFourmi = "Nord";
                     break;
                 case 2:
-                    dirFourmi = Stock.directions[1]; // Est
+                    dirFourmi = "Est";
                     break;
                 case 3:
-                    dirFourmi = Stock.directions[2]; // Sud
+                    dirFourmi = "Sud";
                     break;
                 case 4:
-                    dirFourmi = Stock.directions[3]; // Ouest
+                    dirFourmi = "Ouest";
                     break;
             }
             Console.WriteLine($"\n\nLa fourmi est actuellement aux coordonnées : {x}, {y} et dans la direction {dirFourmi}");
-
-
-
-
-            Thread.Sleep(1000);         // Pause de l'execution du programme d'une durée de 1000 ms soit d'une seconde
         }
 
         #endregion Méthode Outils
@@ -278,15 +271,7 @@ namespace Projet_CSharp_S2
             int choix_menu;
 
             Console.WriteLine("\n0: Quitter le programme\n\n1: La fourmi de Langton - 1ère Partie.\n2: La fourmi de Langton V2 - 2ème Partie\n");
-            Console.WriteLine("Que voulez vous faire ?");
-
-            /*do
-            {
-                choix_menu = SaisieNombre();
-                //if (choix_menu < 0 || choix_menu > 2)
-                      //Console.WriteLine($"{cc.badVal} : Le nombre saisi n'est pas dans les bornes {cc.red}[0 ; 2]{cc.end}.");   // Gestion de l'erreur dans le default du switch
-            } while (choix_menu < 0 || choix_menu > 2);*/
-
+            Console.Write("Que voulez vous faire ? ");
             choix_menu = SaisieNombre();
 
             switch (choix_menu) {
@@ -303,32 +288,32 @@ namespace Projet_CSharp_S2
                     FourmiLangton();        // Redirection vers la méthode de suite du programme
                     break;
 
-                /*case 2:
+                case 2:
                     Console.Clear();
-                    
-                    break;*/
+                    Console.WriteLine("Under construction");
+                    break;
 
                 default:
                     Console.Clear();
-                    Console.WriteLine($"{cc.badVal} : Le nombre saisi n'est pas dans les bornes {cc.red}[0 ; 2]{cc.end}.");
+                    Console.WriteLine($"{cc.badVal} : Le nombre saisi n'est pas dans les bornes {cc.red}[0 ; 2]{cc.end}. Veuillez réessayer.");
                     Main();
                     break;
             }
         }
 
-        public static void FourmiLangton()
+        static void FourmiLangton()
         {
             #region Initialisation de la Matrice
 
-            string[,] mat = SaisieMatrice();     // Déclaration et intialisation de la matrice qui sera utilisée.
-            Stock.matrice_principale = mat;
+            string[,] mat = SaisieMatrice();        // Déclaration et intialisation de la matrice principale
+            Stock.matrice_principale = mat;         // Copie de l'état actuel de la matrice dans la classe Stock pour la rendre accessible
 
 
             for (int i = 0; i < mat.GetLength(0); i++)  
             {
                 for (int j = 0; j < mat.GetLength(1); j++)
                 {
-                    mat[i, j] = "   |";             // Remplissage de la mattrice avec de quoi faire des cotés.
+                    mat[i, j] = "   |";             // Remplissage de la matrice avec de quoi faire des cotés
                 }
             }
 
@@ -342,21 +327,22 @@ namespace Projet_CSharp_S2
             Console.Clear();
 
             #region Initialisation de la fourmi
-            Random direction = new Random();
-            int dir = direction.Next(1, 4);       // Choix aléatoire de la direction de la foumi (1, 4) pour nord sud est ouest
 
-            char fourmi = ' ';      // Initialisation de la fourmi qui sera dans la matrice
+            Random direction = new Random();
+            int dir = direction.Next(1, 4);         // Choix aléatoire de la direction de la foumi (1, 4) pour Nord Est Sud Ouest
+
+            char fourmi = ' ';                      // Initialisation de la fourmi qui sera dans la matrice
 
             if (dir == 1)
-                fourmi = Stock.fourmis[0]; Stock.direction = 0;      // Direction Nord
+                fourmi = Stock.fourmis[0];// Stock.coordonnees[2] = 0;      // Direction Nord (Stock.fourmis contient les différentes formes de la fourmi)
             if (dir == 2)
-                fourmi = Stock.fourmis[1]; Stock.direction = 1;      // Direction Est
+                fourmi = Stock.fourmis[1];// Stock.coordonnees[2] = 1;      // Direction Est
             if (dir == 3)
-                fourmi = Stock.fourmis[2]; Stock.direction = 2;      // Direction Sud
+                fourmi = Stock.fourmis[2];// Stock.coordonnees[2] = 2;      // Direction Sud
             if (dir == 4)
-                fourmi = Stock.fourmis[3]; Stock.direction = 3;      // Direction Ouest
+                fourmi = Stock.fourmis[3];// Stock.coordonnees[2] = 3;      // Direction Ouest
 
-            mat[mat.GetLength(0) / 2, mat.GetLength(1) / 2] = $" {fourmi} |";   // Insertion de la fourmi avec une direction aléatoire dans la matrice
+            mat[mat.GetLength(0) / 2, mat.GetLength(1) / 2] = $" {fourmi} |";   // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
 
             #endregion Initialisation de la fourmi
 
@@ -367,36 +353,31 @@ namespace Projet_CSharp_S2
             switch(direc)
             {
                 case 1:
-                    dirFourmi = Stock.directions[0]; // Nord
+                    dirFourmi = "Nord";
                     break;
                 case 2:
-                    dirFourmi = Stock.directions[1]; // Est
+                    dirFourmi = "Est";
                     break;
                 case 3:
-                    dirFourmi = Stock.directions[2]; // Sud
+                    dirFourmi = "Sud";
                     break;
                 case 4:
-                    dirFourmi = Stock.directions[3]; // Ouest
+                    dirFourmi = "Ouest";
                     break;
             }
 
             Console.WriteLine($"\n\nLa fourmi est actuellement aux coordonnées : {PosFourmi(mat)[0]}, {PosFourmi(mat)[1]} et dans la direction {dirFourmi}");
 
+            while (Stock.coordonnees[0] < mat.GetLength(0) && Stock.coordonnees[1] < mat.GetLength(1) )
+            {
+                Console.Clear();
+                DeplacementFourmi();
 
+                if (Stock.coordonnees[0] != PosFourmi(mat)[0] || Stock.coordonnees[1] != PosFourmi(mat)[1] || Stock.coordonnees[2] != PosFourmi(mat)[2])    // Ne devrait jamais s'executer normalement
+                    Console.WriteLine($"{cc.wrongFlag} Attention les coordonnées son faussées, échec de la simulation.\nSelon la méthode {cc.red}PosFourmi(string[,] matrice){cc.end} : {cc.cyan}x = {PosFourmi(mat)[0]}; y = {PosFourmi(mat)[1]},{cc.end} de direction {cc.cyan}{PosFourmi(mat)[2]}\nSelon la variable globale {cc.red}Stock.coordonnees[n]{cc.end} : {cc.cyan}x = {Stock.coordonnees[0]}; y = {Stock.coordonnees[1]},{cc.end} de direction {cc.cyan}{Stock.coordonnees[2]}"); 
 
-            Console.ReadKey();
-
-            MouvementFourmi();
-            Console.Clear();
-            MouvementFourmi();
-            Console.Clear();
-            MouvementFourmi();
-            Console.Clear();
-            MouvementFourmi();
-            Console.Clear();
-            MouvementFourmi();
-            Console.Clear();
-            MouvementFourmi();
+                Thread.Sleep(500);      // Pause de l'execution du programme d'une durée de 500 ms soit d'une demi seconde
+            }
         }       
     }
 }
