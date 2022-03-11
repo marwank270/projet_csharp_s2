@@ -1,7 +1,7 @@
 ﻿/** Global informations
  * Authors : Marwan K. & Charles A. - Lebrun
  * Github project repository : https://github.com/marwank270/projet_csharp_s2/
- * Authors githubs : https://github.com/marwank270 & https://github.com/novaxsavestheyear
+ * Author's github : https://github.com/marwank270 & https://github.com/novaxsavestheyear
  **/
 
 using System;
@@ -67,8 +67,17 @@ namespace Projet_CSharp_S2
         // [deprecated] //public static string[] directions = { "Nord", "Est", "Sud", "Ouest" };      // Toutes les directions possibles de la fourmi
         public static int direction;                                                // Variable régulièrement mise à jour contenant la direction de la fourmi
         public static string[,] matrice_principale;                                 // Variable régulièrement mise à jour contenant la matrice générale de l'algorithme
+        public static int[,] matrice_fantome;                                    // Variable régulièrement mise à jour contenant la matrice de couleurs
         public static int[] coordonnees;                                            // Variable régulièrement mise à jour contenant les coordonnées x,y et direction de la fourmi
     }
+
+    /*public struct saved
+    {
+        public int direction;                                                // Variable régulièrement mise à jour contenant la direction de la fourmi
+        public string[,] matrice_principale;                                 // Variable régulièrement mise à jour contenant la matrice générale de l'algorithme
+        public int[] coordonnees;                                            // Variable régulièrement mise à jour contenant les coordonnées x,y et direction de la fourmi
+    }*/
+
     class Program
     {
         #region Méthode Outils
@@ -114,19 +123,41 @@ namespace Projet_CSharp_S2
         }
         static void AffichageMatrice(string[,] matrice)
         {
-            Console.Write(cc.bgWhite + cc.black);   // Passage en blanc de la console pour laisser que la matrice soit de la bonne couleur au départ
+            //Console.Write(cc.bgWhite + cc.black);     // Passage en blanc de la console pour laisser que la matrice soit de la bonne couleur au départ
+            // La classe cc est inutilisable du fait que je n'ai pas prévu de propriété pour détecter la couleur actuelle nous allons donc continuer comme cela :
+            // Surtout qu'après reflexion la couleur doit être mise au moment de l'initialisation mdrr
 
             for (int i = 0; i < matrice.GetLength(0); i++)
             {
-                Console.WriteLine();                // Retours à la ligne lorsque le bord de la matrice est atteint
+                Console.WriteLine();                    // Retours à la ligne lorsque le bord de la matrice est atteint
                 for (int j = 0; j < matrice.GetLength(1); j++)
                 {
-                    Console.Write(matrice[i, j]);   // Dans cette ligne on écrit la case actuelle de notre matrice dans la console
+                    if (Stock.matrice_fantome[i, j] == 0)                       // Si la case est actuellement blanche
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+
+                        Console.Write(matrice[i, j]);                       // Case vide de couleur noire sur blanche
+
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    if (Stock.matrice_fantome[i,j] == 1)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+
+                        Console.Write(matrice[i, j]);                       // Case vide de couleur blanche sur noir
+
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                    //Console.Write(matrice[i, j]);       // Dans cette ligne on écrit la case actuelle de notre matrice dans la console
                     
                 }
             }
 
-            Console.Write(cc.end);                  // Ici nous remettons la police et couleurs originelles de la console
+            //Console.Write(cc.end);                    // Ici nous remettons la police et couleurs originelles de la console
         }
 
         public static int[] PosFourmi(string[,] tab)            // Définition de la matrice comme étant publique afin de la rendre accessible dans toutes les méthodes (donc d'avoir en permanance la position de la fourmi)
@@ -168,63 +199,72 @@ namespace Projet_CSharp_S2
             int y = Stock.coordonnees[1];
             int direc = Stock.coordonnees[2];                                                                 
 
-            if (Console.BackgroundColor == ConsoleColor.Black)  
+            if (Stock.matrice_fantome[x, y] == 0)  
             {
                 if (direc == 1)
                 {
-                    Stock.matrice_principale[x, y] = $"{Console.BackgroundColor = ConsoleColor.Black}   {cc.end}{cc.bgWhite}{cc.black}|";     // Réécriture du contenu de la case pour le passage en noir
+                    //Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // Réécriture du contenu de la case pour le passage en noir   // Problème avec la classe cc
+
+                    SwitchColor(Stock.matrice_principale, x, y);
                     direc = 4;      // Tourne de Nord à Ouest
                     x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[3]} |";                                  // Réécriture de la fourmi à sa nouvelle position
                 }
                 else if (direc == 2)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+                    //Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+                    SwitchColor(Stock.matrice_principale, x, y);
                     direc = 1;      // Tourne d'Est à Nord
                     y += 1;// x- v+ // Monte vers le Nord donc de 1 sur l'axe y
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[0]} |";                                  // --
                 }
                 else if (direc == 3)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+                    //Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+                    SwitchColor(Stock.matrice_principale, x, y);
                     direc = 2;      // Tourne de Sud à Est
                     x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[1]} |";                                  // --
                 }
                 else if (direc == 4)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+                    //Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+                    SwitchColor(Stock.matrice_principale, x, y);
                     direc = 3;      // Tourne d'Ouest à Sud
                     y -= 1;// x+ v- // Descend vers le Sud donc de -1 sur l'axe y
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[2]} |";                                  // --
                 }
             }
-            else        // Si la case est blanche
+            else if (Stock.matrice_fantome[x, y] == 1)       // Si la case est blanche
             {
                 if (direc == 1)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+                    //Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+                    SwitchColor(Stock.matrice_principale, x, y);
                     direc += 1;     // Tourne de Nord à Est
                     x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[1]} |";
                 }
                 else if (direc == 2)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+                    //Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+                    SwitchColor(Stock.matrice_principale, x, y);
                     direc += 1;     // Tourne de Est à Sud
                     y -= 1;         // Descend vers le Sud donc de -1 sur l'axe y
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[2]} |";
                 }
                 else if (direc == 3)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+                    //Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+                    SwitchColor(Stock.matrice_principale, x, y);
                     direc += 1;     // Tourne de Sud à Ouest
                     x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[3]} |";
                 }
                 else if (direc == 4)
                 {
-                    Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+                    //Stock.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+                    SwitchColor(Stock.matrice_principale, x, y);
                     direc = 1;      // Tourne de Ouest à Nord
                     y += 1;         // Monte vers le Nord donc de 1 sur l'axe x
                     Stock.matrice_principale[x, y] = $" {Stock.fourmis[0]} |";
@@ -254,13 +294,29 @@ namespace Projet_CSharp_S2
                     break;
             }
             Console.WriteLine($"\n\nLa fourmi est actuellement aux coordonnées : {x}, {y} et dans la direction {dirFourmi}");
+            //VerificationFond();
+            Console.WriteLine(Console.ForegroundColor + "\n" + Console.BackgroundColor);
+        }
+
+        static void SwitchColor(string[,] matrice, int x, int y)
+        {
+            if (Stock.matrice_fantome[x, y] == 0)
+            {
+                matrice[x, y] = "   |";
+                Stock.matrice_fantome[x, y] = 1;
+            }
+            else if (Stock.matrice_fantome[x, y] == 1)
+            {
+                matrice[x, y] = "   |";
+                Stock.matrice_fantome[x, y] = 0;
+            }
+
         }
 
         #endregion Méthode Outils
 
         static void Main()
         {
-            
             Console.WriteLine(@"  _____                          _       _        _                      _              
  |  ___|__  _   _ _ __ _ __ ___ (_)   __| | ___  | |    __ _ _ __   __ _| |_ ___  _ __  
  | |_ / _ \| | | | '__| '_ ` _ \| |  / _` |/ _ \ | |   / _` | '_ \ / _` | __/ _ \| '_ \ 
@@ -305,17 +361,23 @@ namespace Projet_CSharp_S2
         {
             #region Initialisation de la Matrice
 
-            string[,] mat = SaisieMatrice();        // Déclaration et intialisation de la matrice principale
-            Stock.matrice_principale = mat;         // Copie de l'état actuel de la matrice dans la classe Stock pour la rendre accessible
+            string[,] mat = SaisieMatrice();                // Déclaration et intialisation de la matrice principale
+            int[,] ghost_mat = new int[mat.GetLength(0), mat.GetLength(1)]; // Déclaration et initialisation de la matrice de couleurs
+            Stock.matrice_principale = mat;                 // Copie de l'état actuel de la matrice dans la classe Stock pour la rendre accessible
+            Stock.matrice_fantome = ghost_mat;
 
+            Console.BackgroundColor = ConsoleColor.White;   // Passage de la couleur du fond au blanc 
+            Console.ForegroundColor = ConsoleColor.Black;   // Passage de la couleur des caractères en noirs (faut bien que ce soit lisible)
 
             for (int i = 0; i < mat.GetLength(0); i++)  
             {
                 for (int j = 0; j < mat.GetLength(1); j++)
                 {
-                    mat[i, j] = "   |";             // Remplissage de la matrice avec de quoi faire des cotés
+                    mat[i, j] = "   |";             // Remplissage de la matrice avec de quoi faire des cotés
                 }
             }
+
+            Console.ResetColor();   // Simple inversion de ce qui a été fait plus haut
 
             AffichageMatrice(mat);                  // Test d'affichage de la matrice
 
@@ -376,7 +438,7 @@ namespace Projet_CSharp_S2
                 if (Stock.coordonnees[0] != PosFourmi(mat)[0] || Stock.coordonnees[1] != PosFourmi(mat)[1] || Stock.coordonnees[2] != PosFourmi(mat)[2])    // Ne devrait jamais s'executer normalement
                     Console.WriteLine($"{cc.wrongFlag} Attention les coordonnées son faussées, échec de la simulation.\nSelon la méthode {cc.red}PosFourmi(string[,] matrice){cc.end} : {cc.cyan}x = {PosFourmi(mat)[0]}; y = {PosFourmi(mat)[1]},{cc.end} de direction {cc.cyan}{PosFourmi(mat)[2]}\nSelon la variable globale {cc.red}Stock.coordonnees[n]{cc.end} : {cc.cyan}x = {Stock.coordonnees[0]}; y = {Stock.coordonnees[1]},{cc.end} de direction {cc.cyan}{Stock.coordonnees[2]}"); 
 
-                Thread.Sleep(500);      // Pause de l'execution du programme d'une durée de 500 ms soit d'une demi seconde
+                //Thread.Sleep(1);      // Pause de l'execution du programme d'une durée de 500 ms soit d'une demi seconde
             }
         }       
     }
