@@ -5,11 +5,12 @@
  **/
 
 using System;
+using System.Linq;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace Projet_CSharp_S2
 {
-
     static class cc // Classe console color faite maison (inutile aux exercices c'est juste pour le fun et faire plus beau) (Marwan)#{
     {
         #region ConsoleColor
@@ -80,6 +81,16 @@ namespace Projet_CSharp_S2
 
     class Program
     {
+        #region Méthode Menu
+
+        public static void EcrireCentre(string texte)
+        {
+            Console.Write(String.Format("[1000D\n{0," + ((Console.WindowWidth / 2 + 5) + (texte.Length / 2)) + "}", texte));
+        }
+
+
+        #endregion Méthode Menu
+
         #region Méthode Outils
 
         static int SaisieNombre()
@@ -159,6 +170,7 @@ namespace Projet_CSharp_S2
 
             //Console.Write(cc.end);                    // Ici nous remettons la police et couleurs originelles de la console
         }
+
 
         public static int[] PosFourmi(string[,] tab)            // Définition de la matrice comme étant publique afin de la rendre accessible dans toutes les méthodes (donc d'avoir en permanance la position de la fourmi)
         {
@@ -312,49 +324,72 @@ namespace Projet_CSharp_S2
             }
 
         }
+        /*static int[,] GenerateFourmi(int nbfourmi)
+        {
+            int[,] mat = SaisieMatrice();
+            for (int i = 0; i <= nbfourmi; i++)
+            {
+                Random a = new Random();
+                int x = x.Next(0, mat.GetLength(0)-1);
+                int y = y.Next(0, mat.GetLength(1)-1);
+
+                // Stock.matrice_principale[i, j] = "   |"; // case de la matrice vide
+                // Stock.matrice_principale[i, j] = $" {Stock.fourmis[Stock.coordonnees[2]] |"; // case de la matrice avec la foumi dans la bonne direction
+            }
+        }*/
 
         #endregion Méthode Outils
 
+        #region Fullscreen Stuff
+        [DllImport("kernel32.dll", ExactSpelling = true)]
+        private static extern IntPtr GetConsoleWindow();
+        private static IntPtr ThisConsole = GetConsoleWindow();
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        private const int HIDE = 0;
+        private const int MAXIMIZE = 3;
+        private const int MINIMIZE = 6;
+        private const int RESTORE = 9;
+        #endregion Fullscreen Stuff
+
         static void Main()
         {
-            Console.WriteLine(@"  _____                          _       _        _                      _              
- |  ___|__  _   _ _ __ _ __ ___ (_)   __| | ___  | |    __ _ _ __   __ _| |_ ___  _ __  
- | |_ / _ \| | | | '__| '_ ` _ \| |  / _` |/ _ \ | |   / _` | '_ \ / _` | __/ _ \| '_ \ 
- |  _| (_) | |_| | |  | | | | | | | | (_| |  __/ | |__| (_| | | | | (_| | || (_) | | | |
- |_|  \___/ \__,_|_|  |_| |_| |_|_|  \__,_|\___| |_____\__,_|_| |_|\__, |\__\___/|_| |_|
-                                                                   |___/                ");
+            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+            ShowWindow(ThisConsole, MAXIMIZE);
 
-            int choix_menu;
+            string ASCII = @"           
+                                                        ,d8888b                                          d8,          d8b             d8b                                                         
+                                                       88P'                                            `8P           88P             88P                                  d8P                    
+                                                    d888888P                                                        d88             d88                                d888888P                  
+                                                     ?88'     d8888b ?88   d8P  88bd88b  88bd8b,d88b   88b     d888888   d8888b    888   d888b8b    88bd88b  d888b8b    ?88'   d8888b   88bd88b 
+                                                     88P     d8P' ?88d88   88   88P'  `  88P'`?8P'?8b  88P    d8P' ?88  d8b_,dP    ?88  d8P' ?88    88P' ?8bd8P' ?88    88P   d8P' ?88  88P' ?8b
+                                                    d88      88b  d88?8(  d88  d88      d88  d88  88P d88     88b  ,88b 88b         88b 88b  ,88b  d88   88P88b  ,88b   88b   88b  d88 d88   88P
+                                                   d88'      `?8888P'`?88P'?8bd88'     d88' d88'  88bd88'     `?88P'`88b`?888P'      88b`?88P'`88bd88'   88b`?88P'`88b  `?8b  `?8888P'd88'   88b
+                                                                                                                                                             )88                          
+                                                                                                                                                            ,88P                          
+                                                                                                                                                        `?8888P                           ";
 
-            Console.WriteLine("\n0: Quitter le programme\n\n1: La fourmi de Langton - 1ère Partie.\n2: La fourmi de Langton V2 - 2ème Partie\n");
-            Console.Write("Que voulez vous faire ? ");
-            choix_menu = SaisieNombre();
+            Console.WriteLine(String.Format($"\x1b[33m \t {ASCII} \x1b[0m"));
 
-            switch (choix_menu) {
-
-                case 0:                     // Cas 0 : Quitter
-                    Console.Clear();
-                    Console.WriteLine("Merci d'avoir utilisé notre programme ! À bientôt !");
-                    Thread.Sleep(3000);     // Temps d'attente de 3s avant de quitter pour que ce ne soit pas sec pour l'utilisateur
-                    Environment.Exit(0);    // Permet de quitter le programme "proprement" avec le code 0 qui indique que le programme s'est terminé sans erreur
-                    break;
-
-                case 1:
-                    Console.Clear();
-                    FourmiLangton();        // Redirection vers la méthode de suite du programme
-                    break;
-
-                case 2:
-                    Console.Clear();
-                    Console.WriteLine("Under construction");
-                    break;
-
-                default:
-                    Console.Clear();
-                    Console.WriteLine($"{cc.badVal} : Le nombre saisi n'est pas dans les bornes {cc.red}[0 ; 2]{cc.end}. Veuillez réessayer.");
-                    Main();
-                    break;
+            Console.SetCursorPosition(Console.WindowWidth / 2, 60);
+            for (var i = 0; i < 100; i++)
+            {
+                Thread.Sleep(1);
+                var width = (i + 1) / 4;
+                var hashtags = string.Concat(Enumerable.Repeat("█", width)); // same as new string("#", width)
+                var space = string.Concat(Enumerable.Repeat(" ", 25 - width));
+                var bar = $"\t\t│{hashtags}{space}│\x1b[43m\x1b[30m  {i + 1}  %\x1b[0m ";
+                Console.Write(String.Format("[1000D{0," + ((Console.WindowWidth / 2) + (bar.Length / 2)) + "}", bar));
             }
+
+            Console.SetCursorPosition(Console.WindowWidth / 2, Console.WindowHeight / 2 - 10);
+            Console.CursorVisible = false;
+
+            string titre = "Choisissez une option avec les fleches directionnelles :\n\n\n";
+            string[] options = { "--------  Fourmi de Langton  ---------\n", "-------- Fourmi de Langton V2 --------\n\n", "QUITTER " };
+
+            Menu menu = new Menu(titre, options);
+            menu.Deplacement();
         }
 
         static void FourmiLangton()
