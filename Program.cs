@@ -115,12 +115,15 @@ namespace Projet_CSharp_S2
             return (int)input;  // On reconverti input en int pour simplifier le reste du code
         }
         public static string[,] SaisieMatrice()   // Saisie des coordonnées des matrices
+        static int[,] SaisieMatrice()   // Saisie des coordonnées des matrices
         {
             int x, y;
             do
             {
                 Console.Write("Saisir la hauteur de la matrice : ");
                 x = SaisieNombre();                                     // Saisie des valeurs par l'utilisateur
+                Console.Write("\nSaisir la largeur de la matrice : ");
+                x = SaisieNombre();     // Saisie des valeurs
                 Console.Write("\nSaisir la largeur de la matrice : ");
                 y = SaisieNombre();
 
@@ -130,6 +133,9 @@ namespace Projet_CSharp_S2
 
 
             string[,] matrice = new string[x, y];                       // Déclaration et initialisation de la matrice
+          
+            string[,] matrice = new string[x, y];// Déclaration et initialisation de la matrice
+            int[,] matrice = new int[x, y];// Déclaration et initialisation de la matrice
             return matrice;
         }
         static void AffichageMatrice(string[,] matrice)
@@ -173,6 +179,7 @@ namespace Projet_CSharp_S2
 
 
         public static int[] PosFourmi(string[,] tab)            // Définition de la matrice comme étant publique afin de la rendre accessible dans toutes les méthodes (donc d'avoir en permanance la position de la fourmi)
+        static int[] PosFourmi(string[,] tab)
         {
             int[] pos = new int[3];                             // Tableau initialisé pour contenir les coordonnées x, y de la fourmi et sa direction 
 
@@ -200,6 +207,7 @@ namespace Projet_CSharp_S2
             }
 
             Stock.coordonnees = pos;    // Cette ligne est très importante, elle nous permet d'envoyer les coordonnées et la direction de la fourmi dans une classe Stock qui contient les variables globales du programme
+
             return pos;
         }
         static void DeplacementFourmi()
@@ -309,7 +317,6 @@ namespace Projet_CSharp_S2
             //VerificationFond();
             Console.WriteLine(Console.ForegroundColor + "\n" + Console.BackgroundColor);
         }
-
         static void SwitchColor(string[,] matrice, int x, int y)
         {
             if (Stock.matrice_fantome[x, y] == 0)
@@ -322,6 +329,27 @@ namespace Projet_CSharp_S2
                 matrice[x, y] = "   |";
                 Stock.matrice_fantome[x, y] = 0;
             }
+            AffichageMatrice(Stock.matrice_principale);
+
+            //int direct = PosFourmi(Stock.matrice_principale)[2];
+            string dirFourmi = "";
+            switch (direc)
+            {
+                case 1:
+                    dirFourmi = Stock.directions[0]; // Nord
+                    break;
+                case 2:
+                    dirFourmi = Stock.directions[1]; // Est
+                    break;
+                case 3:
+                    dirFourmi = Stock.directions[2]; // Sud
+                    break;
+                case 4:
+                    dirFourmi = Stock.directions[3]; // Ouest
+                    break;
+            }
+            Console.WriteLine($"\n\nLa fourmi est actuellement aux coordonnées : {x}, {y} et dans la direction {dirFourmi}");
+
 
         }
         /*static int[,] GenerateFourmi(int nbfourmi)
@@ -391,6 +419,12 @@ namespace Projet_CSharp_S2
             Menu menu = new Menu(titre, options);
             menu.Deplacement();
         }
+        public static void FourmiLangton()
+        {
+            #region Initialisation de la Matrice
+
+            string[,] mat = SaisieMatrice();     // Déclaration et intialisation de la matrice qui sera utilisée.
+            Stock.matrice_principale = mat;
 
         static void FourmiLangton()
         {
@@ -475,6 +509,18 @@ namespace Projet_CSharp_S2
 
                 //Thread.Sleep(1);      // Pause de l'execution du programme d'une durée de 500 ms soit d'une demi seconde
             }
+            Console.ReadKey();
+            MouvementFourmi();
+            Console.Clear();
+            MouvementFourmi();
+            Console.Clear();
+            MouvementFourmi();
+            Console.Clear();
+            MouvementFourmi();
+            Console.Clear();
+            MouvementFourmi();
+            Console.Clear();
+            MouvementFourmi();
         }       
     }
 }
