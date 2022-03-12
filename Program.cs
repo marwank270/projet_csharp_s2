@@ -411,7 +411,7 @@ namespace Projet_CSharp_S2
                 case 1:
                     Console.Clear();
                     Console.WriteLine("Under construction");
-                    break;
+                    break; 
 
                 case 2:                     // Cas 2 : Quitter
                     Console.Clear();

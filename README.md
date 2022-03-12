@@ -51,3 +51,14 @@
   - Changement de l'ASCII art du menu (trop de rat nous on copié les idées de Marwan) *(Marwan)*
 - Amélioration :
   - Ajout de commentaires explicatifs sur le code *(Marwan)*
+
+## 12/03/22 :
+-Fichiers :
+  - Création de `Ant.cs`
+- Codage : 
+  - Foumi parfaitement fonctinonelle
+- Amélioration :
+  - Amélioration du menu
+  - Amélioration des matrices
+  - Amélioration de l'affichage
+  - amélioration de l'agencement du code dans les fichiers
