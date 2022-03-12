@@ -104,12 +104,13 @@ namespace Projet_CSharp_S2
                 x = SaisieNombre();     // Saisie des valeurs
                 Console.Write("\nSaisir la largeur de la matrice : ");
                 x = SaisieNombre();     // Saisie des valeurs
+                Console.Write("\nSaisir la largeur de la matrice : ");
                 y = SaisieNombre();
 
                 if (x % 2 == 0 && y % 2 == 0)   // Vérification de la parité des valeurs
                     Console.WriteLine($"{cc.badVal} : Vous ne pouvez pas saisir {cc.yellow}plusieurs nombres pairs{cc.end} à cause du centre.");
             } while  (x % 2 == 0 && y % 2 == 0);
-            
+          
             string[,] matrice = new string[x, y];// Déclaration et initialisation de la matrice
             int[,] matrice = new int[x, y];// Déclaration et initialisation de la matrice
             return matrice;
@@ -158,18 +159,6 @@ namespace Projet_CSharp_S2
                     else if (tab[i, j] == " ◄ |")
                     {
                         pos[0] = i; pos[1] = j; pos[2] = 4; Stock.direction = 4;   // 4 désigne direction ouest
-                    }
-                    else if (tab[i, j] == " ► |")
-                    {
-                        pos[0] = i; pos[1] = j; pos[2] = 2;     // 2 désigne direction est
-                    }
-                    else if (tab[i, j] == " ▼ |")
-                    {
-                        pos[0] = i; pos[1] = j; pos[2] = 3;     // 3 désigne direction sud
-                    }
-                    else if (tab[i, j] == " ◄ |")
-                    {
-                        pos[0] = i; pos[1] = j; pos[2] = 4;     // 4 désigne direction ouest
                     }
                 }
             }
@@ -271,6 +260,27 @@ namespace Projet_CSharp_S2
             }
             Console.WriteLine($"\n\nLa fourmi est actuellement aux coordonnées : {x}, {y} et dans la direction {dirFourmi}");
 
+            AffichageMatrice(Stock.matrice_principale);
+
+            //int direct = PosFourmi(Stock.matrice_principale)[2];
+            string dirFourmi = "";
+            switch (direc)
+            {
+                case 1:
+                    dirFourmi = Stock.directions[0]; // Nord
+                    break;
+                case 2:
+                    dirFourmi = Stock.directions[1]; // Est
+                    break;
+                case 3:
+                    dirFourmi = Stock.directions[2]; // Sud
+                    break;
+                case 4:
+                    dirFourmi = Stock.directions[3]; // Ouest
+                    break;
+            }
+            Console.WriteLine($"\n\nLa fourmi est actuellement aux coordonnées : {x}, {y} et dans la direction {dirFourmi}");
+
 
 
 
@@ -336,11 +346,13 @@ namespace Projet_CSharp_S2
             string[,] mat = SaisieMatrice();     // Déclaration et intialisation de la matrice qui sera utilisée.
             Stock.matrice_principale = mat;
 
-        static void FourmiLangton()
+        public static void FourmiLangton()
         {
             #region Initialisation de la Matrice
 
-            string[,] mat = new string[19, 20];     // Déclaration et intialisation de la matrice qui sera utilisée.
+            string[,] mat = SaisieMatrice();     // Déclaration et intialisation de la matrice qui sera utilisée.
+            Stock.matrice_principale = mat;
+
 
             for (int i = 0; i < mat.GetLength(0); i++)  
             {
@@ -375,15 +387,6 @@ namespace Projet_CSharp_S2
                 fourmi = Stock.fourmis[3]; Stock.direction = 3;      // Direction Ouest
 
             mat[mat.GetLength(0) / 2, mat.GetLength(1) / 2] = $" {fourmi} |";   // Insertion de la fourmi avec une direction aléatoire dans la matrice
-                fourmi = Stock.fourmis[0];       // Direction Nord
-            if (dir == 2)
-                fourmi = Stock.fourmis[1];       // Direction Est
-            if (dir == 3)
-                fourmi = Stock.fourmis[2];       // Direction Sud
-            if (dir == 4)
-                fourmi = Stock.fourmis[3];       // Direction Ouest
-
-            mat[19 / 2, 20 / 2] = $" {fourmi} |";   // Insertion de la fourmi avec une direction aléatoire dans la matrice
 
             #endregion Initialisation de la fourmi
 
