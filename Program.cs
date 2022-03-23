@@ -78,11 +78,6 @@ namespace Projet_CSharp_S2
             Console.Write(String.Format("[1000D\n{0," + ((Console.WindowWidth / 2 + 5/* +5 pour aérer le texte */) + (texte.Length / 2)) + "}", texte));
         }
 
-        public static void Centraliser(string texte)
-        {
-            Console.Write(String.Format("[1000D\n{0," + ((Console.WindowWidth / 2) + (texte.Length / 2)) + "}", texte));
-        }
-
         #endregion Méthode Menu
 
         #region Méthode Outils
@@ -95,8 +90,10 @@ namespace Projet_CSharp_S2
             {
                 try
                 {
+                    Console.CursorVisible = true;
                     input = Convert.ToInt16(Console.ReadLine());    // Le code essaye de convertir la saisie et si il réussi il passe la valeur de succes à true
                     succes = true;
+                    Console.CursorVisible = false;
                 }
                 catch                                               // En cas d'echec, on affiche un message d'erreur et on recommence
                 {
@@ -123,15 +120,28 @@ namespace Projet_CSharp_S2
                 if (x % 2 == 0 && y % 2 == 0)                           // Vérification de la parité des valeurs
                 {
                     Console.Clear();
-                    EcrireCentre($"{cc.badVal} : Vous ne pouvez pas saisir {cc.yellow}deux nombres pairs{cc.end} sinon la matrice n'as pas de centre.");
+                    EcrireCentre($"{cc.wrongFlag} : Vous ne pouvez pas saisir {cc.yellow}deux nombres pairs{cc.end} sinon la matrice n'as pas de centre.");
                     Console.WriteLine();
                     Console.WriteLine();
                 }
-                   
-            } while  (x % 2 == 0 && y % 2 == 0);
+                if (x <= 3 || y <= 3)                                   // Vérification de la qualité des valeurs
+                {
+                    Console.Clear();
+                    EcrireCentre($"{cc.wrongFlag} : Vous ne pouvez pas saisir {cc.yellow}de matrice inférieure à [3,3]{cc.end} sinon la simulation ne se {cc.red}produit que sur 1 tour{cc.end}");
+                    Console.WriteLine();
+                    Console.WriteLine();
+                }
+                if (y >= 55)                                            // Vérification de la qualité des valeurs
+                {
+                    Console.Clear();
+                    EcrireCentre($"{cc.infoFlag} : La Largeur de la matrice ne doit pas dépasser les 55 de largeur ou elle débordera sur les informations");
+                    Console.WriteLine();
+                    Console.WriteLine();
+                }
 
-            Console.CursorVisible = false;
+            } while (x % 2 == 0 && y % 2 == 0 && x <= 3 || y == 3 && y > 55); // y > 55 déborde sur le menu du coté
 
+            
             string[,] matrice = new string[x, y];                       // Déclaration et initialisation de la matrice
             return matrice;
         }
@@ -157,7 +167,7 @@ namespace Projet_CSharp_S2
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    if (Ant.matrice_fantome[i,j] == 1)
+                    if (Ant.matrice_fantome[i, j] == 1)
                     {
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
@@ -207,9 +217,9 @@ namespace Projet_CSharp_S2
             int y = PosFourmi(Ant.matrice_principale)[1];*/                                                 //
             int x = Ant.coordonnees[0];
             int y = Ant.coordonnees[1];
-            int direc = Ant.coordonnees[2];                                                                 
+            int direc = Ant.coordonnees[2];
 
-            if (Ant.matrice_fantome[x, y] == 0)  
+            if (Ant.matrice_fantome[x, y] == 0)
             {
                 if (direc == 1)
                 {
@@ -244,6 +254,9 @@ namespace Projet_CSharp_S2
                     y -= 1;// x+ v- // Descend vers le Sud donc de -1 sur l'axe y
                     Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";                                  // --
                 }
+                Ant.coordonnees[0] = x;               // Mise à jour des variables globales en adéquation avec les changements des lignes d'au dessus
+                Ant.coordonnees[1] = y;               //
+                Ant.coordonnees[2] = direc;           //
             }
             else if (Ant.matrice_fantome[x, y] == 1)       // Si la case est blanche
             {
@@ -284,31 +297,7 @@ namespace Projet_CSharp_S2
                 Ant.coordonnees[1] = y;               //
                 Ant.coordonnees[2] = direc;           //
             }
-
-            string dirFourmi = "";
-            switch (direc)
-            {
-                case 1:
-                    dirFourmi = "Nord ";
-                    break;
-                case 2:
-                    dirFourmi = "Est  ";
-                    break;
-                case 3:
-                    dirFourmi = "Sud  ";
-                    break;
-                case 4:
-                    dirFourmi = "Ouest";
-                    break;
-            }
-
-            string X = x < 10 ? $"0{x}" : x.ToString();                // x < 10 on ajoute le 0 sinon on le touche pas
-            string Y = y < 10 ? $"0{y}" : y.ToString();                // Idem avec y
-
             AffichageMatrice(Ant.matrice_principale);
-            EcrireCentre($"ÉTAT : {cc.bgYellow}{cc.black} X : {X} | Y : {Y} {cc.end}| {Ant.fourmis[direc - 1]} : {dirFourmi} |{cc.rod} ÉTAPE : {Ant.step} {cc.end}");
-
-            
         }
 
         static void SwitchColor(string[,] matrice, int x, int y)
@@ -339,10 +328,11 @@ namespace Projet_CSharp_S2
             }
         }*/
 
+
         #endregion Méthode Outils
 
         #region Fullscreen Stuff
-        [DllImport("kernel32.dll", ExactSpelling = true)]                           // Ce code n'est pas le notre nous savons comment il fonctionne et le comprenons
+        [DllImport("kernel32.dll", ExactSpelling = true)]                           // Ce code n'est pas le notre mais nous savons comment il fonctionne et le comprenons
         private static extern IntPtr GetConsoleWindow();                            // Il provient de cette source : https://www.codegrepper.com/code-examples/csharp/maximize+window+c%23
         private static IntPtr ThisConsole = GetConsoleWindow();                     // Ainsi que les deux première lignes du main
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
@@ -355,12 +345,20 @@ namespace Projet_CSharp_S2
 
         static void Main()
         {
+            #region Préparation
+
             Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);     // Agrandi d'abord la fenêtre au maximum
             ShowWindow(ThisConsole, MAXIMIZE);                                                  // Puis la met en plein écran
-            Console.Title = "La fourmi de Langton. Par Marwan Kaouachi & Charles Albert-Lebrun";                       // Titre de la fenêtre
+            Console.Title = "La fourmi de Langton. Par Marwan Kaouachi & Charles Albert-Lebrun";// Titre de la fenêtre
+            Console.OutputEncoding = System.Text.Encoding.UTF8;                                 // Prévention des problèmes de compatibilités
+            Console.CursorVisible = false;
 
-            Thread ThreadPrincipal = new Thread(FourmiLangton);                                 // Création d'un objet Thread
-            ThreadPrincipal.Priority = ThreadPriority.AboveNormal;                              // Surclassement de la priorité du processus le plus lent
+            Thread ThreadPrincipal = new Thread(FourmiLangton)                                  // Création d'un objet Thread
+            {
+                Priority = ThreadPriority.AboveNormal                                           // Surclassement de la priorité du processus le plus lourd 
+            };                                 
+
+            #endregion Préparation
 
             string ASCII = @"           
                                                 ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
@@ -378,7 +376,7 @@ namespace Projet_CSharp_S2
                                                 ║                                                                                                                                                   ║
                                                 ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝   ";
 
-            Console.WriteLine(String.Format($"\n\x1b[33m \t {ASCII} \x1b[0m"));                 // Écris en jaune
+            Console.WriteLine(String.Format($"\n{cc.yellow} \t {ASCII} {cc.end}"));             // Écris en jaune
 
             Console.SetCursorPosition(Console.WindowWidth / 2, 60);                             // Place le curseur en bas de l'écran pour la barre de chargement
             for (var i = 0; i < 100; i++)                                                       // Barre de chargement inspirée par cette source : https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
@@ -387,12 +385,11 @@ namespace Projet_CSharp_S2
                 var largeur = (i + 1) / 4;
                 var rempplissage = new string('█', largeur);                                    // La string rempplissage se met à jour a chaque tour de la boucle en ajoutant "largeur" x "█"
                 var espaces = new string(' ', 25 - largeur);                                    // Idem avec ' ' et "25 - largeur"
-                var barre = $"\t\t│{rempplissage}{espaces}│\x1b[43m\x1b[30m  {i + 1}  %\x1b[0m ";// Mise à jour a chaques tour de la barre avec le remplissage + les espaces les couleurs et le %
+                var barre = $"\t\t│{rempplissage}{espaces}│{cc.bgYellow}{cc.black}  {i + 1}  %{cc.end} ";// Mise à jour a chaques tour de la barre avec le remplissage + les espaces les couleurs et le %
                 Console.Write(String.Format("[1000D{0," + ((Console.WindowWidth / 2) + (barre.Length / 2)) + "}", barre));
             }
 
-            Console.SetCursorPosition(Console.WindowWidth / 2, Console.WindowHeight / 2 - 10);  // Position du curseur au centre (mais plus haut) pour préparer l'écriture du menu
-            Console.CursorVisible = false;
+            Console.SetCursorPosition(Console.WindowWidth / 2, Console.WindowHeight / 2 - 10);  // Position du curseur au centre (mais plus haut (-10) pour préparer l'écriture du menu
 
             string titre = "Choisissez une option avec les fleches directionnelles :\n\n\n";
             string[] options = { "--------  Fourmi de Langton  ---------\n", "-------- Fourmi de Langton V2 --------\n\n", "QUITTER " };
@@ -405,22 +402,22 @@ namespace Projet_CSharp_S2
 
                 case 0:
                     Console.Clear();
-                    FourmiLangton();        // Redirection vers la méthode de suite du programme
+                    FourmiLangton();                    // Redirection vers la méthode de suite du programme
                     break;
 
                 case 1:
                     Console.Clear();
                     Console.WriteLine("Under construction");
-                    break; 
-
-                case 2:                     // Cas 2 : Quitter
-                    Console.Clear();
-                    Console.WriteLine($"Merci d'avoir utilisé notre programme ! À bientôt ! {cc.red}<3{cc.end}");
-                    Thread.Sleep(3000);     // Temps d'attente de 3s avant de quitter pour que ce ne soit pas sec pour l'utilisateur
-                    Environment.Exit(0);    // Permet de quitter le programme "proprement" avec le code 0 qui indique que le programme s'est terminé sans erreur
                     break;
 
-                default:                // Ne devrais jamais s'afficher avec le menu flêché mais soyons prudent et evitons les crash potentiels
+                case 2:                                 // Cas 2 : Quitter
+                    Console.Clear();
+                    Console.WriteLine($"Merci d'avoir utilisé notre programme ! À bientôt ! {cc.red}<3{cc.end}");
+                    Thread.Sleep(3000);                 // Temps d'attente de 3s avant de quitter pour que ce ne soit pas sec pour l'utilisateur
+                    Environment.Exit(0);                // Permet de quitter le programme "proprement" avec le code 0 qui indique que le programme s'est terminé sans erreur
+                    break;
+
+                default:                                // Ne devrais jamais s'afficher avec le menu flêché mais soyons prudent et evitons les crash potentiels
                     Console.Clear();
                     Console.WriteLine($"{cc.badVal} : Le nombre saisi n'est pas dans les bornes {cc.red}[0 ; 2]{cc.end}. Veuillez réessayer.");
                     Main();
@@ -434,13 +431,13 @@ namespace Projet_CSharp_S2
 
             string[,] mat = SaisieMatrice();                // Déclaration et intialisation de la matrice principale
             int[,] ghost_mat = new int[mat.GetLength(0), mat.GetLength(1)]; // Déclaration et initialisation de la matrice de couleurs
-            Ant.matrice_principale = mat;                 // Copie de l'état actuel de la matrice dans la classe Ant pour la rendre accessible
+            Ant.matrice_principale = mat;                   // Copie de l'état actuel de la matrice dans la classe Ant pour la rendre accessible
             Ant.matrice_fantome = ghost_mat;
 
             Console.BackgroundColor = ConsoleColor.White;   // Passage de la couleur du fond au blanc 
             Console.ForegroundColor = ConsoleColor.Black;   // Passage de la couleur des caractères en noirs (faut bien que ce soit lisible)
 
-            for (int i = 0; i < mat.GetLength(0); i++)  
+            for (int i = 0; i < mat.GetLength(0); i++)
             {
                 for (int j = 0; j < mat.GetLength(1); j++)
                 {
@@ -454,56 +451,79 @@ namespace Projet_CSharp_S2
 
             Console.WriteLine("\n");
             EcrireCentre("\x1b[32mMatrice initialisée\x1b[0m. Appuyez sur une touche continuez ...");
-
-            #endregion Initialisation de la Matrice
-
             Console.ReadKey();
             Console.Clear();
 
-            #region Initialisation de la fourmi
+            #endregion Initialisation de la Matrice
 
-            Random direction = new Random();
-            int dir = direction.Next(1, 4);         // Choix aléatoire de la direction de la foumi (1, 4) pour Nord Est Sud Ouest
+            Ant.Spawn(mat, mat.GetLength(0) / 2, mat.GetLength(1) / 2);        // Initialisation de la matrice principale
 
-            char fourmi = ' ';                      // Initialisation de la fourmi qui sera dans la matrice
-
-            if (dir == 1)
-                fourmi = Ant.fourmis[0];// Ant.coordonnees[2] = 0;      // Direction Nord (Ant.fourmis contient les différentes formes de la fourmi)
-            if (dir == 2)
-                fourmi = Ant.fourmis[1];// Ant.coordonnees[2] = 1;      // Direction Est
-            if (dir == 3)
-                fourmi = Ant.fourmis[2];// Ant.coordonnees[2] = 2;      // Direction Sud
-            if (dir == 4)
-                fourmi = Ant.fourmis[3];// Ant.coordonnees[2] = 3;      // Direction Ouest
-
-            mat[mat.GetLength(0) / 2, mat.GetLength(1) / 2] = $" {fourmi} ";   // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
-
-            #endregion Initialisation de la fourmi
-
-            AffichageMatrice(mat);
-
-            int direc = PosFourmi(mat)[2];
+            int direc = PosFourmi(mat)[2];  // Recherche de la position de la fourmi à travers la matrice pour déterminer sa position
 
             if (direc == null)              // Gestion d'une erreur d'array vide à l'initialisation
                 direc = Ant.direction;
 
+            //ConsoleKeyInfo info_touche = Console.ReadKey(true);             // Lecture de la frappe utilisateur
+            //ConsoleKey touche = info_touche.Key;                            // Détection de la touche lors de la frappe
+
             int tours = 1;
-            while (Ant.coordonnees[0] < mat.GetLength(0) && Ant.coordonnees[1] < mat.GetLength(1) )
+            bool run = true;
+            Ant.running = run;
+
+            while (Ant.coordonnees[0] != mat.GetLength(0) || Ant.coordonnees[1] != mat.GetLength(1))
             {
                 //Console.Clear(); // Mieux sans (vu que nous avons géré la matrice pour qu'elle garde les même positions
+                Menu.SideInfo();
+                if (Console.KeyAvailable)
+                {
+                    if (Console.ReadKey().Key == ConsoleKey.Spacebar)
+                    {
+                        Ant.running = false;
+                        Console.SetCursorPosition(0, 10);
+                        Console.Write($"{cc.bgRed}[    ÉTAT   ] : En pause...{cc.end}");
+                        while (Console.ReadKey().Key != ConsoleKey.Spacebar)
+                        {
+                            run = false;
+
+                            if (Console.ReadKey().Key == ConsoleKey.Escape)
+                            {
+                                Console.Clear();
+                                Main();
+                                break;
+                            }
+                        }
+                    }
+                    /*else if (Console.ReadKey().Key == ConsoleKey.Escape)
+                    {
+                        string MainMenu = $"{cc.bgRed}{cc.white}Voulez vous retourner au menu principal ?";
+                        string confirmation = $"ECHAP : Non / ENTRÉE : Oui{cc.end}";
+                        Console.SetCursorPosition(Console.WindowWidth / 2 - MainMenu.Length / 2, Console.WindowHeight / 2);
+                        Console.Write(MainMenu);
+                        Console.SetCursorPosition(Console.WindowWidth / 2 - confirmation.Length / 2, Console.WindowHeight / 2 + 1);
+                        Console.Write(confirmation);
+
+                        while (Console.ReadKey().Key != ConsoleKey.Escape)
+                        {
+                            run = false;
+
+                            if (Console.ReadKey().Key != ConsoleKey.Enter)
+                            {
+                                Console.Clear();
+                                Main();
+                                break;
+                            }
+                        }
+                    }*/
+                }
+                Ant.running = run;
                 DeplacementFourmi();
                 tours++;
                 Ant.step = tours;
-                Thread.Sleep(100);
-
-
-
-                /* Si ce if est supprimé la matrice part en couille ?????? */
-                if (Ant.coordonnees[0] != PosFourmi(mat)[0] || Ant.coordonnees[1] != PosFourmi(mat)[1] || Ant.coordonnees[2] != PosFourmi(mat)[2])    // Ne devrait jamais s'executer normalement 
-                {
-                    /*Console.WriteLine($"{cc.wrongFlag} Attention les coordonnées son faussées, échec de la simulation.\nSelon la méthode {cc.red}PosFourmi(string[,] matrice){cc.end} : {cc.cyan}x = {PosFourmi(mat)[0]}; y = {PosFourmi(mat)[1]},{cc.end} de direction {cc.cyan}{PosFourmi(mat)[2]}\nSelon la variable globale {cc.red}Ant.coordonnees[n]{cc.end} : {cc.cyan}x = {Ant.coordonnees[0]}; y = {Ant.coordonnees[1]},{cc.end} de direction {cc.cyan}{Ant.coordonnees[2]}");*/
-                }
+                if (Menu.count_spinner >= 3)
+                    Menu.count_spinner = -1;
+                Menu.count_spinner += 1;
+                Thread.Sleep(10);
             }
-        }       
+        }
     }
 }
