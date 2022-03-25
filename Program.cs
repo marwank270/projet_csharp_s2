@@ -210,10 +210,7 @@ namespace Projet_CSharp_S2
             Ant.coordonnees = pos;    // Cette ligne est très importante, elle nous permet d'envoyer les coordonnées et la direction de la fourmi dans une classe Ant qui contient les variables globales du programme
             return pos;
         }
-        static void BordMatrice(string[,] matrice, int x, int y)
-        {
-            //if ()
-        }
+
         public static void DeplacementFourmi()
         {
             /*int[] position_fourmi = Ant.coordonnees;                                                      // Coordonnées de la fourmi récupérée à partir de la variable globale Ant.coordonnees
