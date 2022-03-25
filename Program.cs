@@ -62,13 +62,6 @@ namespace Projet_CSharp_S2
         #endregion ConsoleColor
     }
 
-    /*public struct saved
-    {
-        public int direction;                                                // Variable régulièrement mise à jour contenant la direction de la fourmi
-        public string[,] matrice_principale;                                 // Variable régulièrement mise à jour contenant la matrice générale de l'algorithme
-        public int[] coordonnees;                                            // Variable régulièrement mise à jour contenant les coordonnées x,y et direction de la fourmi
-    }*/
-
     class Program
     {
         #region Méthode Menu
