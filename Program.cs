@@ -4,8 +4,6 @@
  * Author's github : https://github.com/marwank270 & https://github.com/novaxsavestheyear
  **/
 
-
-// test
 using System;
 using System.Linq;                          // Nécessaire pour les Enummerable
 using System.Threading;                     // Nécessaire pour les Thread.Sleep(t);
@@ -211,6 +209,10 @@ namespace Projet_CSharp_S2
 
             Ant.coordonnees = pos;    // Cette ligne est très importante, elle nous permet d'envoyer les coordonnées et la direction de la fourmi dans une classe Ant qui contient les variables globales du programme
             return pos;
+        }
+        static void BordMatrice(string[,] matrice, int x, int y)
+        {
+            //if ()
         }
         public static void DeplacementFourmi()
         {
