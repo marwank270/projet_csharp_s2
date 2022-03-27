@@ -69,8 +69,13 @@
 - Amélioration : 
   - Correction de bugs de saisies *(Charles)*
   - Amélioration des boucles *(Charles)*
-  - Ajouts de commentaires dans les fichiers `Ant.cs` et `Menu.cs`
+  - Ajouts de commentaires dans les fichiers `Ant.cs` et `Menu.cs` *(Marwan)*
 
 ## 25/03/22 : 
 - Fichiers : 
   - Mise à jour du fichier `.gitignore` pour nous permettre de reprendre le codage chacun de notre coté et pouvoir executer le projet (le problème était qu'en pushant tout le dossier les fichiers de génération de la build comprennais les chemins d'accès de l'un ou l'autre et donc ne pouvais pas s'executer sur un autre ordinateur le fait d'avoir configuré ce `.gitingnore` permet de récupérer et executer le projet en récupérant seulement les changements fait aux fichiers scripts) *(Marwan)*
+
+## 27/03/22 :
+- Codage :
+  - Optimisation de la boucle principale : transformation des `if` `else if` a répétition en `switch` *(Marwan)*
+  - Gestion de l'erreur du bord de matrice terminée mais à améliorer au niveau estétique *(Marwan)*

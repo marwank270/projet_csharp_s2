@@ -222,78 +222,125 @@ namespace Projet_CSharp_S2
 
             if (Ant.matrice_fantome[x, y] == false)
             {
-                if (direc == 1)
+                switch (direc)
                 {
-                    //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // Réécriture du contenu de la case pour le passage en noir   // Problème avec la classe cc
+                    case 1:
+                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // Réécriture du contenu de la case pour le passage en noir   // Problème avec la classe cc
 
-                    SwitchColor(Ant.matrice_principale, x, y);
-                    direc = 4;      // Tourne de Nord à Ouest
-                    x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
-                    Ant.matrice_principale[x, y] = $" {Ant.fourmis[3]} ";                                  // Réécriture de la fourmi à sa nouvelle position
+                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        {
+                            Console.ReadKey();
+                            Console.WriteLine("FIN");
+                        }
+
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc = 4;      // Tourne de Nord à Ouest
+                        x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
+                        Ant.matrice_principale[x, y] = $" {Ant.fourmis[3]} ";                                  // Réécriture de la fourmi à sa nouvelle position
+                        break;
+                    case 2:
+                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+
+                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        {
+                            Console.ReadKey();
+                            Console.WriteLine("FIN");
+                        }
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc = 1;      // Tourne d'Est à Nord
+                        y += 1;// x- v+ // Monte vers le Nord donc de 1 sur l'axe y
+                        Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";                                  // --
+                        break;
+                    case 3:
+                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+
+                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        {
+                            Console.ReadKey();
+                            Console.WriteLine("FIN");
+                        }
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc = 2;      // Tourne de Sud à Est
+                        x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
+                        Ant.matrice_principale[x, y] = $" {Ant.fourmis[1]} ";                                  // --
+                        break;
+                    case 4:
+                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
+
+                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        {
+                            Console.ReadKey();
+                            Console.WriteLine("FIN");
+                        }
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc = 3;      // Tourne d'Ouest à Sud
+                        y -= 1;// x+ v- // Descend vers le Sud donc de -1 sur l'axe y
+                        Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";                                  // --
+                        break;
                 }
-                else if (direc == 2)
-                {
-                    //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
-                    SwitchColor(Ant.matrice_principale, x, y);
-                    direc = 1;      // Tourne d'Est à Nord
-                    y += 1;// x- v+ // Monte vers le Nord donc de 1 sur l'axe y
-                    Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";                                  // --
-                }
-                else if (direc == 3)
-                {
-                    //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
-                    SwitchColor(Ant.matrice_principale, x, y);
-                    direc = 2;      // Tourne de Sud à Est
-                    x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
-                    Ant.matrice_principale[x, y] = $" {Ant.fourmis[1]} ";                                  // --
-                }
-                else if (direc == 4)
-                {
-                    //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
-                    SwitchColor(Ant.matrice_principale, x, y);
-                    direc = 3;      // Tourne d'Ouest à Sud
-                    y -= 1;// x+ v- // Descend vers le Sud donc de -1 sur l'axe y
-                    Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";                                  // --
-                }
+                
                 Ant.coordonnees[0] = x;               // Mise à jour des variables globales en adéquation avec les changements des lignes d'au dessus
                 Ant.coordonnees[1] = y;               //
                 Ant.coordonnees[2] = direc;           //
             }
             else if (Ant.matrice_fantome[x, y] == true)       // Si la case est blanche
             {
-                if (direc == 1)
+                switch (direc)
                 {
-                    //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    SwitchColor(Ant.matrice_principale, x, y);
-                    direc += 1;     // Tourne de Nord à Est
-                    x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
-                    Ant.matrice_principale[x, y] = $" {Ant.fourmis[1]} ";
-                }
-                else if (direc == 2)
-                {
-                    //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    SwitchColor(Ant.matrice_principale, x, y);
-                    direc += 1;     // Tourne de Est à Sud
-                    y -= 1;         // Descend vers le Sud donc de -1 sur l'axe y
-                    Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";
-                }
-                else if (direc == 3)
-                {
-                    //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    SwitchColor(Ant.matrice_principale, x, y);
-                    direc += 1;     // Tourne de Sud à Ouest
-                    x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
-                    Ant.matrice_principale[x, y] = $" {Ant.fourmis[3]} ";
-                }
-                else if (direc == 4)
-                {
-                    //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-                    SwitchColor(Ant.matrice_principale, x, y);
-                    direc = 1;      // Tourne de Ouest à Nord
-                    y += 1;         // Monte vers le Nord donc de 1 sur l'axe x
-                    Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";
-                }
+                    case 1:
+                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
 
+                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        {
+                            Console.ReadKey();
+                            Console.WriteLine("FIN");
+                        }
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc += 1;     // Tourne de Nord à Est
+                        x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
+                        Ant.matrice_principale[x, y] = $" {Ant.fourmis[1]} ";
+                        break;
+                    case 2:
+                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+
+                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        {
+                            Console.ReadKey();
+                            Console.WriteLine("FIN");
+                        }
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc += 1;     // Tourne de Est à Sud
+                        y -= 1;         // Descend vers le Sud donc de -1 sur l'axe y
+                        Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";
+                        break;
+                    case 3:
+                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+
+                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        {
+                            Console.ReadKey();
+                            Console.WriteLine("FIN");
+                        }
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc += 1;     // Tourne de Sud à Ouest
+                        x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
+                        Ant.matrice_principale[x, y] = $" {Ant.fourmis[3]} ";
+                        break;
+                    case 4:
+                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
+
+                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        {
+                            Console.ReadKey();
+                            Console.WriteLine("FIN");
+                        }
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc = 1;      // Tourne de Ouest à Nord
+                        y += 1;         // Monte vers le Nord donc de 1 sur l'axe x
+                        Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";
+                        break;
+                }
+                
                 Ant.coordonnees[0] = x;               // Mise à jour des variables globales en adéquation avec les changements des lignes d'au dessus
                 Ant.coordonnees[1] = y;               //
                 Ant.coordonnees[2] = direc;           //
@@ -329,12 +376,34 @@ namespace Projet_CSharp_S2
             }
         }*/
 
-        static void VerifBordMat(string[,] matrice, int x, int y)
+        static bool VerifBordMat(string[,] matrice)
         {
-            if (x == matrice.GetLength(0) && Ant.coordonnees[2] == 2 || x == 0 && Ant.coordonnees[2] == 4)
+            bool end;
+            if (Ant.coordonnees[0] == matrice.GetLength(0) && Ant.coordonnees[2] == 2 || Ant.coordonnees[0] == 0 && Ant.coordonnees[2] == 4 || Ant.coordonnees[1] == matrice.GetLength(1) && Ant.coordonnees[2] == 3 || Ant.coordonnees[1] == 0 && Ant.coordonnees[2] == 1)
             {
-
+                end = true;
+                Console.WriteLine("FIN");
+                Console.ReadKey();
+            } else
+            {
+                end = false;
             }
+            return end;
+        }
+        static bool Verif(string[,] matrice, int x, int y)
+        {
+            bool valide = true;
+            if (x > matrice.GetLength(0) || x < 0)
+                valide = false;
+            if (y > matrice.GetLength(1) || y < 0)
+                valide = false;
+
+            return valide;
+        }
+
+        static void FIN()
+        {
+
         }
 
         #endregion Méthode Outils
@@ -478,7 +547,7 @@ namespace Projet_CSharp_S2
             bool run = true;
             Ant.running = run;
 
-            while (Ant.coordonnees[0] != mat.GetLength(0) || Ant.coordonnees[1] != mat.GetLength(1))
+            while (VerifBordMat(mat) == false)
             {
                 //Console.Clear(); // Mieux sans (vu que nous avons géré la matrice pour qu'elle garde les même positions
                 Menu.SideInfo();
