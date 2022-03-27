@@ -62,3 +62,11 @@
   - Amélioration des matrices
   - Amélioration de l'affichage
   - amélioration de l'agencement du code dans les fichiers 
+
+## 23/03/22 :
+- Fichiers : 
+  - Création de `FourmiTest.cs` dans le but de commencer les tests avec les structures *(Marwan)*
+- Amélioration : 
+  - Correction de bugs de saisies *(Charles)*
+  - Amélioration des boucles *(Charles)*
+  - Ajouts de commentaires dans les fichiers `Ant.cs` et `Menu.cs`
