@@ -61,4 +61,4 @@
   - Amélioration du menu
   - Amélioration des matrices
   - Amélioration de l'affichage
-  - amélioration de l'agencement du code dans les fichiers
+  - amélioration de l'agencement du code dans les fichiers 
