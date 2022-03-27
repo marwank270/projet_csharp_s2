@@ -79,3 +79,4 @@
 - Codage :
   - Optimisation de la boucle principale : transformation des `if` `else if` a répétition en `switch` *(Marwan)*
   - Gestion de l'erreur du bord de matrice terminée mais à améliorer au niveau estétique *(Marwan)*
+

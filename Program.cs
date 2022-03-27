@@ -106,6 +106,7 @@ namespace Projet_CSharp_S2
             return (int)input;  // On reconverti input en int pour simplifier le reste du code
         }
         public static string[,] SaisieMatrice()   // Saisie des coordonnées des matrices
+        static int[,] SaisieMatrice()   // Saisie des coordonnées des matrices
         {
             Console.CursorVisible = true;
 
@@ -143,6 +144,10 @@ namespace Projet_CSharp_S2
 
             
             string[,] matrice = new string[x, y];                       // Déclaration et initialisation de la matrice
+
+          
+            string[,] matrice = new string[x, y];// Déclaration et initialisation de la matrice
+            int[,] matrice = new int[x, y];// Déclaration et initialisation de la matrice
             return matrice;
         }
         static void AffichageMatrice(string[,] matrice)
@@ -181,6 +186,7 @@ namespace Projet_CSharp_S2
             }
         }
         public static int[] PosFourmi(string[,] tab)            // Définition de la matrice comme étant publique afin de la rendre accessible dans toutes les méthodes (donc d'avoir en permanance la position de la fourmi)
+        static int[] PosFourmi(string[,] tab)
         {
             int[] pos = new int[3];                             // Tableau initialisé pour contenir les coordonnées x, y de la fourmi et sa direction 
 
@@ -397,7 +403,6 @@ namespace Projet_CSharp_S2
                 valide = false;
             if (y > matrice.GetLength(1) || y < 0)
                 valide = false;
-
             return valide;
         }
 
@@ -501,6 +506,12 @@ namespace Projet_CSharp_S2
                     break;
             }
         }
+        public static void FourmiLangton()
+        {
+            #region Initialisation de la Matrice
+
+            string[,] mat = SaisieMatrice();     // Déclaration et intialisation de la matrice qui sera utilisée.
+            Stock.matrice_principale = mat;
 
         static void FourmiLangton()
         {
