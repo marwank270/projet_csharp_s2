@@ -157,7 +157,7 @@ namespace Projet_CSharp_S2
                 Console.SetCursorPosition(Console.WindowWidth / 2 - matrice.GetLength(1) * 3/*nombre de caractère par cases*/ / 2, 10 /*marge de base en partant du haut*/ + i);
                 for (int j = 0; j < matrice.GetLength(1); j++)
                 {
-                    if (Ant.matrice_fantome[i, j] == 0)                       // Si la case est actuellement blanche
+                    if (Ant.matrice_fantome[i, j] == false)                       // Si la case est actuellement blanche
                     {
                         Console.BackgroundColor = ConsoleColor.White;
                         Console.ForegroundColor = ConsoleColor.Black;
@@ -167,7 +167,7 @@ namespace Projet_CSharp_S2
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    if (Ant.matrice_fantome[i, j] == 1)
+                    if (Ant.matrice_fantome[i, j] == true)
                     {
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
@@ -220,7 +220,7 @@ namespace Projet_CSharp_S2
             int y = Ant.coordonnees[1];
             int direc = Ant.coordonnees[2];
 
-            if (Ant.matrice_fantome[x, y] == 0)
+            if (Ant.matrice_fantome[x, y] == false)
             {
                 if (direc == 1)
                 {
@@ -259,7 +259,7 @@ namespace Projet_CSharp_S2
                 Ant.coordonnees[1] = y;               //
                 Ant.coordonnees[2] = direc;           //
             }
-            else if (Ant.matrice_fantome[x, y] == 1)       // Si la case est blanche
+            else if (Ant.matrice_fantome[x, y] == true)       // Si la case est blanche
             {
                 if (direc == 1)
                 {
@@ -303,15 +303,15 @@ namespace Projet_CSharp_S2
 
         static void SwitchColor(string[,] matrice, int x, int y)
         {
-            if (Ant.matrice_fantome[x, y] == 0)
+            if (Ant.matrice_fantome[x, y] == false)
             {
                 matrice[x, y] = "   ";
-                Ant.matrice_fantome[x, y] = 1;
+                Ant.matrice_fantome[x, y] = true;
             }
-            else if (Ant.matrice_fantome[x, y] == 1)
+            else if (Ant.matrice_fantome[x, y] == true)
             {
                 matrice[x, y] = "   ";
-                Ant.matrice_fantome[x, y] = 0;
+                Ant.matrice_fantome[x, y] = false;
             }
 
         }
@@ -329,6 +329,13 @@ namespace Projet_CSharp_S2
             }
         }*/
 
+        static void VerifBordMat(string[,] matrice, int x, int y)
+        {
+            if (x == matrice.GetLength(0) && Ant.coordonnees[2] == 2 || x == 0 && Ant.coordonnees[2] == 4)
+            {
+
+            }
+        }
 
         #endregion Méthode Outils
 
@@ -431,7 +438,7 @@ namespace Projet_CSharp_S2
             #region Initialisation de la Matrice
 
             string[,] mat = SaisieMatrice();                // Déclaration et intialisation de la matrice principale
-            int[,] ghost_mat = new int[mat.GetLength(0), mat.GetLength(1)]; // Déclaration et initialisation de la matrice de couleurs
+            bool[,] ghost_mat = new bool[mat.GetLength(0), mat.GetLength(1)]; // Déclaration et initialisation de la matrice de couleurs
             Ant.matrice_principale = mat;                   // Copie de l'état actuel de la matrice dans la classe Ant pour la rendre accessible
             Ant.matrice_fantome = ghost_mat;
 
