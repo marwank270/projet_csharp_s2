@@ -106,7 +106,6 @@ namespace Projet_CSharp_S2
             return (int)input;  // On reconverti input en int pour simplifier le reste du code
         }
         public static string[,] SaisieMatrice()   // Saisie des coordonnées des matrices
-        static int[,] SaisieMatrice()   // Saisie des coordonnées des matrices
         {
             Console.CursorVisible = true;
 
@@ -142,12 +141,8 @@ namespace Projet_CSharp_S2
 
             } while (x % 2 == 0 && y % 2 == 0 && x <= 3 || y == 3 && y > 55); // y > 55 déborde sur le menu du coté
 
-            
-            string[,] matrice = new string[x, y];                       // Déclaration et initialisation de la matrice
 
-          
-            string[,] matrice = new string[x, y];// Déclaration et initialisation de la matrice
-            int[,] matrice = new int[x, y];// Déclaration et initialisation de la matrice
+            string[,] matrice = new string[x, y];                       // Déclaration et initialisation de la matrice
             return matrice;
         }
         static void AffichageMatrice(string[,] matrice)
@@ -185,8 +180,7 @@ namespace Projet_CSharp_S2
                 }
             }
         }
-        public static int[] PosFourmi(string[,] tab)            // Définition de la matrice comme étant publique afin de la rendre accessible dans toutes les méthodes (donc d'avoir en permanance la position de la fourmi)
-        static int[] PosFourmi(string[,] tab)
+        public static int[] PosFourmi(string[,] tab)
         {
             int[] pos = new int[3];                             // Tableau initialisé pour contenir les coordonnées x, y de la fourmi et sa direction 
 
@@ -284,7 +278,7 @@ namespace Projet_CSharp_S2
                         Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";                                  // --
                         break;
                 }
-                
+
                 Ant.coordonnees[0] = x;               // Mise à jour des variables globales en adéquation avec les changements des lignes d'au dessus
                 Ant.coordonnees[1] = y;               //
                 Ant.coordonnees[2] = direc;           //
@@ -346,7 +340,7 @@ namespace Projet_CSharp_S2
                         Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";
                         break;
                 }
-                
+
                 Ant.coordonnees[0] = x;               // Mise à jour des variables globales en adéquation avec les changements des lignes d'au dessus
                 Ant.coordonnees[1] = y;               //
                 Ant.coordonnees[2] = direc;           //
@@ -390,7 +384,8 @@ namespace Projet_CSharp_S2
                 end = true;
                 Console.WriteLine("FIN");
                 Console.ReadKey();
-            } else
+            }
+            else
             {
                 end = false;
             }
@@ -438,7 +433,7 @@ namespace Projet_CSharp_S2
             Thread ThreadPrincipal = new Thread(FourmiLangton)                                  // Création d'un objet Thread
             {
                 Priority = ThreadPriority.AboveNormal                                           // Surclassement de la priorité du processus le plus lourd 
-            };                                 
+            };
 
             #endregion Préparation
 
@@ -506,15 +501,9 @@ namespace Projet_CSharp_S2
                     break;
             }
         }
-        public static void FourmiLangton()
-        {
-            #region Initialisation de la Matrice
-
-            string[,] mat = SaisieMatrice();     // Déclaration et intialisation de la matrice qui sera utilisée.
-            Stock.matrice_principale = mat;
-
         static void FourmiLangton()
         {
+
             #region Initialisation de la Matrice
 
             string[,] mat = SaisieMatrice();                // Déclaration et intialisation de la matrice principale
@@ -525,11 +514,13 @@ namespace Projet_CSharp_S2
             Console.BackgroundColor = ConsoleColor.White;   // Passage de la couleur du fond au blanc 
             Console.ForegroundColor = ConsoleColor.Black;   // Passage de la couleur des caractères en noirs (faut bien que ce soit lisible)
 
+            #endregion Initialisation de la Matrice
+
             for (int i = 0; i < mat.GetLength(0); i++)
             {
                 for (int j = 0; j < mat.GetLength(1); j++)
                 {
-                    mat[i, j] = "   ";             // Remplissage de la matrice avec de quoi faire des cotés
+                    mat[i, j] = "   ";             // Remplissage de la matrice en blanc
                 }
             }
 
@@ -542,7 +533,6 @@ namespace Projet_CSharp_S2
             Console.ReadKey();
             Console.Clear();
 
-            #endregion Initialisation de la Matrice
 
             Ant.Spawn(mat, mat.GetLength(0) / 2, mat.GetLength(1) / 2);        // Initialisation de la matrice principale
 
@@ -555,8 +545,7 @@ namespace Projet_CSharp_S2
             //ConsoleKey touche = info_touche.Key;                            // Détection de la touche lors de la frappe
 
             int tours = 1;
-            bool run = true;
-            Ant.running = run;
+            bool run = Ant.running = true;
 
             while (VerifBordMat(mat) == false)
             {
@@ -581,27 +570,6 @@ namespace Projet_CSharp_S2
                             }
                         }
                     }
-                    /*else if (Console.ReadKey().Key == ConsoleKey.Escape)
-                    {
-                        string MainMenu = $"{cc.bgRed}{cc.white}Voulez vous retourner au menu principal ?";
-                        string confirmation = $"ECHAP : Non / ENTRÉE : Oui{cc.end}";
-                        Console.SetCursorPosition(Console.WindowWidth / 2 - MainMenu.Length / 2, Console.WindowHeight / 2);
-                        Console.Write(MainMenu);
-                        Console.SetCursorPosition(Console.WindowWidth / 2 - confirmation.Length / 2, Console.WindowHeight / 2 + 1);
-                        Console.Write(confirmation);
-
-                        while (Console.ReadKey().Key != ConsoleKey.Escape)
-                        {
-                            run = false;
-
-                            if (Console.ReadKey().Key != ConsoleKey.Enter)
-                            {
-                                Console.Clear();
-                                Main();
-                                break;
-                            }
-                        }
-                    }*/
                 }
                 Ant.running = run;
                 DeplacementFourmi();
