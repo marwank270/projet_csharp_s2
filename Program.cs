@@ -2,6 +2,7 @@
  * Authors : Marwan K. & Charles A. - Lebrun
  * Github project repository : https://github.com/marwank270/projet_csharp_s2/
  * Author's github : https://github.com/marwank270 & https://github.com/novaxsavestheyear
+ * Version : 270322
  **/
 
 using System;
@@ -139,7 +140,7 @@ namespace Projet_CSharp_S2
                     Console.WriteLine();
                 }
 
-            } while (x % 2 == 0 && y % 2 == 0 && x <= 3 || y == 3 && y > 55); // y > 55 déborde sur le menu du coté
+            } while (x % 2 == 0 && y % 2 == 0 && x <= 3 || y <= 3 && y > 55); // y > 55 déborde sur le menu du coté
 
 
             string[,] matrice = new string[x, y];                       // Déclaration et initialisation de la matrice
@@ -231,6 +232,7 @@ namespace Projet_CSharp_S2
                         {
                             Console.ReadKey();
                             Console.WriteLine("FIN");
+                            FIN();
                         }
 
                         SwitchColor(Ant.matrice_principale, x, y);
@@ -245,6 +247,7 @@ namespace Projet_CSharp_S2
                         {
                             Console.ReadKey();
                             Console.WriteLine("FIN");
+                            FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
                         direc = 1;      // Tourne d'Est à Nord
@@ -258,6 +261,7 @@ namespace Projet_CSharp_S2
                         {
                             Console.ReadKey();
                             Console.WriteLine("FIN");
+                            FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
                         direc = 2;      // Tourne de Sud à Est
@@ -271,6 +275,7 @@ namespace Projet_CSharp_S2
                         {
                             Console.ReadKey();
                             Console.WriteLine("FIN");
+                            FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
                         direc = 3;      // Tourne d'Ouest à Sud
@@ -294,6 +299,7 @@ namespace Projet_CSharp_S2
                         {
                             Console.ReadKey();
                             Console.WriteLine("FIN");
+                            FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
                         direc += 1;     // Tourne de Nord à Est
@@ -307,6 +313,7 @@ namespace Projet_CSharp_S2
                         {
                             Console.ReadKey();
                             Console.WriteLine("FIN");
+                            FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
                         direc += 1;     // Tourne de Est à Sud
@@ -320,6 +327,7 @@ namespace Projet_CSharp_S2
                         {
                             Console.ReadKey();
                             Console.WriteLine("FIN");
+                            FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
                         direc += 1;     // Tourne de Sud à Ouest
@@ -333,6 +341,7 @@ namespace Projet_CSharp_S2
                         {
                             Console.ReadKey();
                             Console.WriteLine("FIN");
+                            FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
                         direc = 1;      // Tourne de Ouest à Nord
@@ -382,7 +391,7 @@ namespace Projet_CSharp_S2
             if (Ant.coordonnees[0] == matrice.GetLength(0) && Ant.coordonnees[2] == 2 || Ant.coordonnees[0] == 0 && Ant.coordonnees[2] == 4 || Ant.coordonnees[1] == matrice.GetLength(1) && Ant.coordonnees[2] == 3 || Ant.coordonnees[1] == 0 && Ant.coordonnees[2] == 1)
             {
                 end = true;
-                Console.WriteLine("FIN");
+                FIN();
                 Console.ReadKey();
             }
             else
@@ -403,7 +412,10 @@ namespace Projet_CSharp_S2
 
         static void FIN()
         {
-
+            Console.SetCursorPosition(0, 10);
+            Console.Write($"{cc.rod}[    ÉTAT   ] : Terminé     {cc.end}");
+            EcrireCentre("Appuyez sur une touche pour accéder au résumé...");
+            Console.ReadKey();
         }
 
         #endregion Méthode Outils
