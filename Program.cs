@@ -191,19 +191,19 @@ namespace Projet_CSharp_S2
                 {
                     if (tab[i, j] == $" {Ant.fourmis[0]} ")  // Si le contenu au coordonnées vaut ce que l'on cherche (Ant.fourmis contient les différentes formes de la fourmi) on lance l'enregistrement des variables
                     {
-                        pos[0] = i; pos[1] = j; pos[2] = 1; Ant.coordonnees[2] = 1;    // 1 désigne direction nord (sous la forme de x = 1, y = j, direction = 1)
+                        pos[0] = i; pos[1] = j; pos[2] = 1;  // 1 désigne direction nord (sous la forme de x = 1, y = j, direction = 1)
                     }
                     else if (tab[i, j] == $" {Ant.fourmis[1]} ")
                     {
-                        pos[0] = i; pos[1] = j; pos[2] = 2; Ant.coordonnees[2] = 2;    // 2 désigne direction est
+                        pos[0] = i; pos[1] = j; pos[2] = 2;  // 2 désigne direction est
                     }
                     else if (tab[i, j] == $" {Ant.fourmis[2]} ")
                     {
-                        pos[0] = i; pos[1] = j; pos[2] = 3; Ant.coordonnees[2] = 3;    // 3 désigne direction sud
+                        pos[0] = i; pos[1] = j; pos[2] = 3;  // 3 désigne direction sud
                     }
                     else if (tab[i, j] == $" {Ant.fourmis[3]} ")
                     {
-                        pos[0] = i; pos[1] = j; pos[2] = 4; Ant.coordonnees[2] = 4;    // 4 désigne direction ouest
+                        pos[0] = i; pos[1] = j; pos[2] = 4;  // 4 désigne direction ouest
                     }
                 }
             }
@@ -455,6 +455,7 @@ namespace Projet_CSharp_S2
         }
         static void Home()
         {
+            Console.Clear();
             string ASCII = @"           
                                                 ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
                                                 ║                                                                                                                                                   ║
@@ -552,7 +553,7 @@ namespace Projet_CSharp_S2
             Console.Clear();
 
 
-            Ant.Spawn(mat, mat.GetLength(0) / 2, mat.GetLength(1) / 2);        // Initialisation de la matrice principale
+            Ant.Spawn(mat, mat.GetLength(0) / 2, mat.GetLength(1) / 2);        // Initialisation de la fourmi dans la matrice principale
 
             int direc = PosFourmi(mat)[2];  // Recherche de la position de la fourmi à travers la matrice pour déterminer sa position
 

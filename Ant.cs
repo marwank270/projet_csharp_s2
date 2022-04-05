@@ -21,7 +21,7 @@ namespace Projet_CSharp_S2
             Random direction = new Random();
             int dir = direction.Next(1, 4);         // Choix aléatoire de la direction de la foumi (1, 4) pour Nord Est Sud Ouest
 
-            char fourmi = ' ';                      // Initialisation de la fourmi qui sera dans la matrice
+            /*char fourmi = ' ';                      // Initialisation de la fourmi qui sera dans la matrice
 
             if (dir == 1)
                 fourmi = Ant.fourmis[0];// Ant.coordonnees[2] = 0;      // Direction Nord (Ant.fourmis contient les différentes formes de la fourmi)
@@ -30,9 +30,12 @@ namespace Projet_CSharp_S2
             if (dir == 3)
                 fourmi = Ant.fourmis[2];// Ant.coordonnees[2] = 2;      // Direction Sud
             if (dir == 4)
-                fourmi = Ant.fourmis[3];// Ant.coordonnees[2] = 3;      // Direction Ouest
+                fourmi = Ant.fourmis[3];// Ant.coordonnees[2] = 3;      // Direction Ouest*/
 
-            matrice[x, y] = $" {fourmi} ";   // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
+            //matrice[x, y] = $" {fourmi} ";   // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
+
+            //coordonnees[2] = dir;       // Syncronisation de la direction avec les variables globales
+            matrice[x, y] = $" {Ant.fourmis[dir-1]} ";   // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
         }
         #endregion Initialisation de la fourmi
     }
