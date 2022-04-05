@@ -80,3 +80,6 @@
   - Optimisation de la boucle principale : transformation des `if` `else if` a répétition en `switch` *(Marwan)*
   - Gestion de l'erreur du bord de matrice terminée mais à améliorer au niveau estétique *(Marwan)*
 
+## 05/04/22 : 
+- Codage :
+  - Optimisation de la méthode `SwitchColor()` en changeant les `if` par l'opérateur d'inversion `!`

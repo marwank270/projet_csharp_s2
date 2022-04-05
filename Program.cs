@@ -191,19 +191,19 @@ namespace Projet_CSharp_S2
                 {
                     if (tab[i, j] == $" {Ant.fourmis[0]} ")  // Si le contenu au coordonnées vaut ce que l'on cherche (Ant.fourmis contient les différentes formes de la fourmi) on lance l'enregistrement des variables
                     {
-                        pos[0] = i; pos[1] = j; pos[2] = 1; Ant.direction = 1;    // 1 désigne direction nord (sous la forme de x = 1, y = j, direction = 1)
+                        pos[0] = i; pos[1] = j; pos[2] = 1; Ant.coordonnees[2] = 1;    // 1 désigne direction nord (sous la forme de x = 1, y = j, direction = 1)
                     }
                     else if (tab[i, j] == $" {Ant.fourmis[1]} ")
                     {
-                        pos[0] = i; pos[1] = j; pos[2] = 2; Ant.direction = 2;    // 2 désigne direction est
+                        pos[0] = i; pos[1] = j; pos[2] = 2; Ant.coordonnees[2] = 2;    // 2 désigne direction est
                     }
                     else if (tab[i, j] == $" {Ant.fourmis[2]} ")
                     {
-                        pos[0] = i; pos[1] = j; pos[2] = 3; Ant.direction = 3;    // 3 désigne direction sud
+                        pos[0] = i; pos[1] = j; pos[2] = 3; Ant.coordonnees[2] = 3;    // 3 désigne direction sud
                     }
                     else if (tab[i, j] == $" {Ant.fourmis[3]} ")
                     {
-                        pos[0] = i; pos[1] = j; pos[2] = 4; Ant.direction = 4;    // 4 désigne direction ouest
+                        pos[0] = i; pos[1] = j; pos[2] = 4; Ant.coordonnees[2] = 4;    // 4 désigne direction ouest
                     }
                 }
             }
@@ -557,10 +557,7 @@ namespace Projet_CSharp_S2
             int direc = PosFourmi(mat)[2];  // Recherche de la position de la fourmi à travers la matrice pour déterminer sa position
 
             if (direc == null)              // Gestion d'une erreur d'array vide à l'initialisation
-                direc = Ant.direction;
-
-            //ConsoleKeyInfo info_touche = Console.ReadKey(true);             // Lecture de la frappe utilisateur
-            //ConsoleKey touche = info_touche.Key;                            // Détection de la touche lors de la frappe
+                direc = Ant.coordonnees[2];
 
             int tours = 1;
             bool run = Ant.running = true;
