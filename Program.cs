@@ -2,7 +2,7 @@
  * Authors : Marwan K. & Charles A. - Lebrun
  * Github project repository : https://github.com/marwank270/projet_csharp_s2/
  * Author's github : https://github.com/marwank270 & https://github.com/novaxsavestheyear
- * Version : 270322
+ * Version : 050422
  **/
 
 using System;
@@ -211,7 +211,6 @@ namespace Projet_CSharp_S2
             Ant.coordonnees = pos;    // Cette ligne est très importante, elle nous permet d'envoyer les coordonnées et la direction de la fourmi dans une classe Ant qui contient les variables globales du programme
             return pos;
         }
-
         public static void DeplacementFourmi()
         {
             int x = Ant.coordonnees[0];                 // Récupération des coordonnées via les variables globales
@@ -353,7 +352,6 @@ namespace Projet_CSharp_S2
             }
             AffichageMatrice(Ant.matrice_principale);
         }
-
         static void SwitchColor(string[,] matrice, int x, int y)
         {
             Ant.matrice_fantome[x, y] = !Ant.matrice_fantome[x, y];
@@ -370,19 +368,6 @@ namespace Projet_CSharp_S2
             }*/
 
         }
-        /*static int[,] GenerateFourmi(int nbfourmi)
-        {
-            int[,] mat = SaisieMatrice();
-            for (int i = 0; i <= nbfourmi; i++)
-            {
-                Random a = new Random();
-                int x = x.Next(0, mat.GetLength(0)-1);
-                int y = y.Next(0, mat.GetLength(1)-1);
-
-                // Ant.matrice_principale[i, j] = "   |"; // case de la matrice vide
-                // Ant.matrice_principale[i, j] = $" {Ant.fourmis[Ant.coordonnees[2]] |"; // case de la matrice avec la foumi dans la bonne direction
-            }
-        }*/
 
         static bool VerifBordMat(string[,] matrice)
         {
@@ -418,6 +403,19 @@ namespace Projet_CSharp_S2
             Console.ReadKey();
             Home();
         }
+        /*static int[,] GenerateFourmi(int nbfourmi)
+        {
+            int[,] mat = SaisieMatrice();
+            for (int i = 0; i <= nbfourmi; i++)
+            {
+                Random a = new Random();
+                int x = x.Next(0, mat.GetLength(0)-1);
+                int y = y.Next(0, mat.GetLength(1)-1);
+
+                // Ant.matrice_principale[i, j] = "   |"; // case de la matrice vide
+                // Ant.matrice_principale[i, j] = $" {Ant.fourmis[Ant.coordonnees[2]] |"; // case de la matrice avec la foumi dans la bonne direction
+            }
+        }*/
 
         #endregion Méthode Outils
 
@@ -521,7 +519,6 @@ namespace Projet_CSharp_S2
         }
         static void FourmiLangton()
         {
-
             #region Initialisation de la Matrice
 
             string[,] mat = SaisieMatrice();                // Déclaration et intialisation de la matrice principale
@@ -538,16 +535,16 @@ namespace Projet_CSharp_S2
             {
                 for (int j = 0; j < mat.GetLength(1); j++)
                 {
-                    mat[i, j] = "   ";             // Remplissage de la matrice en blanc
+                    mat[i, j] = "   ";                      // Remplissage de la matrice en blanc
                 }
             }
 
-            Console.ResetColor();   // Simple inversion de ce qui a été fait plus haut
+            Console.ResetColor();                           // Simple inversion des changements de couleurs appliqués à la console plus haut
 
-            AffichageMatrice(mat);                  // Test d'affichage de la matrice
+            AffichageMatrice(mat);                          // Test d'affichage de la matrice vide
 
             Console.WriteLine("\n");
-            EcrireCentre("\x1b[32mMatrice initialisée\x1b[0m. Appuyez sur une touche continuez ...");
+            EcrireCentre($"{cc.green}Matrice initialisée{cc.end}. Appuyez sur une touche continuez ...");
             Console.ReadKey();
             Console.Clear();
 
@@ -564,8 +561,8 @@ namespace Projet_CSharp_S2
 
             while (VerifBordMat(mat) == false)
             {
-                //Console.Clear(); // Mieux sans (vu que nous avons géré la matrice pour qu'elle garde les même positions
-                Menu.SideInfo();
+                //Console.Clear();  // Mieux sans (vu que nous avons modifié la matrice pour qu'elle garde les même positions et se réécrive par dessus elle même)
+                Menu.SideInfo();    // Informations de bord affiché sur le coté durant toute la simulation 
 
                 #region Contrôles
                 if (Console.KeyAvailable)
@@ -579,10 +576,10 @@ namespace Projet_CSharp_S2
                         {
                             run = false;
 
-                            if (Console.ReadKey().Key == ConsoleKey.Escape)
+                            if (Console.ReadKey().Key == ConsoleKey.Escape)     // Echap x 2 pour quitter
                             {
                                 Console.Clear();
-                                Main();
+                                Home();
                                 break;
                             }
                         }
@@ -599,6 +596,13 @@ namespace Projet_CSharp_S2
                 Menu.count_spinner += 1;
                 Thread.Sleep(10);
             }
+        }
+
+        static void FourmiLangtonV2()
+        {
+            #region Initialisation de la matrice circulaire
+
+            #endregion Initialisation de la matrice circulaire
         }
     }
 }
