@@ -225,54 +225,58 @@ namespace Projet_CSharp_S2
                     case 1:
                         //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // Réécriture du contenu de la case pour le passage en noir   // Problème avec la classe cc
 
-                        if (Verif(Ant.matrice_principale, x, y) == false)
-                        {
-                            Console.ReadKey();
-                            FIN();
-                        }
 
                         SwitchColor(Ant.matrice_principale, x, y);
                         direc = 4;      // Tourne de Nord à Ouest
                         x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
+                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        {
+                            Console.ReadKey();
+                            FIN();
+                            break;
+                        }
                         Ant.matrice_principale[x, y] = $" {Ant.fourmis[3]} ";                                  // Réécriture de la fourmi à sa nouvelle position
                         break;
                     case 2:
                         //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
 
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc = 1;      // Tourne d'Est à Nord
+                        y += 1;// x- v+ // Monte vers le Nord donc de 1 sur l'axe y
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
                             FIN();
+                            break;
                         }
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc = 1;      // Tourne d'Est à Nord
-                        y += 1;// x- v+ // Monte vers le Nord donc de 1 sur l'axe y
                         Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";                                  // --
                         break;
                     case 3:
                         //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
 
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc = 2;      // Tourne de Sud à Est
+                        x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
                             FIN();
+                            break;
                         }
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc = 2;      // Tourne de Sud à Est
-                        x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
                         Ant.matrice_principale[x, y] = $" {Ant.fourmis[1]} ";                                  // --
                         break;
                     case 4:
                         //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // ---
 
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc = 3;      // Tourne d'Ouest à Sud
+                        y -= 1;// x+ v- // Descend vers le Sud donc de -1 sur l'axe y
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
                             FIN();
+                            break;
                         }
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc = 3;      // Tourne d'Ouest à Sud
-                        y -= 1;// x+ v- // Descend vers le Sud donc de -1 sur l'axe y
                         Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";                                  // --
                         break;
                 }
@@ -288,53 +292,57 @@ namespace Projet_CSharp_S2
                     case 1:
                         //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
 
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc += 1;     // Tourne de Nord à Est
+                        x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
                             FIN();
+                            break;
                         }
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc += 1;     // Tourne de Nord à Est
-                        x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
                         Ant.matrice_principale[x, y] = $" {Ant.fourmis[1]} ";
                         break;
                     case 2:
                         //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
 
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc += 1;     // Tourne de Est à Sud
+                        y -= 1;         // Descend vers le Sud donc de -1 sur l'axe y
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
                             FIN();
+                            break;
                         }
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc += 1;     // Tourne de Est à Sud
-                        y -= 1;         // Descend vers le Sud donc de -1 sur l'axe y
                         Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";
                         break;
                     case 3:
                         //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
 
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc += 1;     // Tourne de Sud à Ouest
+                        x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
                             FIN();
+                            break;
                         }
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc += 1;     // Tourne de Sud à Ouest
-                        x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
                         Ant.matrice_principale[x, y] = $" {Ant.fourmis[3]} ";
                         break;
                     case 4:
                         //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
 
+                        SwitchColor(Ant.matrice_principale, x, y);
+                        direc = 1;      // Tourne de Ouest à Nord
+                        y += 1;         // Monte vers le Nord donc de 1 sur l'axe x
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
                             FIN();
+                            break;
                         }
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc = 1;      // Tourne de Ouest à Nord
-                        y += 1;         // Monte vers le Nord donc de 1 sur l'axe x
                         Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";
                         break;
                 }
@@ -405,6 +413,8 @@ namespace Projet_CSharp_S2
         {
             Console.SetCursorPosition(0, 10);
             Console.Write($"{cc.rod}[    ÉTAT   ] : Terminé     {cc.end}");
+            Console.SetCursorPosition(15, 18);
+            Console.Write($"{cc.red}Appuyez sur une touche pour revenir au menu ...{cc.end}");
             Console.ReadKey();
             Home();
         }

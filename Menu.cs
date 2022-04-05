@@ -28,15 +28,15 @@ namespace Projet_CSharp_S2
                 if (i == Selection)
                 {
                     if (i == 2)
-                        selecteur = "\t  \x1b[41m\x1b[37m►  ";      // Affichage spécial fond rouge écrit en blanc pour l'option 2, l'option quitter 
+                        selecteur = $"\t  {cc.bgRed}{cc.white}►  ";      // Affichage spécial fond rouge écrit en blanc pour l'option 2, l'option quitter 
                     else
-                        selecteur = "\t  \x1b[47m\x1b[30m►  ";      // Sinon le selecteur est noir sur blanc
+                        selecteur = $"\t  {cc.bgWhite}{cc.black}►  ";      // Sinon le selecteur est noir sur blanc
                 }
                 else
                 {
                     selecteur = "";                                 // Si le selecteur est sur une option les autres sont en blanc sur noir en normal quoi
                 }
-                Program.EcrireCentre($"{selecteur}{SelectionActuelle}\x1b[0m"); // Écriture (au centre) de notre selecteur et de l'option actuelle suivi d'une balise de reset format (même fonction que Console.ResetColors();
+                Program.EcrireCentre($"{selecteur}{SelectionActuelle}{cc.end}"); // Écriture (au centre) de notre selecteur et de l'option actuelle suivi d'une balise de reset format (même fonction que Console.ResetColors();
             }
         }
 
@@ -102,7 +102,7 @@ namespace Projet_CSharp_S2
             Console.SetCursorPosition(0, 12);
             Console.Write($"[ DIRECTION ] : {Ant.fourmis[direc - 1]} : {dirFourmi} ");
             Console.SetCursorPosition(0, 13);
-            Console.Write($"[   ÉTAPE   ] : {cc.rod} {Ant.step} {cc.end}");
+            Console.Write($"[   ÉTAPE   ] : {cc.rod}{Ant.step}{cc.end}");
             Console.SetCursorPosition(0, 17);
             Console.Write($"{cc.yellow}[   PAUSE  ] : {cc.end}ESPACE");
             Console.SetCursorPosition(0, 18);
