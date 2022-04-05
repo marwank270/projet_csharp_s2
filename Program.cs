@@ -214,10 +214,7 @@ namespace Projet_CSharp_S2
 
         public static void DeplacementFourmi()
         {
-            /*int[] position_fourmi = Ant.coordonnees;                                                      // Coordonnées de la fourmi récupérée à partir de la variable globale Ant.coordonnees
-            int x = PosFourmi(Ant.matrice_principale)[0];                                                 //
-            int y = PosFourmi(Ant.matrice_principale)[1];*/                                                 //
-            int x = Ant.coordonnees[0];
+            int x = Ant.coordonnees[0];                 // Récupération des coordonnées via les variables globales
             int y = Ant.coordonnees[1];
             int direc = Ant.coordonnees[2];
 
@@ -231,7 +228,6 @@ namespace Projet_CSharp_S2
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
-                            Console.WriteLine("FIN");
                             FIN();
                         }
 
@@ -246,7 +242,6 @@ namespace Projet_CSharp_S2
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
-                            Console.WriteLine("FIN");
                             FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
@@ -260,7 +255,6 @@ namespace Projet_CSharp_S2
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
-                            Console.WriteLine("FIN");
                             FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
@@ -274,7 +268,6 @@ namespace Projet_CSharp_S2
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
-                            Console.WriteLine("FIN");
                             FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
@@ -298,7 +291,6 @@ namespace Projet_CSharp_S2
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
-                            Console.WriteLine("FIN");
                             FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
@@ -312,7 +304,6 @@ namespace Projet_CSharp_S2
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
-                            Console.WriteLine("FIN");
                             FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
@@ -326,7 +317,6 @@ namespace Projet_CSharp_S2
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
-                            Console.WriteLine("FIN");
                             FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
@@ -340,7 +330,6 @@ namespace Projet_CSharp_S2
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             Console.ReadKey();
-                            Console.WriteLine("FIN");
                             FIN();
                         }
                         SwitchColor(Ant.matrice_principale, x, y);
