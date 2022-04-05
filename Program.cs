@@ -417,7 +417,7 @@ namespace Projet_CSharp_S2
             Console.SetCursorPosition(0, 10);
             Console.Write($"{cc.rod}[    ÉTAT   ] : Terminé     {cc.end}");
             Console.ReadKey();
-            Menu();
+            Home();
         }
 
         #endregion Méthode Outils
@@ -451,9 +451,9 @@ namespace Projet_CSharp_S2
 
             #endregion Préparation
 
-            Menu();
+            Home();
         }
-        static void Menu()
+        static void Home()
         {
             string ASCII = @"           
                                                 ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
