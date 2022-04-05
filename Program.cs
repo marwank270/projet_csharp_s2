@@ -359,7 +359,9 @@ namespace Projet_CSharp_S2
 
         static void SwitchColor(string[,] matrice, int x, int y)
         {
-            if (Ant.matrice_fantome[x, y] == false)
+            Ant.matrice_fantome[x, y] = !Ant.matrice_fantome[x, y];
+            matrice[x, y] = "   ";
+            /*if (Ant.matrice_fantome[x, y] == false)
             {
                 matrice[x, y] = "   ";
                 Ant.matrice_fantome[x, y] = true;
@@ -368,7 +370,7 @@ namespace Projet_CSharp_S2
             {
                 matrice[x, y] = "   ";
                 Ant.matrice_fantome[x, y] = false;
-            }
+            }*/
 
         }
         /*static int[,] GenerateFourmi(int nbfourmi)
@@ -415,6 +417,7 @@ namespace Projet_CSharp_S2
             Console.SetCursorPosition(0, 10);
             Console.Write($"{cc.rod}[    ÉTAT   ] : Terminé     {cc.end}");
             Console.ReadKey();
+            Menu();
         }
 
         #endregion Méthode Outils
@@ -443,11 +446,15 @@ namespace Projet_CSharp_S2
 
             Thread ThreadPrincipal = new Thread(FourmiLangton)                                  // Création d'un objet Thread
             {
-                Priority = ThreadPriority.AboveNormal                                           // Surclassement de la priorité du processus le plus lourd 
+                Priority = ThreadPriority.AboveNormal                                           // Surclassement de la priorité du processus le plus gourmand 
             };
 
             #endregion Préparation
 
+            Menu();
+        }
+        static void Menu()
+        {
             string ASCII = @"           
                                                 ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
                                                 ║                                                                                                                                                   ║
@@ -562,6 +569,8 @@ namespace Projet_CSharp_S2
             {
                 //Console.Clear(); // Mieux sans (vu que nous avons géré la matrice pour qu'elle garde les même positions
                 Menu.SideInfo();
+
+                #region Contrôles
                 if (Console.KeyAvailable)
                 {
                     if (Console.ReadKey().Key == ConsoleKey.Spacebar)
@@ -582,6 +591,8 @@ namespace Projet_CSharp_S2
                         }
                     }
                 }
+                #endregion Contrôles
+
                 Ant.running = run;
                 DeplacementFourmi();
                 tours++;
