@@ -403,9 +403,9 @@ namespace Projet_CSharp_S2
         static bool Verif(string[,] matrice, int x, int y)
         {
             bool valide = true;
-            if (x > matrice.GetLength(0) || x < 0)
+            if (x > matrice.GetLength(0) || x < 0 /*&& Ant.coordonnees[2] == 2 || Ant.coordonnees[2] == 4*/)
                 valide = false;
-            if (y > matrice.GetLength(1) || y < 0)
+            if (y > matrice.GetLength(1) || y < 0 /*&& Ant.coordonnees[2] == 1 || Ant.coordonnees[2] == 3*/)
                 valide = false;
             return valide;
         }
@@ -414,7 +414,6 @@ namespace Projet_CSharp_S2
         {
             Console.SetCursorPosition(0, 10);
             Console.Write($"{cc.rod}[    ÉTAT   ] : Terminé     {cc.end}");
-            EcrireCentre("Appuyez sur une touche pour accéder au résumé...");
             Console.ReadKey();
         }
 
