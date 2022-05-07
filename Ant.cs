@@ -9,14 +9,14 @@ namespace Projet_CSharp_S2
         // [deprecated] public static string[] directions = { "Nord", "Est", "Sud", "Ouest" };      // Toutes les directions possibles de la fourmi
         // [deprecated] public static int direction;                                                // Variable régulièrement mise à jour contenant la direction de la fourmi
         public static string[,] matrice_principale;                                 // Variable régulièrement mise à jour contenant la matrice générale de l'algorithme
-        public static bool[,] matrice_fantome;                                       // Variable régulièrement mise à jour contenant la matrice de couleurs
+        public static bool[,] matrice_fantome;                                      // Variable régulièrement mise à jour contenant la matrice de couleurs
         public static int[] coordonnees;                                            // Variable régulièrement mise à jour contenant les coordonnées x,y et direction de la fourmi
         public static int step;
         public static bool running;
         #endregion Variables Globales
 
         #region Initialisation de la fourmi
-        public static void Spawn(string[,] matrice, int x, int y)
+        public static int Spawn(string[,] matrice)
         {
             Random direction = new Random();
             int dir = direction.Next(1, 4);         // Choix aléatoire de la direction de la foumi (1, 4) pour Nord Est Sud Ouest
@@ -35,7 +35,9 @@ namespace Projet_CSharp_S2
             //matrice[x, y] = $" {fourmi} ";   // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
 
             //coordonnees[2] = dir;       // Syncronisation de la direction avec les variables globales
-            matrice[x, y] = $" {Ant.fourmis[dir-1]} ";   // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
+            matrice[matrice.GetLength(0) / 2, matrice.GetLength(1) / 2] = $" {Ant.fourmis[dir-1]} ";   // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
+
+            return dir;         // Retourne la direction de la fourmi pour ne plus avoir à utiliser PosFourmi() dans Program.cs                    
         }
         #endregion Initialisation de la fourmi
     }

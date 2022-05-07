@@ -85,3 +85,4 @@
   - Optimisation de la méthode `SwitchColor()` en changeant les `if` par l'opérateur d'inversion `!` *(Marwan)*
   - Optimisation de la méthode `Ant.Spawn()` en changeant les `if` par `Ant.fourmis[dir-1]` *(Marwan)*
   - Amélioration de la méthode `Fin()` *(Marwan)*
+  //penser a chaner le switch color, le mettre plus bas 

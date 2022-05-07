@@ -91,7 +91,7 @@ namespace Projet_CSharp_S2
                     break;
             }
 
-            string X = x < 10 ? $"0{x}" : x.ToString();                // x < 10 on ajoute le 0 sinon on le touche pas
+            string X = x < 10 ? $"0{x}" : x.ToString();                // x < 10 on ajoute le 0 sinon on le touche pas (pour eviter que les coordonnées se décallent en permanance)
             string Y = y < 10 ? $"0{y}" : y.ToString();                // Idem avec y
             string[] spinner = { "/", "-", "\\", "|" };
 
