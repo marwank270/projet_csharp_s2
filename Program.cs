@@ -453,7 +453,7 @@ namespace Projet_CSharp_S2
                 Ant.coordonnees[2] = direc;           //
             }
             AffichageMatrice(Ant.matrice_principale);
-        }
+        } 
         static void SwitchColor(string[,] matrice, int x, int y)
         {
             Ant.matrice_fantome[x, y] = !Ant.matrice_fantome[x, y];
