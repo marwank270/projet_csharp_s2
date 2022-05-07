@@ -161,7 +161,8 @@ namespace Projet_CSharp_S2
 
                 case 1:
                     Console.Clear();
-                    Console.WriteLine("Under construction");
+                    //Console.WriteLine("Under construction");
+                    FourmiLangtonV2();
                     break;
 
                 case 2:                                 // Cas 2 : Quitter
@@ -228,7 +229,7 @@ namespace Projet_CSharp_S2
                 if (x <= 3 || y <= 3)                                   // Vérification de la qualité des valeurs
                 {
                     Console.Clear();
-                    EcrireCentre($"{cc.wrongFlag} : Vous ne pouvez pas saisir {cc.yellow}de matrice inférieure à [3,3]{cc.end} sinon la simulation ne se {cc.red}produit que sur 1 tour{cc.end}");
+                    EcrireCentre($"{cc.wrongFlag} : Vous ne pouvez pas saisir {cc.yellow}de matrice inférieure à [3,3]{cc.end} sinon la simulation ne se {cc.red}produit que sur 1 tour{cc.end}.");
                     Console.WriteLine();
                     Console.WriteLine();
                 }
@@ -246,7 +247,41 @@ namespace Projet_CSharp_S2
             string[,] matrice = new string[x, y];                       // Déclaration et initialisation de la matrice
             return matrice;
         }
-        static void AffichageMatrice(string[,] matrice)
+        static string[,] InitialiseMat()
+        {
+            #region Initialisation de la Matrice
+
+            string[,] mat = SaisieMatrice();                // Déclaration et intialisation de la matrice principale
+            bool[,] ghost_mat = new bool[mat.GetLength(0), mat.GetLength(1)]; // Déclaration et initialisation de la matrice de couleurs
+            Ant.matrice_principale = mat;                   // Copie des matrices dans la classe Ant pour les rendre accessible
+            Ant.matrice_fantome = ghost_mat;                //
+
+            #endregion Initialisation de la Matrice
+
+            Console.BackgroundColor = ConsoleColor.White;   // Passage de la couleur du fond au blanc 
+            Console.ForegroundColor = ConsoleColor.Black;   // Passage de la couleur des caractères en noirs (faut bien que ce soit lisible)
+
+            for (int i = 0; i < mat.GetLength(0); i++)
+            {
+                for (int j = 0; j < mat.GetLength(1); j++)
+                {
+                    mat[i, j] = "   ";                      // Remplissage de la matrice en blanc
+                }
+            }
+
+            Console.ResetColor();                           // Simple inversion des changements de couleurs appliqués à la console plus haut
+
+            AffichageMatrice(mat);                          // Test d'affichage de la matrice vide
+
+            Console.WriteLine("\n");
+            EcrireCentre($"{cc.green}Matrice initialisée{cc.end}. Appuyez sur une touche continuez ...");
+            Console.ReadKey();
+            Console.Clear();
+
+
+            return mat;
+        }
+        static void AffichageMatrice(string[,] matrice, bool v2 = false) // La valeur par défaut du paramètre v2 est false
         {
             //Console.Write(cc.bgWhite + cc.black);     // Passage en blanc de la console pour laisser que la matrice soit de la bonne couleur au départ
             // La classe cc est inutilisable du fait que je n'ai pas prévu de propriété pour détecter la couleur actuelle nous allons donc continuer comme cela :
@@ -254,30 +289,58 @@ namespace Projet_CSharp_S2
 
             for (int i = 0; i < matrice.GetLength(0); i++)
             {
+                Global Antv2 = new Global();// Constructeur de la struct Global
+
                 Console.WriteLine();                    // Retours à la ligne lorsque le bord de la matrice est atteint
                 Console.SetCursorPosition(Console.WindowWidth / 2 - matrice.GetLength(1) * 3/*nombre de caractère par cases*/ / 2, 10 /*marge de base en partant du haut*/ + i);
                 for (int j = 0; j < matrice.GetLength(1); j++)
                 {
-                    if (Ant.matrice_fantome[i, j] == false)                       // Si la case est actuellement blanche
+                    if (v2 == true)
                     {
-                        Console.BackgroundColor = ConsoleColor.White;
-                        Console.ForegroundColor = ConsoleColor.Black;
+                        if (Antv2.matrice_fantome[i, j] == false)                 // Si la case est actuellement blanche
+                        {
+                            Console.BackgroundColor = ConsoleColor.White;
+                            Console.ForegroundColor = ConsoleColor.Black;
 
-                        Console.Write(matrice[i, j]);                       // Case vide de couleur noire sur blanche
+                            Console.Write(matrice[i, j]);                       // Case vide de couleur noire sur blanche
 
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                    if (Ant.matrice_fantome[i, j] == true)
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        if (Antv2.matrice_fantome[i, j] == true)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.ForegroundColor = ConsoleColor.White;
+
+                            Console.Write(matrice[i, j]);                       // Case vide de couleur blanche sur noir
+
+                            Console.BackgroundColor = ConsoleColor.White;
+                            Console.ForegroundColor = ConsoleColor.Black;
+                        }
+                    } else
                     {
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.ForegroundColor = ConsoleColor.White;
+                        if (Ant.matrice_fantome[i, j] == false)                 // Si la case est actuellement blanche
+                        {
+                            Console.BackgroundColor = ConsoleColor.White;
+                            Console.ForegroundColor = ConsoleColor.Black;
 
-                        Console.Write(matrice[i, j]);                       // Case vide de couleur blanche sur noir
+                            Console.Write(matrice[i, j]);                       // Case vide de couleur noire sur blanche
 
-                        Console.BackgroundColor = ConsoleColor.White;
-                        Console.ForegroundColor = ConsoleColor.Black;
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        if (Ant.matrice_fantome[i, j] == true)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.ForegroundColor = ConsoleColor.White;
+
+                            Console.Write(matrice[i, j]);                       // Case vide de couleur blanche sur noir
+
+                            Console.BackgroundColor = ConsoleColor.White;
+                            Console.ForegroundColor = ConsoleColor.Black;
+                        }
                     }
+                    
                 }
             }
         }
@@ -311,7 +374,7 @@ namespace Projet_CSharp_S2
             Ant.coordonnees = pos;    // Cette ligne est très importante, elle nous permet d'envoyer les coordonnées et la direction de la fourmi dans une classe Ant qui contient les variables globales du programme
             return pos;
         }
-        public static void DeplacementFourmi()
+        public static void DeplacementFourmi()   // Cette méthode entière peut être optimisé et automatisé au lieu de passer par chaques cas. Nous le ferons si nous avons le temps
         {
             int x = Ant.coordonnees[0];                 // Récupération des coordonnées via les variables globales
             int y = Ant.coordonnees[1];
@@ -319,7 +382,7 @@ namespace Projet_CSharp_S2
 
             if (Ant.matrice_fantome[x, y] == false)
             {
-                switch (direc)          // Ce switch entier peut être optimisé et automatisé au lieu de passer par chaques cas. Nous le ferons si nous avons le temps
+                switch (direc)          
                 {
                     case 1:
                         //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // Réécriture du contenu de la case pour le passage en noir   // Problème d'affichage avec la classe cc
@@ -506,6 +569,7 @@ namespace Projet_CSharp_S2
             Console.Clear();
             Home();
         }
+
         /*static int[,] GenerateFourmi(int nbfourmi)
         {
             int[,] mat = SaisieMatrice();
@@ -526,35 +590,7 @@ namespace Projet_CSharp_S2
 
         static void FourmiLangton()
         {
-            #region Initialisation de la Matrice
-
-            string[,] mat = SaisieMatrice();                // Déclaration et intialisation de la matrice principale
-            bool[,] ghost_mat = new bool[mat.GetLength(0), mat.GetLength(1)]; // Déclaration et initialisation de la matrice de couleurs
-            Ant.matrice_principale = mat;                   // Copie de l'état actuel de la matrice dans la classe Ant pour la rendre accessible
-            Ant.matrice_fantome = ghost_mat;
-
-            Console.BackgroundColor = ConsoleColor.White;   // Passage de la couleur du fond au blanc 
-            Console.ForegroundColor = ConsoleColor.Black;   // Passage de la couleur des caractères en noirs (faut bien que ce soit lisible)
-
-            #endregion Initialisation de la Matrice
-
-            for (int i = 0; i < mat.GetLength(0); i++)
-            {
-                for (int j = 0; j < mat.GetLength(1); j++)
-                {
-                    mat[i, j] = "   ";                      // Remplissage de la matrice en blanc
-                }
-            }
-
-            Console.ResetColor();                           // Simple inversion des changements de couleurs appliqués à la console plus haut
-
-            AffichageMatrice(mat);                          // Test d'affichage de la matrice vide
-
-            Console.WriteLine("\n");
-            EcrireCentre($"{cc.green}Matrice initialisée{cc.end}. Appuyez sur une touche continuez ...");
-            Console.ReadKey();
-            Console.Clear();
-
+            string[,] mat = InitialiseMat();// Initialisation de la matrice
 
             Ant.Spawn(mat);                 // Initialisation de la fourmi dans la matrice principale
 
@@ -607,9 +643,40 @@ namespace Projet_CSharp_S2
 
         static void FourmiLangtonV2()
         {
-            #region Initialisation de la matrice circulaire
+            //string[,] Cmat = InitialiseMat(); // Initialisation de la matrice circulaire de manière identique
+            // Au final non, nous allons utiliser la structure de Antv2.cs car nous sommes obigés d'avoir au moins une struct dans notre projet
 
-            #endregion Initialisation de la matrice circulaire
+            Global Antv2;
+
+            string[,] mat = SaisieMatrice();
+            bool[,] ghost_mat = new bool[mat.GetLength(0), mat.GetLength(1)];
+
+            EcrireCentre("Saisir un nombre de fourmi à faire apparaître : ");
+            int nb_fourmi = SaisieNombre();
+            int[][] info_fourmis = new int[nb_fourmi][];
+
+            Console.BackgroundColor = ConsoleColor.White;   
+            Console.ForegroundColor = ConsoleColor.Black;   
+
+            for (int i = 0; i < mat.GetLength(0); i++)
+            {
+                for (int j = 0; j < mat.GetLength(1); j++)
+                {
+                    mat[i, j] = "   ";
+                    ghost_mat[i,j] = false;
+                }
+            }
+
+            Console.ResetColor();
+            AffichageMatrice(mat, true);
+            Console.WriteLine("\n");
+            EcrireCentre($"{cc.green}Matrice initialisée{cc.end}. Appuyez sur une touche continuez ...");
+            Console.ReadKey();
+            Console.Clear();
+
+            Antv2.matrice_principale = mat;                                       // Copie des variables dans la struct Global pour les rendre accessible
+            Antv2.matrice_fantome = ghost_mat;                                    // 
+            Antv2.fourmis = info_fourmis;                                         // Copie du jagged array des fourmis
         }
 
         #endregion Méthodes Exercices

@@ -19,8 +19,9 @@ namespace Projet_CSharp_S2
         public static int Spawn(string[,] matrice)
         {
             Random direction = new Random();
-            int dir = direction.Next(1, 4);         // Choix aléatoire de la direction de la foumi (1, 4) pour Nord Est Sud Ouest
+            int dir = direction.Next(1, 4);                                                             // Choix aléatoire de la direction de la foumi (1, 4) pour Nord Est Sud Ouest
 
+            #region code moins performant
             /*char fourmi = ' ';                      // Initialisation de la fourmi qui sera dans la matrice
 
             if (dir == 1)
@@ -35,9 +36,11 @@ namespace Projet_CSharp_S2
             //matrice[x, y] = $" {fourmi} ";   // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
 
             //coordonnees[2] = dir;       // Syncronisation de la direction avec les variables globales
-            matrice[matrice.GetLength(0) / 2, matrice.GetLength(1) / 2] = $" {Ant.fourmis[dir-1]} ";   // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
+            #endregion code moins performant
 
-            return dir;         // Retourne la direction de la fourmi pour ne plus avoir à utiliser PosFourmi() dans Program.cs                    
+            matrice[matrice.GetLength(0) / 2, matrice.GetLength(1) / 2] = $" {Ant.fourmis[dir-1]} ";    // Insertion de la fourmi au centre de la matrice avec une direction aléatoire
+
+            return dir;                                                                                 // Retourne la direction de la fourmi pour ne plus avoir à utiliser PosFourmi() dans Program.cs                    
         }
         #endregion Initialisation de la fourmi
     }

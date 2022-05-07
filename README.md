@@ -97,3 +97,4 @@
   - Correction de plusieurs bug liés à la méthode `FIN()` et `DeplacementFourmi()` qui empêchent parfois de finir correctement lorsque la fourmi atteint le bord de la matrice *(Marwan)*
   - Amélioration d'un bug graphique lié a l'alignement du menu `SideInfo()` dans `Menu.cs` causé par un `Console.Clear();` placé au mauvais endroit *(Marwan)*
   - Déplacement de SwitchColor() dans `DeplacementFourmi()` *(Marwan)*
+  - Ajout d'un paramètre optionnel `bool v2 = false` dans la méthode `AffichageMatrice()` afin de pouvoir la réutiliser la méthode de la version 1 *(Marwan)*
