@@ -54,14 +54,14 @@
 
 ## 12/03/22 :
 - Fichiers :
-  - Création de `Ant.cs`
+  - Création de `Ant.cs` *(Marwan)*
 - Codage : 
-  - Foumi parfaitement fonctinonelle
+  - Fourmi parfaitement fonctinonelle *(Marwan)*
 - Amélioration :
-  - Amélioration du menu
-  - Amélioration des matrices
-  - Amélioration de l'affichage
-  - amélioration de l'agencement du code dans les fichiers
+  - Amélioration du menu *(Marwan)*
+  - Amélioration des matrices *(Marwan)*
+  - Amélioration de l'affichage *(Marwan)*
+  - amélioration de l'agencement du code dans les fichiers *(Marwan)*
 
 ## 23/03/22 :
 - Fichiers : 
@@ -86,3 +86,12 @@
   - Optimisation de la méthode `Ant.Spawn()` en changeant les `if` par `Ant.fourmis[dir-1]` *(Marwan)*
   - Amélioration de la méthode `Fin()` *(Marwan)*
   //penser a chaner le switch color, le mettre plus bas 
+
+## 07/05/22 :
+> Plus d'un mois sans avoir travaillé le projet c'est pas bien mais on va charbonner.
+- Fichiers :
+  - Modification de `FourmiTest.cs` (renommé `Antv2.cs`) : Modification de la structure, création d'une méthode pour la matrice circulaire (non testé actuellement) *(Marwan)*
+  - Légères corrections dans le fichier `README.md` *(Marwan)*
+- Amélioration :
+  - Correction de plusieurs bug liés à la méthode `FIN()` et `DeplacementFourmi()` qui empêchent parfois de finir correctement lorsque la fourmi atteint le bord de la matrice *(Marwan)*
+  - Amélioration d'un bug graphique lié a l'alignement du menu `SideInfo()` dans `Menu.cs` causé par un `Console.Clear();` placé au mauvais endroit *(Marwan)*
