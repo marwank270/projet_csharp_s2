@@ -324,9 +324,6 @@ namespace Projet_CSharp_S2
                     case 1:
                         //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // Réécriture du contenu de la case pour le passage en noir   // Problème d'affichage avec la classe cc
 
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc = 4;      // Tourne de Nord à Ouest
-                        x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             FIN();
@@ -334,48 +331,51 @@ namespace Projet_CSharp_S2
                         }
                         else
                         {
+                            SwitchColor(Ant.matrice_principale, x, y);
+                            direc = 4;      // Tourne de Nord à Ouest
+                            x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
                             Ant.matrice_principale[x, y] = $" {Ant.fourmis[3]} ";                                  // Réécriture de la fourmi à sa nouvelle position
                         }
                         
                         break;
                     case 2:
 
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc = 1;      // Tourne d'Est à Nord
-                        y += 1;// x- v+ // Monte vers le Nord donc de 1 sur l'axe y
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             FIN();
                             break;
                         } else {
+                            SwitchColor(Ant.matrice_principale, x, y);
+                            direc = 1;      // Tourne d'Est à Nord
+                            y += 1;// x- v+ // Monte vers le Nord donc de 1 sur l'axe y
                             Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";                                  // --
                         }
                         
                         break;
                     case 3:
 
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc = 2;      // Tourne de Sud à Est
-                        x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             FIN();
                             break;
                         } else {
+                            SwitchColor(Ant.matrice_principale, x, y);
+                            direc = 2;      // Tourne de Sud à Est
+                            x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
                             Ant.matrice_principale[x, y] = $" {Ant.fourmis[1]} ";                                  // --
                         }
                         
                         break;
                     case 4:
 
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc = 3;      // Tourne d'Ouest à Sud
-                        y -= 1;// x+ v- // Descend vers le Sud donc de -1 sur l'axe y
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             FIN();
                             break;
                         } else {
+                            SwitchColor(Ant.matrice_principale, x, y);
+                            direc = 3;      // Tourne d'Ouest à Sud
+                            y -= 1;// x+ v- // Descend vers le Sud donc de -1 sur l'axe y
                             Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";                                  // --
                         }
                         
@@ -391,61 +391,57 @@ namespace Projet_CSharp_S2
                 switch (direc)
                 {
                     case 1:
-                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
-
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc += 1;     // Tourne de Nord à Est
-                        x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
+                        
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             FIN();
                             break;
                         } else {
+                            SwitchColor(Ant.matrice_principale, x, y);
+                            direc += 1;     // Tourne de Nord à Est
+                            x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
                             Ant.matrice_principale[x, y] = $" {Ant.fourmis[1]} ";
                         }
                         
                         break;
                     case 2:
-                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
 
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc += 1;     // Tourne de Est à Sud
-                        y -= 1;         // Descend vers le Sud donc de -1 sur l'axe y
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             FIN();
                             break;
                         } else {
+                            SwitchColor(Ant.matrice_principale, x, y);
+                            direc += 1;     // Tourne de Est à Sud
+                            y -= 1;         // Descend vers le Sud donc de -1 sur l'axe y
                             Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";
                         }
                         
                         break;
                     case 3:
-                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
 
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc += 1;     // Tourne de Sud à Ouest
-                        x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             FIN();
                             break;
                         } else {
+                            SwitchColor(Ant.matrice_principale, x, y);
+                            direc += 1;     // Tourne de Sud à Ouest
+                            x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
                             Ant.matrice_principale[x, y] = $" {Ant.fourmis[3]} ";
                         }
                         
                         break;
                     case 4:
-                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";
 
-                        SwitchColor(Ant.matrice_principale, x, y);
-                        direc = 1;      // Tourne de Ouest à Nord
-                        y += 1;         // Monte vers le Nord donc de 1 sur l'axe x
                         if (Verif(Ant.matrice_principale, x, y) == false)
                         {
                             FIN();
                             break;
                         } else {
+                            SwitchColor(Ant.matrice_principale, x, y);
+                            direc = 1;      // Tourne de Ouest à Nord
+                            y += 1;         // Monte vers le Nord donc de 1 sur l'axe x
                             Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";
                         }
                         
