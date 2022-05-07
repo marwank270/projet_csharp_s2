@@ -85,7 +85,8 @@
   - Optimisation de la méthode `SwitchColor()` en changeant les `if` par l'opérateur d'inversion `!` *(Marwan)*
   - Optimisation de la méthode `Ant.Spawn()` en changeant les `if` par `Ant.fourmis[dir-1]` *(Marwan)*
   - Amélioration de la méthode `Fin()` *(Marwan)*
-  //penser a chaner le switch color, le mettre plus bas 
+  
+ > Penser à chaner le switch color, le mettre plus bas 
 
 ## 07/05/22 :
 > Plus d'un mois sans avoir travaillé le projet c'est pas bien mais on va charbonner.
@@ -95,3 +96,4 @@
 - Amélioration :
   - Correction de plusieurs bug liés à la méthode `FIN()` et `DeplacementFourmi()` qui empêchent parfois de finir correctement lorsque la fourmi atteint le bord de la matrice *(Marwan)*
   - Amélioration d'un bug graphique lié a l'alignement du menu `SideInfo()` dans `Menu.cs` causé par un `Console.Clear();` placé au mauvais endroit *(Marwan)*
+  - Déplacement de SwitchColor() dans `DeplacementFourmi()` *(Marwan)*
