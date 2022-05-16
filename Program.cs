@@ -599,15 +599,15 @@ namespace Projet_CSharp_S2
                 int Y = rand.Next(0, mat.GetLength(0)-1);
                 int Direc = rand.Next(1, 4);
 
-                for (int j = 0; j < mat.GetLength(0); j++)
+                /*for (int j = 0; j < mat.GetLength(0); j++)
                 {
                     for (int k = 0; k < mat.GetLength(1); k++)
                     {
                         mat[X, Y] = $" {Ant.fourmis[Direc]} ";
                     }
-                }
+                }*/
 
-                Antv2.fourmis[i] = new int[4] { X, Y, Direc, 0 };
+                Antv2.fourmis[i] = new int[5] { X, Y, Direc, 0, 0 };
             }
         }
 
@@ -660,120 +660,124 @@ namespace Projet_CSharp_S2
             int age = Antv2.fourmis[i][3];
 
             string[,] mat = Ant.matrice_principale;
-            
 
-            if (Ant.matrice_fantome[y, x] == false)// si la case est blanche
+            if (Antv2.fourmis[i][4] == 1)
             {
-                if (y == 0 && direc == 4)                   // Fourmi en haut de la matrice
+                if (Ant.matrice_fantome[y, x] == false)// si la case est blanche
                 {
-                    direc = 1;
-                    if (Verif2(x, mat.GetLength(0) - 1))
+                    if (y == 0 && direc == 4)                   // Fourmi en haut de la matrice
                     {
-                        SwitchColor(mat, x, y);
-                        y = mat.GetLength(0) - 1;
-                        age++;
+                        direc = 1;
+                        if (Verif2(x, mat.GetLength(0) - 1))
+                        {
+                            SwitchColor(mat, x, y);
+                            y = mat.GetLength(0) - 1;
+                            age++;
+                        }
+                        mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                        Antv2.moved = true;
                     }
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
+                    else if (y == mat.GetLength(0) - 1 && direc == 2)     // Fourmi en bas de la matrice
+                    {
+                        direc = 3;
+                        if (Verif2(x, 0))
+                        {
+                            SwitchColor(mat, x, y);
+                            y = 0;
+                            age++;
+                        }
+                        mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                        Antv2.moved = true;
+                    }
+                    else if (x == 0 && direc == 3)
+                    {
+                        direc = 4;
+                        if (Verif2(mat.GetLength(1) - 1, y))
+                        {
+                            SwitchColor(mat, x, y);
+                            x = mat.GetLength(1) - 1;
+                            age++;
+                        }
+                        mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                        Antv2.moved = true;
+                    }
+                    else if (x == mat.GetLength(1) - 1 && direc == 1)
+                    {
+                        direc = 2;
+                        if (Verif2(0, y))
+                        {
+                            SwitchColor(mat, x, y);
+                            x = 0;
+                            age++;
+                        }
+                        mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                        Antv2.moved = true;
+                    }
                 }
-                else if (y == mat.GetLength(0)-1 && direc == 2)     // Fourmi en bas de la matrice
+                else if (Ant.matrice_fantome[y, x] == true) // Si la case est noire
                 {
-                    direc = 3;
-                    if (Verif2(x, 0))
+                    if (y == 0 && direc == 2)                           // Fourmi en haut de la matrice
                     {
-                        SwitchColor(mat, x, y);
-                        y = 0;
-                        age++;
+                        direc = 1;
+                        if (Verif2(x, mat.GetLength(0) - 1))
+                        {
+                            SwitchColor(mat, x, y);
+                            y = mat.GetLength(0) - 1;
+                            age++;
+                        }
+                        mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                        Antv2.moved = true;
                     }
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
+                    else if (y == mat.GetLength(0) - 1 && direc == 4)     // Fourmi en bas de la matrice
+                    {
+                        direc = 3;
+                        if (Verif2(x, 0))
+                        {
+                            SwitchColor(mat, x, y);
+                            y = 0;
+                            age++;
+                        }
+                        mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                        Antv2.moved = true;
+                    }
+                    else if (x == 0 && direc == 1)                       // Fourmi à gauche de la matrice
+                    {
+                        direc = 4;
+                        if (Verif2(mat.GetLength(1) - 1, y))
+                        {
+                            SwitchColor(mat, x, y);
+                            x = mat.GetLength(1) - 1;
+                            age++;
+                        }
+                        mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                        Antv2.moved = true;
+                    }
+                    else if (x == mat.GetLength(1) - 1 && direc == 3)       // Fourmi à droite de la matrice
+                    {
+                        direc = 2;
+                        if (Verif2(0, y))
+                        {
+                            SwitchColor(mat, x, y);
+                            x = 0;
+                            age++;
+                        }
+                        mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                        Antv2.moved = true;
+                    }
                 }
-                else if (x == 0 && direc == 3)
+
+                if (x != Antv2.fourmis[i][1] || y != Antv2.fourmis[i][0])
                 {
-                    direc = 4;
-                    if (Verif2(mat.GetLength(1) - 1, y))
-                    {
-                        SwitchColor(mat, x, y);
-                        x = mat.GetLength(1) - 1;
-                        age++;
-                    }
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
-                }
-                else if (x == mat.GetLength(1)-1 && direc == 1)
-                {
-                    direc = 2;
-                    if (Verif2(0, y))
-                    {
-                        SwitchColor(mat, x, y);
-                        x = 0;
-                        age++;
-                    }
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.fourmis[i][0] = y;
+                    Antv2.fourmis[i][1] = x;
+                    Antv2.fourmis[i][2] = direc;
+                    Antv2.fourmis[i][3] = age;
+
                     Antv2.moved = true;
                 }
             }
-            else if (Ant.matrice_fantome[y, x] == true) // Si la case est noire
-            {
-                if (y == 0 && direc == 2)                           // Fourmi en haut de la matrice
-                {
-                    direc = 1;
-                    if (Verif2(x, mat.GetLength(0) - 1))
-                    {
-                        SwitchColor(mat, x, y);
-                        y = mat.GetLength(0) - 1;
-                        age++;
-                    }
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
-                } 
-                else if (y == mat.GetLength(0)-1 && direc == 4)     // Fourmi en bas de la matrice
-                {
-                    direc = 3;
-                    if (Verif2(x, 0))
-                    {
-                        SwitchColor(mat, x, y);
-                        y = 0;
-                        age++;
-                    }
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
-                }
-                else if (x == 0 && direc == 1)                       // Fourmi à gauche de la matrice
-                {
-                    direc = 4;
-                    if (Verif2(mat.GetLength(1) - 1, y))
-                    {
-                        SwitchColor(mat, x, y);
-                        x = mat.GetLength(1) - 1;
-                        age++;
-                    }
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
-                }
-                else if (x == mat.GetLength(1)-1 && direc == 3)       // Fourmi à droite de la matrice
-                {
-                    direc = 2;
-                    if (Verif2(0, y))
-                    {
-                        SwitchColor(mat, x, y);
-                        x = 0;
-                        age++;
-                    }
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
-                }
-            }
 
-            if (x != Antv2.fourmis[i][1] || y != Antv2.fourmis[i][0])
-            {
-                Antv2.fourmis[i][0] = y;
-                Antv2.fourmis[i][1] = x;
-                Antv2.fourmis[i][2] = direc;
-                Antv2.fourmis[i][3] = age;
 
-                Antv2.moved = true;
-            }
         }
 
         static void OrdrePassageFourmi()
@@ -859,128 +863,134 @@ namespace Projet_CSharp_S2
             }
         }
 
-        static void DeplacementCirculaire(string[,] mat)
+        static void DeplacementCirculaire(string[,] mat,int tours, int nb_fourmi)
         {
-            //OrdrePassageFourmi();
-            OrdreV2(Antv2.fourmis);
+            OrdrePassageFourmi();
             for (int i = 0; i < Antv2.fourmis.Length; i++)
             {
-                Antv2.moved = false;
-                DeplacementBordMat(i);
-
-                if ( Antv2.moved == false)
+                if (Antv2.fourmis[i][4] == 1)
                 {
-                    int x = Antv2.fourmis[i][1];
-                    int y = Antv2.fourmis[i][0];
-                    int direc = Antv2.fourmis[i][2];
-                    int age = Antv2.fourmis[i][3];
+                    Antv2.moved = false;
+                    DeplacementBordMat(i);
 
-                    if (Ant.matrice_fantome[y, x] == false) // Déplacement de base si la case est blanche
+                    if ( Antv2.moved == false)
                     {
-                        switch (direc)
+                        int x = Antv2.fourmis[i][1];
+                        int y = Antv2.fourmis[i][0];
+                        int direc = Antv2.fourmis[i][2];
+                        int age = Antv2.fourmis[i][3];
+
+                        if (Ant.matrice_fantome[y, x] == false) // Déplacement de base si la case est blanche
                         {
-                            case 1:
-                                direc = 2;
-                                if (Verif2(x+1, y))
-                                {
-                                    SwitchColor(mat, x, y);
-                                    x++;
-                                    age++;
-                                }
+                            switch (direc)
+                            {
+                                case 1:
+                                    direc = 2;
+                                    if (Verif2(x+1, y))
+                                    {
+                                        SwitchColor(mat, x, y);
+                                        x++;
+                                        age++;
+                                    }
                                 
-                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                                break;
-                            case 2:
-                                direc = 3;
-                                if (Verif2(x, y + 1))
-                                {
-                                    SwitchColor(mat, x, y);
-                                    y++;
-                                    age++;
-                                }
-                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                                break;
-                            case 3:
-                                direc = 4;
-                                if (Verif2(x-1, y))
-                                {
-                                    SwitchColor(mat, x, y);
-                                    x--;
-                                    age++;
-                                }
-                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                                break;
-                            case 4:
-                                direc = 1;
-                                if (Verif2(x, y - 1))
-                                {
-                                    SwitchColor(mat, x, y);
-                                    y--;
-                                    age++;
-                                }
-                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                                break;
+                                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                    break;
+                                case 2:
+                                    direc = 3;
+                                    if (Verif2(x, y + 1))
+                                    {
+                                        SwitchColor(mat, x, y);
+                                        y++;
+                                        age++;
+                                    }
+                                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                    break;
+                                case 3:
+                                    direc = 4;
+                                    if (Verif2(x-1, y))
+                                    {
+                                        SwitchColor(mat, x, y);
+                                        x--;
+                                        age++;
+                                    }
+                                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                    break;
+                                case 4:
+                                    direc = 1;
+                                    if (Verif2(x, y - 1))
+                                    {
+                                        SwitchColor(mat, x, y);
+                                        y--;
+                                        age++;
+                                    }
+                                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                    break;
 
+                            }
+                            age++;
                         }
-                        age++;
-                    }
-                    else if (Ant.matrice_fantome[y, x] == true) // Déplacement de base si la case est noire
-                    {
-                        switch (direc)
+                        else if (Ant.matrice_fantome[y, x] == true) // Déplacement de base si la case est noire
                         {
-                            case 1:
-                                //erreur fourmi freeze !
-                                direc = 4;
-                                if (Verif2(x-1, y))
-                                {
-                                    SwitchColor(mat, x, y);
-                                    x--;
-                                    age++;
-                                } 
-                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                                break;
-                            case 2:
-                                direc = 1;
-                                if (Verif2(x, y - 1))
-                                {
-                                    SwitchColor(mat, x, y);
-                                    y--;
-                                    age++;
-                                }
-                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                                break;
-                            case 3:
-                                direc = 2;
-                                if (Verif2(x+1, y))
-                                {
-                                    SwitchColor(mat, x, y);
-                                    x++;
-                                    age++;
-                                }
-                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                                break;
-                            case 4:
-                                direc = 3;
-                                if (Verif2(x, y + 1))
-                                {
-                                    SwitchColor(mat, x, y);
-                                    y++;
-                                    age++;
-                                }
-                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                                break;
+                            switch (direc)
+                            {
+                                case 1:
+                                    //erreur fourmi freeze !
+                                    direc = 4;
+                                    if (Verif2(x-1, y))
+                                    {
+                                        SwitchColor(mat, x, y);
+                                        x--;
+                                        age++;
+                                    } 
+                                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                    break;
+                                case 2:
+                                    direc = 1;
+                                    if (Verif2(x, y - 1))
+                                    {
+                                        SwitchColor(mat, x, y);
+                                        y--;
+                                        age++;
+                                    }
+                                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                    break;
+                                case 3:
+                                    direc = 2;
+                                    if (Verif2(x+1, y))
+                                    {
+                                        SwitchColor(mat, x, y);
+                                        x++;
+                                        age++;
+                                    }
+                                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                    break;
+                                case 4:
+                                    direc = 3;
+                                    if (Verif2(x, y + 1))
+                                    {
+                                        SwitchColor(mat, x, y);
+                                        y++;
+                                        age++;
+                                    }
+                                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                    break;
 
+                            }
                         }
-                    }
                     
-                    Antv2.fourmis[i][1] = x;
-                    Antv2.fourmis[i][0] = y;
-                    Antv2.fourmis[i][2] = direc;
-                    Antv2.fourmis[i][3] = age;
+                        Antv2.fourmis[i][1] = x;
+                        Antv2.fourmis[i][0] = y;
+                        Antv2.fourmis[i][2] = direc;
+                        Antv2.fourmis[i][3] = age;
 
                     
+                    }
+                    AffichageMatrice(mat);
                 }
+<<<<<<< Updated upstream
                 
+=======
+>>>>>>> Stashed changes
             }
             AffichageMatrice(mat);
         }
@@ -1103,6 +1113,7 @@ namespace Projet_CSharp_S2
 
             bool run = true;
             bool no_stop = true;
+            int tours =0;
             while (no_stop == true)
             {
                 //Console.Clear();  // Mieux sans (vu que nous avons modifié la matrice pour qu'elle garde les même positions et se réécrive par dessus elle même)
@@ -1132,7 +1143,8 @@ namespace Projet_CSharp_S2
                 #endregion Contrôles
 
                 //Ant.running = run;
-                DeplacementCirculaire(Ant.matrice_principale);
+                DeplacementCirculaire(Ant.matrice_principale,tours,nb_fourmi);
+                tours++;
                 if (Menu.count_spinner >= 3)
                     Menu.count_spinner = -1;
                 Menu.count_spinner += 1;
