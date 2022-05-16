@@ -576,9 +576,9 @@ namespace Projet_CSharp_S2
         static bool Verif(string[,] matrice, int x, int y)
         {
             bool valide = true;
-            if (y > matrice.GetLength(0) || y < 0 /*&& Ant.coordonnees[2] == 2 || Ant.coordonnees[2] == 4*/)
+            if (y >= matrice.GetLength(0) || y < 0 /*&& Ant.coordonnees[2] == 2 || Ant.coordonnees[2] == 4*/)
                 valide = false;
-            if (x > matrice.GetLength(1) || x < 0 /*&& Ant.coordonnees[2] == 1 || Ant.coordonnees[2] == 3*/)
+            if (x >= matrice.GetLength(1) || x < 0 /*&& Ant.coordonnees[2] == 1 || Ant.coordonnees[2] == 3*/)
                 valide = false;
             return valide;
         }
@@ -678,8 +678,8 @@ namespace Projet_CSharp_S2
         static void DeplacementBordMat(int i) // Déplacement de la fourmi selon les cas 8 cas possible en bords de matrice
         {
             AffichageMatrice(Ant.matrice_principale);
-            int x = Antv2.fourmis[i][0];    // Recupération des variables liés à la fourmi
-            int y = Antv2.fourmis[i][1];
+            int x = Antv2.fourmis[i][1];    // Recupération des variables liés à la fourmi
+            int y = Antv2.fourmis[i][0];
             int direc = Antv2.fourmis[i][2];
             int age = Antv2.fourmis[i][3];
 
@@ -688,38 +688,38 @@ namespace Projet_CSharp_S2
 
             if (Ant.matrice_fantome[y, x] == false)// si la case est blanche
             {
-                if (x == 0 && direc == 4)                           // Fourmi en haut de la matrice
+                if (y == 0 && direc == 4)                           // Fourmi en haut de la matrice
                 {
                     direc = 1;
                     SwitchColor(mat, y, x);
-                    x = mat.GetLength(1)-1;
-                    age++;
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
-                }
-                else if (x == mat.GetLength(1)-1 && direc == 2)     // Fourmi en bas de la matrice
-                {
-                    direc = 3;
-                    SwitchColor(mat, x, y);
-                    x = 0;
-                    age++;
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
-                }
-                else if (y == 0 && direc == 3)
-                {
-                    direc = 4;
-                    SwitchColor(mat, x, y);
                     y = mat.GetLength(0)-1;
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
                 }
-                else if (y == mat.GetLength(0)-1 && direc == 1)
+                else if (y == mat.GetLength(0)-1 && direc == 2)     // Fourmi en bas de la matrice
+                {
+                    direc = 3;
+                    SwitchColor(mat, x, y);
+                    y = 0;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
+                else if (x == 0 && direc == 3)
+                {
+                    direc = 4;
+                    SwitchColor(mat, x, y);
+                    x = mat.GetLength(1)-1;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
+                else if (x == mat.GetLength(1)-1 && direc == 1)
                 {
                     direc = 2;
                     SwitchColor(mat, x, y);
-                    y = 0;
+                    x = 0;
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
@@ -727,48 +727,48 @@ namespace Projet_CSharp_S2
             }
             else if (Ant.matrice_fantome[y, x] == true) // Si la case est noire
             {
-                if (x == 0 && direc == 2)                           // Fourmi en haut de la matrice
+                if (y == 0 && direc == 2)                           // Fourmi en haut de la matrice
                 {
                     direc = 1;
                     SwitchColor(mat, x, y);
-                    x = mat.GetLength(1) - 1;
+                    y = mat.GetLength(0) - 1;
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
                 } 
-                else if (x == mat.GetLength(1)-1 && direc == 4)     // Fourmi en bas de la matrice
+                else if (y == mat.GetLength(0)-1 && direc == 4)     // Fourmi en bas de la matrice
                 {
                     direc = 3;
-                    SwitchColor(mat, x, y);
-                    x = 0;
-                    age++;
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
-                }
-                else if (y == 0 && direc == 1)                       // Fourmi à gauche de la matrice
-                {
-                    direc = 4;
-                    SwitchColor(mat, x, y);
-                    y = mat.GetLength(0)-1;
-                    age++;
-                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                    Antv2.moved = true;
-                }
-                else if (y == mat.GetLength(0)-1 && direc == 3)       // Fourmi à droite de la matrice
-                {
-                    direc = 2;
                     SwitchColor(mat, x, y);
                     y = 0;
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
                 }
+                else if (x == 0 && direc == 1)                       // Fourmi à gauche de la matrice
+                {
+                    direc = 4;
+                    SwitchColor(mat, x, y);
+                    x = mat.GetLength(1)-1;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
+                else if (x == mat.GetLength(1)-1 && direc == 3)       // Fourmi à droite de la matrice
+                {
+                    direc = 2;
+                    SwitchColor(mat, x, y);
+                    x = 0;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
             }
 
-            if (x != Antv2.fourmis[i][0] || y != Antv2.fourmis[i][1])
+            if (x != Antv2.fourmis[i][1] || y != Antv2.fourmis[i][0])
             {
-                Antv2.fourmis[i][0] = x;
-                Antv2.fourmis[i][1] = y;
+                Antv2.fourmis[i][0] = y;
+                Antv2.fourmis[i][1] = x;
                 Antv2.fourmis[i][2] = direc;
                 Antv2.fourmis[i][3] = age;
 
@@ -811,8 +811,8 @@ namespace Projet_CSharp_S2
 
                 if ( Antv2.moved == false)
                 {
-                    int x = Antv2.fourmis[i][0];
-                    int y = Antv2.fourmis[i][1];
+                    int x = Antv2.fourmis[i][1];
+                    int y = Antv2.fourmis[i][0];
                     int direc = Antv2.fourmis[i][2];
                     int age = Antv2.fourmis[i][3];
 
@@ -881,8 +881,8 @@ namespace Projet_CSharp_S2
                         age++;
                     }
                     
-                    Antv2.fourmis[i][0] = x;
-                    Antv2.fourmis[i][1] = y;
+                    Antv2.fourmis[i][1] = x;
+                    Antv2.fourmis[i][0] = y;
                     Antv2.fourmis[i][2] = direc;
                     Antv2.fourmis[i][3] = age;
 
