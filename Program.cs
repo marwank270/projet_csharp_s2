@@ -184,6 +184,7 @@ namespace Projet_CSharp_S2
 
         #region Méthodes Outils
 
+        #region Outils Partie 1
         static int SaisieNombre()
         {
             short? input;   // On ne dépassera jamais 32767 comme valeur donc inutile de prendre un int (et prendre un short permet d'optimiser le code)
@@ -219,13 +220,13 @@ namespace Projet_CSharp_S2
                 EcrireCentre("Saisir la largeur de la matrice : ");
                 y = SaisieNombre();
 
-                if (x % 2 == 0 && y % 2 == 0)                           // Vérification de la parité des valeurs
+                /*if (x % 2 == 0 && y % 2 == 0)                           // Vérification de la parité des valeurs
                 {
                     Console.Clear();
                     EcrireCentre($"{cc.wrongFlag} : Vous ne pouvez pas saisir {cc.yellow}deux nombres pairs{cc.end} sinon la matrice n'as pas de centre.");
                     Console.WriteLine();
                     Console.WriteLine();
-                }
+                }*/
                 if (x <= 3 || y <= 3)                                   // Vérification de la qualité des valeurs
                 {
                     Console.Clear();
@@ -244,7 +245,7 @@ namespace Projet_CSharp_S2
             } while (x % 2 == 0 && y % 2 == 0 && x <= 3 || y <= 3 && y > 55); // y > 55 déborde sur le menu du coté
 
 
-            string[,] matrice = new string[x, y];                       // Déclaration et initialisation de la matrice
+            string[,] matrice = new string[y, x];                       // Déclaration et initialisation de la matrice
             return matrice;
         }
         static string[,] InitialiseMat()
@@ -289,13 +290,13 @@ namespace Projet_CSharp_S2
 
             for (int i = 0; i < matrice.GetLength(0); i++)
             {
-                Global Antv2 = new Global();// Constructeur de la struct Global
+                //Fourmis Antv2 = new Fourmis();// Constructeur de la struct Fourmis
 
                 Console.WriteLine();                    // Retours à la ligne lorsque le bord de la matrice est atteint
-                Console.SetCursorPosition(Console.WindowWidth / 2 - matrice.GetLength(1) * 3/*nombre de caractère par cases*/ / 2, 10 /*marge de base en partant du haut*/ + i);
+                Console.SetCursorPosition(Console.WindowWidth / 2 - matrice.GetLength(1) * 3/*nombre de caractère par cases*/ / 2, 10 /*marge de base en partant du haut*/ + i); // Permet de toujours écrire la matrice au centre
                 for (int j = 0; j < matrice.GetLength(1); j++)
                 {
-                    if (v2 == true)
+                    /*if (v2 == true)
                     {
                         if (Antv2.matrice_fantome[i, j] == false)                 // Si la case est actuellement blanche
                         {
@@ -318,7 +319,7 @@ namespace Projet_CSharp_S2
                             Console.ForegroundColor = ConsoleColor.Black;
                         }
                     } else
-                    {
+                    {*/
                         if (Ant.matrice_fantome[i, j] == false)                 // Si la case est actuellement blanche
                         {
                             Console.BackgroundColor = ConsoleColor.White;
@@ -339,7 +340,7 @@ namespace Projet_CSharp_S2
                             Console.BackgroundColor = ConsoleColor.White;
                             Console.ForegroundColor = ConsoleColor.Black;
                         }
-                    }
+                    //}
                     
                 }
             }
@@ -374,36 +375,51 @@ namespace Projet_CSharp_S2
             Ant.coordonnees = pos;    // Cette ligne est très importante, elle nous permet d'envoyer les coordonnées et la direction de la fourmi dans une classe Ant qui contient les variables globales du programme
             return pos;
         }
-        public static void DeplacementFourmi()   // Cette méthode entière peut être optimisé et automatisé au lieu de passer par chaques cas. Nous le ferons si nous avons le temps
+        public static void DeplacementFourmi(bool v2 = false, int i = 0 /*Paramètres par défaut en false et 0*/)   // Cette méthode entière peut être optimisé et automatisé au lieu de passer par chaques cas. Nous le ferons si nous avons le temps
         {
-            int x = Ant.coordonnees[0];                 // Récupération des coordonnées via les variables globales
-            int y = Ant.coordonnees[1];
-            int direc = Ant.coordonnees[2];
+            int x, y, direc;
+            bool T = false;
+            
+            if (v2 == true)
+            {
+                x = Antv2.fourmis[i][0];
+                y = Antv2.fourmis[i][1];
+                direc = Antv2.fourmis[i][2];
+            }
+            else
+            {
+                x = Ant.coordonnees[0];                 // Récupération des coordonnées via les variables globales
+                y = Ant.coordonnees[1];
+                direc = Ant.coordonnees[2];
+            }
 
-            if (Ant.matrice_fantome[x, y] == false)
+            if (Ant.matrice_fantome[y, x] == false)
             {
                 switch (direc)          
                 {
                     case 1:
-                        //Ant.matrice_principale[x, y] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // Réécriture du contenu de la case pour le passage en noir   // Problème d'affichage avec la classe cc
-
-                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        //Ant.matrice_principale[y, x] = $"{cc.bgBlack}   {cc.end}{cc.bgWhite}{cc.black}|";     // Réécriture du contenu de la case pour le passage en noir   // Problème d'affichage avec la classe cc
+                        if (v2 == true)
+                        {
+                            T = Teleportation(Ant.matrice_principale, i);
+                        }
+                        else if (Verif(Ant.matrice_principale, x, y) == false && v2 == false)
                         {
                             FIN();
                             break;
                         }
-                        else
+                        else if (T == false)
                         {
                             SwitchColor(Ant.matrice_principale, x, y);
                             direc = 4;      // Tourne de Nord à Ouest
                             x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
-                            Ant.matrice_principale[x, y] = $" {Ant.fourmis[3]} ";                                  // Réécriture de la fourmi à sa nouvelle position
+                            Ant.matrice_principale[y, x] = $" {Ant.fourmis[3]} ";                                  // Réécriture de la fourmi à sa nouvelle position
                         }
                         
                         break;
                     case 2:
 
-                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        if (Verif(Ant.matrice_principale, x, y) == false && v2 == false)
                         {
                             FIN();
                             break;
@@ -411,13 +427,13 @@ namespace Projet_CSharp_S2
                             SwitchColor(Ant.matrice_principale, x, y);
                             direc = 1;      // Tourne d'Est à Nord
                             y += 1;// x- v+ // Monte vers le Nord donc de 1 sur l'axe y
-                            Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";                                  // --
+                            Ant.matrice_principale[y, x] = $" {Ant.fourmis[0]} ";                                  // --
                         }
                         
                         break;
                     case 3:
 
-                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        if (Verif(Ant.matrice_principale, x, y) == false && v2 == false)
                         {
                             FIN();
                             break;
@@ -425,13 +441,13 @@ namespace Projet_CSharp_S2
                             SwitchColor(Ant.matrice_principale, x, y);
                             direc = 2;      // Tourne de Sud à Est
                             x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
-                            Ant.matrice_principale[x, y] = $" {Ant.fourmis[1]} ";                                  // --
+                            Ant.matrice_principale[y, x] = $" {Ant.fourmis[1]} ";                                  // --
                         }
                         
                         break;
                     case 4:
 
-                        if (Verif(Ant.matrice_principale, x, y) == false)
+                        if (Verif(Ant.matrice_principale, x, y) == false && v2 == false)
                         {
                             FIN();
                             break;
@@ -439,17 +455,25 @@ namespace Projet_CSharp_S2
                             SwitchColor(Ant.matrice_principale, x, y);
                             direc = 3;      // Tourne d'Ouest à Sud
                             y -= 1;// x+ v- // Descend vers le Sud donc de -1 sur l'axe y
-                            Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";                                  // --
+                            Ant.matrice_principale[y, x] = $" {Ant.fourmis[2]} ";                                  // --
                         }
                         
                         break;
                 }
 
-                Ant.coordonnees[0] = x;               // Mise à jour des variables globales en adéquation avec les changements des lignes d'au dessus
-                Ant.coordonnees[1] = y;               //
-                Ant.coordonnees[2] = direc;           //
+                if (v2 == true)
+                {
+                    Antv2.fourmis[i][0] = x;              // Mise à jour des variables globales en adéquation avec les changements des lignes d'au dessus
+                    Antv2.fourmis[i][1] = y;              //
+                    Antv2.fourmis[i][2] = direc;          //
+                } else
+                {
+                    Ant.coordonnees[0] = x;               // Mise à jour des variables globales en adéquation avec les changements des lignes d'au dessus
+                    Ant.coordonnees[1] = y;               //
+                    Ant.coordonnees[2] = direc;           //
+                }
             }
-            else if (Ant.matrice_fantome[x, y] == true)       // Si la case est blanche
+            else if (Ant.matrice_fantome[y, x] == true)       // Si la case est blanche
             {
                 switch (direc)
                 {
@@ -463,7 +487,7 @@ namespace Projet_CSharp_S2
                             SwitchColor(Ant.matrice_principale, x, y);
                             direc += 1;     // Tourne de Nord à Est
                             x += 1;         // Avance vers l'Est donc de 1 sur l'axe x
-                            Ant.matrice_principale[x, y] = $" {Ant.fourmis[1]} ";
+                            Ant.matrice_principale[y, x] = $" {Ant.fourmis[1]} ";
                         }
                         
                         break;
@@ -477,7 +501,7 @@ namespace Projet_CSharp_S2
                             SwitchColor(Ant.matrice_principale, x, y);
                             direc += 1;     // Tourne de Est à Sud
                             y -= 1;         // Descend vers le Sud donc de -1 sur l'axe y
-                            Ant.matrice_principale[x, y] = $" {Ant.fourmis[2]} ";
+                            Ant.matrice_principale[y, x] = $" {Ant.fourmis[2]} ";
                         }
                         
                         break;
@@ -491,7 +515,7 @@ namespace Projet_CSharp_S2
                             SwitchColor(Ant.matrice_principale, x, y);
                             direc += 1;     // Tourne de Sud à Ouest
                             x -= 1;         // Avance vers l'Ouest donc de -1 sur l'axe x
-                            Ant.matrice_principale[x, y] = $" {Ant.fourmis[3]} ";
+                            Ant.matrice_principale[y, x] = $" {Ant.fourmis[3]} ";
                         }
                         
                         break;
@@ -505,7 +529,7 @@ namespace Projet_CSharp_S2
                             SwitchColor(Ant.matrice_principale, x, y);
                             direc = 1;      // Tourne de Ouest à Nord
                             y += 1;         // Monte vers le Nord donc de 1 sur l'axe x
-                            Ant.matrice_principale[x, y] = $" {Ant.fourmis[0]} ";
+                            Ant.matrice_principale[y, x] = $" {Ant.fourmis[0]} ";
                         }
                         
                         break;
@@ -516,11 +540,11 @@ namespace Projet_CSharp_S2
                 Ant.coordonnees[2] = direc;           //
             }
             AffichageMatrice(Ant.matrice_principale);
-        } 
+        }
         static void SwitchColor(string[,] matrice, int x, int y)
         {
-            Ant.matrice_fantome[x, y] = !Ant.matrice_fantome[x, y];
-            matrice[x, y] = "   ";
+            Ant.matrice_fantome[y, x] = !Ant.matrice_fantome[y, x];
+            matrice[y, x] = "   ";
             /*if (Ant.matrice_fantome[x, y] == false)
             {
                 matrice[x, y] = "   ";
@@ -552,9 +576,9 @@ namespace Projet_CSharp_S2
         static bool Verif(string[,] matrice, int x, int y)
         {
             bool valide = true;
-            if (x > matrice.GetLength(0) || x < 0 /*&& Ant.coordonnees[2] == 2 || Ant.coordonnees[2] == 4*/)
+            if (y > matrice.GetLength(0) || y < 0 /*&& Ant.coordonnees[2] == 2 || Ant.coordonnees[2] == 4*/)
                 valide = false;
-            if (y > matrice.GetLength(1) || y < 0 /*&& Ant.coordonnees[2] == 1 || Ant.coordonnees[2] == 3*/)
+            if (x > matrice.GetLength(1) || x < 0 /*&& Ant.coordonnees[2] == 1 || Ant.coordonnees[2] == 3*/)
                 valide = false;
             return valide;
         }
@@ -584,7 +608,296 @@ namespace Projet_CSharp_S2
             }
         }*/
 
+        #endregion Outils Partie 1
+
+        #region Outils Partie 2
+
+        static void MultiSpawn(string[,] mat, int nb_fourmi)
+        {
+            Random rand = new Random();
+
+            for (int i = 0; i < nb_fourmi; i++)
+            {
+                int X = rand.Next(0, mat.GetLength(1));
+                int Y = rand.Next(0, mat.GetLength(0));
+                int Direc = rand.Next(1, 4);
+
+                for (int j = 0; j < mat.GetLength(0); j++)
+                {
+                    for (int k = 0; k < mat.GetLength(1); k++)
+                    {
+                        mat[X, Y] = $" {Ant.fourmis[Direc]} ";
+                    }
+                }
+
+                Antv2.fourmis[i] = new int[4] { X, Y, Direc, 0 };
+            }
+        }
+
+        public static bool Teleportation(string[,] mat, int i/* index de la fourmi en cours de mouvement*/)    // Gère la matrice circulaire
+        {
+            bool teleported = false;
+            /*int x = Antv2.fourmis[i][0];
+            int y = Antv2.fourmis[i][1];
+            int direc = Antv2.fourmis[i][2];
+
+            if (y == 0 && direc == 1)   // Si la fourmi est en haut de la matrice et dirigée vers le haut
+            {
+                SwitchColor(mat, x, y); // Changement de couleur de la case            
+                y = mat.GetLength(1);   // Mouvement de la foumi i en bas de matrice
+            }
+            else if (y == mat.GetLength(1) && direc == 3)   // Si la fourmi est en bas et dirigée vers le bas
+            {
+                SwitchColor(mat, x, y); // Changement de couleur de la case    
+                y = 0;                  // Mouvement de la foumi i en haut de la matrice
+            }
+
+            if (x == 0 && direc == 4)   // Si la foumi est tout à droite et dirigée vers la droite
+            {
+                SwitchColor(mat, x, y); // Changement de couleur de la case  
+                x = mat.GetLength(0);   // Mouvement de la fourmi i à gauche de la matrice
+            }
+                
+            else if (x == mat.GetLength(0) && direc == 2)   // Si la foumi est tout à gauche et dirigée vers la gauche
+            {
+                SwitchColor(mat, x, y); // Changement de couleur de la case  
+                x = 0;                  // Mouvement de la foumi i a droite de la matrice
+            }
+
+            if (x != Antv2.fourmis[i][0] || y != Antv2.fourmis[i][1])   // Si une variable à changées
+                teleported = true;      // Est marquée comme "à déjà bougée"
+            if (teleported == true)
+                Antv2.fourmis[i][3]++;  // Age += 1
+
+            Antv2.fourmis[i][0] = x;    // Modification des variables
+            Antv2.fourmis[i][1] = y;    //
+            Antv2.fourmis[i][2] = direc;*/
+
+            return teleported;
+        }
+        static void DeplacementBordMat(int i) // Déplacement de la fourmi selon les cas 8 cas possible en bords de matrice
+        {
+            AffichageMatrice(Ant.matrice_principale);
+            int x = Antv2.fourmis[i][0];    // Recupération des variables liés à la fourmi
+            int y = Antv2.fourmis[i][1];
+            int direc = Antv2.fourmis[i][2];
+            int age = Antv2.fourmis[i][3];
+
+            string[,] mat = Ant.matrice_principale;
+            
+
+            if (Ant.matrice_fantome[y, x] == false)// si la case est blanche
+            {
+                if (x == 0 && direc == 4)                           // Fourmi en haut de la matrice
+                {
+                    direc = 1;
+                    SwitchColor(mat, y, x);
+                    x = mat.GetLength(1)-1;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
+                else if (x == mat.GetLength(1)-1 && direc == 2)     // Fourmi en bas de la matrice
+                {
+                    direc = 3;
+                    SwitchColor(mat, x, y);
+                    x = 0;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
+                else if (y == 0 && direc == 3)
+                {
+                    direc = 4;
+                    SwitchColor(mat, x, y);
+                    y = mat.GetLength(0)-1;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
+                else if (y == mat.GetLength(0)-1 && direc == 1)
+                {
+                    direc = 2;
+                    SwitchColor(mat, x, y);
+                    y = 0;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
+            }
+            else if (Ant.matrice_fantome[y, x] == true) // Si la case est noire
+            {
+                if (x == 0 && direc == 2)                           // Fourmi en haut de la matrice
+                {
+                    direc = 1;
+                    SwitchColor(mat, x, y);
+                    x = mat.GetLength(1) - 1;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                } 
+                else if (x == mat.GetLength(1)-1 && direc == 4)     // Fourmi en bas de la matrice
+                {
+                    direc = 3;
+                    SwitchColor(mat, x, y);
+                    x = 0;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
+                else if (y == 0 && direc == 1)                       // Fourmi à gauche de la matrice
+                {
+                    direc = 4;
+                    SwitchColor(mat, x, y);
+                    y = mat.GetLength(0)-1;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
+                else if (y == mat.GetLength(0)-1 && direc == 3)       // Fourmi à droite de la matrice
+                {
+                    direc = 2;
+                    SwitchColor(mat, x, y);
+                    y = 0;
+                    age++;
+                    mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                    Antv2.moved = true;
+                }
+            }
+
+            if (x != Antv2.fourmis[i][0] || y != Antv2.fourmis[i][1])
+            {
+                Antv2.fourmis[i][0] = x;
+                Antv2.fourmis[i][1] = y;
+                Antv2.fourmis[i][2] = direc;
+                Antv2.fourmis[i][3] = age;
+
+                Antv2.moved = true;
+            }
+            AffichageMatrice(Ant.matrice_principale);
+        }
+
+        static void OrdrePassageFourmi()
+        {
+            #region Mise à jour ordre de passage
+
+            
+            for (int i = Antv2.fourmis.Length - 1; i < 0; i--)          // Méthode de tri à bulle pour changer l'ordre des fourmis à chaque fois pour commencer par la plus jeune 
+            {
+                for (int j = Antv2.fourmis.Length - 2; j < 0; j--)
+                {
+                    if (Antv2.fourmis[j-1][3] < Antv2.fourmis[j][3])    // Interversion
+                    {
+                        int roue_de_secours = Antv2.fourmis[j - 1][3];
+                        Antv2.fourmis[j - 1][3] = Antv2.fourmis[j][3];
+                        Antv2.fourmis[j][3] = roue_de_secours;
+                    }
+                }
+
+            }
+
+            #endregion Mise à jour odre de passage
+
+        }
+
+        static void DeplacementCirculaire(string[,] mat)
+        {
+            for (int i = 0; i < Antv2.fourmis.Length; i++)
+            {
+                Antv2.moved = false;
+                AffichageMatrice(Ant.matrice_principale);
+                OrdrePassageFourmi();
+                DeplacementBordMat(i);
+
+                if ( Antv2.moved == false)
+                {
+                    int x = Antv2.fourmis[i][0];
+                    int y = Antv2.fourmis[i][1];
+                    int direc = Antv2.fourmis[i][2];
+                    int age = Antv2.fourmis[i][3];
+
+                    if (Ant.matrice_fantome[y, x] == false) // Déplacement de base si la case est blanche
+                    {
+                        switch (direc)
+                        {
+                            case 1:
+                                direc = 2;
+                                SwitchColor(mat, x, y);
+                                x++;
+                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                break;
+                            case 2:
+                                direc = 3;
+                                SwitchColor(mat, x, y);
+                                y++;
+                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                break;
+                            case 3:
+                                direc = 4;
+                                SwitchColor(mat, x, y);
+                                x--;
+                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                 break;
+                            case 4:
+                                direc = 1;
+                                SwitchColor(mat, x, y);
+                                y--;
+                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                break;
+
+                        }
+                        age++;
+                    }
+                    else if (Ant.matrice_fantome[y, x] == true) // Déplacement de base si la case est noire
+                    {
+                        switch (direc)
+                        {
+                            case 1:
+                                direc = 4;
+                                SwitchColor(mat, x, y);
+                                x--;
+                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                break;
+                            case 2:
+                                direc = 1;
+                                SwitchColor(mat, x, y);
+                                y--;
+                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                break;
+                            case 3:
+                                direc = 2;
+                                SwitchColor(mat, x, y);
+                                x++;
+                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                break;
+                            case 4:
+                                direc = 3;
+                                SwitchColor(mat, x, y);
+                                y++;
+                                mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
+                                break;
+
+                        }
+                        age++;
+                    }
+                    
+                    Antv2.fourmis[i][0] = x;
+                    Antv2.fourmis[i][1] = y;
+                    Antv2.fourmis[i][2] = direc;
+                    Antv2.fourmis[i][3] = age;
+
+                    AffichageMatrice(mat);
+                } else { Console.SetCursorPosition(0, 0);Console.Write($"{cc.red}2ème mouvement non autorisé{cc.end}"); }
+            }
+        }
+
+
+
+        #endregion Outils Partie 2
         #endregion Méthodes Outils
+
+
+
 
         #region Méthodes Exercices
 
@@ -646,14 +959,18 @@ namespace Projet_CSharp_S2
             //string[,] Cmat = InitialiseMat(); // Initialisation de la matrice circulaire de manière identique
             // Au final non, nous allons utiliser la structure de Antv2.cs car nous sommes obigés d'avoir au moins une struct dans notre projet
 
-            Global Antv2;
 
             string[,] mat = SaisieMatrice();
             bool[,] ghost_mat = new bool[mat.GetLength(0), mat.GetLength(1)];
 
             EcrireCentre("Saisir un nombre de fourmi à faire apparaître : ");
             int nb_fourmi = SaisieNombre();
+            //Fourmis[] Antv2 = new Fourmis[nb_fourmi];
+
             int[][] info_fourmis = new int[nb_fourmi][];
+            Ant.matrice_principale = mat;                                       // Copie des variables dans la struct Global pour les rendre accessible
+            Ant.matrice_fantome = ghost_mat;                                    //
+            Antv2.fourmis = info_fourmis;
 
             Console.BackgroundColor = ConsoleColor.White;   
             Console.ForegroundColor = ConsoleColor.Black;   
@@ -663,21 +980,60 @@ namespace Projet_CSharp_S2
                 for (int j = 0; j < mat.GetLength(1); j++)
                 {
                     mat[i, j] = "   ";
-                    ghost_mat[i,j] = false;
+                    ghost_mat[i,j] = false;         // false blanc
                 }
             }
 
+
             Console.ResetColor();
-            AffichageMatrice(mat, true);
+            AffichageMatrice(mat);
             Console.WriteLine("\n");
             EcrireCentre($"{cc.green}Matrice initialisée{cc.end}. Appuyez sur une touche continuez ...");
             Console.ReadKey();
             Console.Clear();
 
-            Antv2.matrice_principale = mat;                                       // Copie des variables dans la struct Global pour les rendre accessible
-            Antv2.matrice_fantome = ghost_mat;                                    // 
-            Antv2.fourmis = info_fourmis;                                         // Copie du jagged array des fourmis
+            MultiSpawn(mat, nb_fourmi);
+            Antv2.index_fourmi_track = 0;
+
+            bool run = true;
+            bool no_stop = true;
+            while (no_stop == true)
+            {
+                //Console.Clear();  // Mieux sans (vu que nous avons modifié la matrice pour qu'elle garde les même positions et se réécrive par dessus elle même)
+                Menu.SideInfov2();    // Informations de bord affiché sur le coté durant toute la simulation 
+
+                #region Contrôles
+                if (Console.KeyAvailable)
+                {
+                    if (Console.ReadKey().Key == ConsoleKey.Spacebar)
+                    {
+                        Ant.running = false;
+                        Console.SetCursorPosition(0, 10);
+                        Console.Write($"{cc.bgRed}[    ÉTAT   ] : En pause...{cc.end}");
+                        while (Console.ReadKey().Key != ConsoleKey.Spacebar)
+                        {
+                            run = false;
+
+                            if (Console.ReadKey().Key == ConsoleKey.Escape)     // Echap x 2 pour quitter
+                            {
+                                Console.Clear();
+                                Home();
+                                break;
+                            }
+                        }
+                    }
+                }
+                #endregion Contrôles
+
+                //Ant.running = run;
+                DeplacementCirculaire(Ant.matrice_principale);
+                if (Menu.count_spinner >= 3)
+                    Menu.count_spinner = -1;
+                Menu.count_spinner += 1;
+                Thread.Sleep(10);
+            }
         }
+
 
         #endregion Méthodes Exercices
     }
