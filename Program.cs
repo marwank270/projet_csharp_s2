@@ -793,11 +793,56 @@ namespace Projet_CSharp_S2
                         compteur++;
                     }
                 }
-
             }
 
             #endregion Mise à jour odre de passage
+        }
 
+        static int[][] OrdreV2(int[][] array)
+        {
+            if (array.Length > 1)
+            {
+                int middleIndex = array.Length/2;
+
+                int[][] leftSide = new int[middleIndex][];
+                //(int[][]) array.Take(middleIndex);
+                int[][] rightSide = (int[][])array.Skip(middleIndex).Take(array.Length-1);
+
+                OrdreV2(leftSide);
+                OrdreV2(rightSide);
+
+                int leftIndex = 0, rightIndex = 0, globalIndex = 0;
+
+                while(leftIndex < leftSide.Length && rightIndex < rightSide.Length)
+                {
+                    if (leftSide[leftIndex][3] < rightSide[rightIndex][3])
+                    {
+                        array[globalIndex] = leftSide[leftIndex];
+                        leftIndex++;
+      }
+                    else
+                    {
+                        array[globalIndex] = rightSide[rightIndex];
+                        rightIndex++;
+                    }
+                    globalIndex++;
+                }
+
+                while (leftIndex < leftSide.Length)
+                {
+                    array[globalIndex] = leftSide[leftIndex];
+                    leftIndex++;
+                    globalIndex++;
+    }
+                while (rightIndex < rightSide.Length)
+                {
+                    array[globalIndex] = rightSide[rightIndex];
+                    rightIndex++;
+                    globalIndex++;
+                }
+            }
+
+            return array;
         }
 
         //display two dimensional array to console !!!!
@@ -816,7 +861,8 @@ namespace Projet_CSharp_S2
 
         static void DeplacementCirculaire(string[,] mat)
         {
-            OrdrePassageFourmi();
+            //OrdrePassageFourmi();
+            OrdreV2(Antv2.fourmis);
             for (int i = 0; i < Antv2.fourmis.Length; i++)
             {
                 Antv2.moved = false;
