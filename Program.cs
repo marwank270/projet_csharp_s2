@@ -288,63 +288,39 @@ namespace Projet_CSharp_S2
             //Console.Write(cc.bgWhite + cc.black);     // Passage en blanc de la console pour laisser que la matrice soit de la bonne couleur au départ
             // La classe cc est inutilisable du fait que je n'ai pas prévu de propriété pour détecter la couleur actuelle nous allons donc continuer comme cela :
             // Surtout qu'après reflexion la couleur doit être mise au moment de l'initialisation mdrr
-
-            for (int i = 0; i < matrice.GetLength(0); i++)
+            Console.ForegroundColor = ConsoleColor.Red;
+            bool b;
+            int length0 = matrice.GetLength(0);
+            int length1 = matrice.GetLength(1);
+            int width = Console.WindowWidth;
+            bool isPreviousBlack = true;
+            for (int i = 0; i < length0; i++)
             {
                 //Fourmis Antv2 = new Fourmis();// Constructeur de la struct Fourmis
-
-                Console.WriteLine();                    // Retours à la ligne lorsque le bord de la matrice est atteint
-                Console.SetCursorPosition(Console.WindowWidth / 2 - matrice.GetLength(1) * 3/*nombre de caractère par cases*/ / 2, 10 /*marge de base en partant du haut*/ + i); // Permet de toujours écrire la matrice au centre
-                for (int j = 0; j < matrice.GetLength(1); j++)
+                // Retours à la ligne lorsque le bord de la matrice est atteint
+                Console.SetCursorPosition(width / 2 - length1 * 3/*nombre de caractère par cases*/ / 2, 10 /*marge de base en partant du haut*/ + i); // Permet de toujours écrire la matrice au centre
+                for (int j = 0; j < length1; j++)
                 {
-                    /*if (v2 == true)
-                    {
-                        if (Antv2.matrice_fantome[i, j] == false)                 // Si la case est actuellement blanche
-                        {
-                            Console.BackgroundColor = ConsoleColor.White;
-                            Console.ForegroundColor = ConsoleColor.Black;
-
-                            Console.Write(matrice[i, j]);                       // Case vide de couleur noire sur blanche
-
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.ForegroundColor = ConsoleColor.White;
-                        }
-                        if (Antv2.matrice_fantome[i, j] == true)
-                        {
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.ForegroundColor = ConsoleColor.White;
-
-                            Console.Write(matrice[i, j]);                       // Case vide de couleur blanche sur noir
-
-                            Console.BackgroundColor = ConsoleColor.White;
-                            Console.ForegroundColor = ConsoleColor.Black;
-                        }
-                    } else
-                    {*/
-                        if (Ant.matrice_fantome[i, j] == false)                 // Si la case est actuellement blanche
-                        {
-                            Console.BackgroundColor = ConsoleColor.White;
-                            Console.ForegroundColor = ConsoleColor.Black;
-
-                            Console.Write(matrice[i, j]);                       // Case vide de couleur noire sur blanche
-
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.ForegroundColor = ConsoleColor.White;
-                        }
-                        if (Ant.matrice_fantome[i, j] == true)
-                        {
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.ForegroundColor = ConsoleColor.White;
-
-                            Console.Write(matrice[i, j]);                       // Case vide de couleur blanche sur noir
-
-                            Console.BackgroundColor = ConsoleColor.White;
-                            Console.ForegroundColor = ConsoleColor.Black;
-                        }
-                    //}
+                    b = Ant.matrice_fantome[i, j];
                     
+                    if (isPreviousBlack != b)
+                    {
+                        if (b == false)
+                        {
+                            Console.BackgroundColor = ConsoleColor.White;                // Case vide de couleur noire sur blanche
+                            isPreviousBlack = false;
+                        }
+                        else
+                        {
+                            Console.BackgroundColor = ConsoleColor.Black;                  // Case vide de couleur blanche sur noir
+                            isPreviousBlack = true;
+                        }
+                    }
+                    Console.Write(matrice[i, j]);
                 }
+                
             }
+            Console.BackgroundColor = ConsoleColor.Black;
         }
         public static int[] PosFourmi(string[,] tab)
         {
@@ -619,8 +595,8 @@ namespace Projet_CSharp_S2
 
             for (int i = 0; i < nb_fourmi; i++)
             {
-                int X = rand.Next(0, mat.GetLength(1));
-                int Y = rand.Next(0, mat.GetLength(0));
+                int X = rand.Next(0, mat.GetLength(1)-1);
+                int Y = rand.Next(0, mat.GetLength(0)-1);
                 int Direc = rand.Next(1, 4);
 
                 for (int j = 0; j < mat.GetLength(0); j++)
@@ -958,8 +934,9 @@ namespace Projet_CSharp_S2
 
                     
                 }
-                AffichageMatrice(mat);
+                
             }
+            AffichageMatrice(mat);
         }
 
         static bool Verif2(int x, int y)
