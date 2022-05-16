@@ -83,6 +83,7 @@ namespace Projet_CSharp_S2
         private const int MINIMIZE = 6;
         private const int RESTORE = 9;
         #endregion Fullscreen Stuff
+        static int compteur = 0;
 
         static void Main(string[] args)
         {
@@ -688,11 +689,14 @@ namespace Projet_CSharp_S2
 
             if (Ant.matrice_fantome[y, x] == false)// si la case est blanche
             {
-                if (y == 0 && direc == 4)                           // Fourmi en haut de la matrice
+                if (y == 0 && direc == 4)                   // Fourmi en haut de la matrice
                 {
                     direc = 1;
-                    SwitchColor(mat, y, x);
-                    y = mat.GetLength(0)-1;
+                    if (Verif2(x, mat.GetLength(0) - 1))
+                    {
+                        SwitchColor(mat, y, x);
+                        y = mat.GetLength(0) - 1;
+                    }
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
@@ -700,8 +704,11 @@ namespace Projet_CSharp_S2
                 else if (y == mat.GetLength(0)-1 && direc == 2)     // Fourmi en bas de la matrice
                 {
                     direc = 3;
-                    SwitchColor(mat, x, y);
-                    y = 0;
+                    if (Verif2(x, 0))
+                    {
+                        SwitchColor(mat, x, y);
+                        y = 0;
+                    }
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
@@ -709,8 +716,11 @@ namespace Projet_CSharp_S2
                 else if (x == 0 && direc == 3)
                 {
                     direc = 4;
-                    SwitchColor(mat, x, y);
-                    x = mat.GetLength(1)-1;
+                    if (Verif2(mat.GetLength(1) - 1, y))
+                    {
+                        SwitchColor(mat, x, y);
+                        x = mat.GetLength(1) - 1;
+                    }
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
@@ -718,8 +728,11 @@ namespace Projet_CSharp_S2
                 else if (x == mat.GetLength(1)-1 && direc == 1)
                 {
                     direc = 2;
-                    SwitchColor(mat, x, y);
-                    x = 0;
+                    if (Verif2(0, y))
+                    {
+                        SwitchColor(mat, x, y);
+                        x = 0;
+                    }
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
@@ -730,8 +743,11 @@ namespace Projet_CSharp_S2
                 if (y == 0 && direc == 2)                           // Fourmi en haut de la matrice
                 {
                     direc = 1;
-                    SwitchColor(mat, x, y);
-                    y = mat.GetLength(0) - 1;
+                    if (Verif2(x, mat.GetLength(0) - 1))
+                    {
+                        SwitchColor(mat, x, y);
+                        y = mat.GetLength(0) - 1;
+                    }
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
@@ -739,8 +755,11 @@ namespace Projet_CSharp_S2
                 else if (y == mat.GetLength(0)-1 && direc == 4)     // Fourmi en bas de la matrice
                 {
                     direc = 3;
-                    SwitchColor(mat, x, y);
-                    y = 0;
+                    if (Verif2(x, 0))
+                    {
+                        SwitchColor(mat, x, y);
+                        y = 0;
+                    }
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
@@ -748,8 +767,11 @@ namespace Projet_CSharp_S2
                 else if (x == 0 && direc == 1)                       // Fourmi à gauche de la matrice
                 {
                     direc = 4;
-                    SwitchColor(mat, x, y);
-                    x = mat.GetLength(1)-1;
+                    if (Verif2(mat.GetLength(1) - 1, y))
+                    {
+                        SwitchColor(mat, x, y);
+                        x = mat.GetLength(1) - 1;
+                    }
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
@@ -757,8 +779,11 @@ namespace Projet_CSharp_S2
                 else if (x == mat.GetLength(1)-1 && direc == 3)       // Fourmi à droite de la matrice
                 {
                     direc = 2;
-                    SwitchColor(mat, x, y);
-                    x = 0;
+                    if (Verif2(0, y))
+                    {
+                        SwitchColor(mat, x, y);
+                        x = 0;
+                    }
                     age++;
                     mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                     Antv2.moved = true;
@@ -780,7 +805,7 @@ namespace Projet_CSharp_S2
         static void OrdrePassageFourmi()
         {
             #region Mise à jour ordre de passage
-
+            
             
             for (int i = Antv2.fourmis.Length - 1; i < 0; i--)          // Méthode de tri à bulle pour changer l'ordre des fourmis à chaque fois pour commencer par la plus jeune 
             {
@@ -791,6 +816,7 @@ namespace Projet_CSharp_S2
                         int roue_de_secours = Antv2.fourmis[j - 1][3];
                         Antv2.fourmis[j - 1][3] = Antv2.fourmis[j][3];
                         Antv2.fourmis[j][3] = roue_de_secours;
+                        compteur++;
                     }
                 }
 
@@ -800,13 +826,26 @@ namespace Projet_CSharp_S2
 
         }
 
+        //display two dimensional array to console !!!!
+        static void AfficheMatrice(int[][] mat)
+        {
+            for (int i =0; i < mat.Length; i++)
+            {
+                Console.SetCursorPosition(0, i + 1);
+                foreach (var e in mat[i])
+                { 
+                    Console.Write(e);
+                }
+                Console.Write("|");
+            }
+        }
+
         static void DeplacementCirculaire(string[,] mat)
         {
             for (int i = 0; i < Antv2.fourmis.Length; i++)
             {
                 Antv2.moved = false;
                 AffichageMatrice(Ant.matrice_principale);
-                OrdrePassageFourmi();
                 DeplacementBordMat(i);
 
                 if ( Antv2.moved == false)
@@ -822,26 +861,39 @@ namespace Projet_CSharp_S2
                         {
                             case 1:
                                 direc = 2;
-                                SwitchColor(mat, x, y);
-                                x++;
+                                if (Verif2(x+1, y))
+                                {
+                                    SwitchColor(mat, x, y);
+                                    x++;
+                                }
+                                
                                 mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                                 break;
                             case 2:
                                 direc = 3;
-                                SwitchColor(mat, x, y);
-                                y++;
+                                if (Verif2(x, y + 1))
+                                {
+                                    SwitchColor(mat, x, y);
+                                    y++;
+                                }
                                 mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                                 break;
                             case 3:
                                 direc = 4;
-                                SwitchColor(mat, x, y);
-                                x--;
+                                if (Verif2(x-1, y))
+                                {
+                                    SwitchColor(mat, x, y);
+                                    x--;
+                                }
                                 mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
-                                 break;
+                                break;
                             case 4:
                                 direc = 1;
-                                SwitchColor(mat, x, y);
-                                y--;
+                                if (Verif2(x, y - 1))
+                                {
+                                    SwitchColor(mat, x, y);
+                                    y--;
+                                }
                                 mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                                 break;
 
@@ -854,26 +906,38 @@ namespace Projet_CSharp_S2
                         {
                             case 1:
                                 direc = 4;
-                                SwitchColor(mat, x, y);
-                                x--;
+                                if (Verif2(x-1, y))
+                                {
+                                    SwitchColor(mat, x, y);
+                                    x--;
+                                }
                                 mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                                 break;
                             case 2:
                                 direc = 1;
-                                SwitchColor(mat, x, y);
-                                y--;
+                                if (Verif2(x, y - 1))
+                                {
+                                    SwitchColor(mat, x, y);
+                                    y--;
+                                }
                                 mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                                 break;
                             case 3:
                                 direc = 2;
-                                SwitchColor(mat, x, y);
-                                x++;
+                                if (Verif2(x+1, y))
+                                {
+                                    SwitchColor(mat, x, y);
+                                    x++;
+                                }
                                 mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                                 break;
                             case 4:
                                 direc = 3;
-                                SwitchColor(mat, x, y);
-                                y++;
+                                if (Verif2(x, y + 1))
+                                {
+                                    SwitchColor(mat, x, y);
+                                    y++;
+                                }
                                 mat[y, x] = $" {Ant.fourmis[direc - 1]} ";
                                 break;
 
@@ -889,6 +953,18 @@ namespace Projet_CSharp_S2
                     AffichageMatrice(mat);
                 } else { Console.SetCursorPosition(0, 0);Console.Write($"{cc.red}2ème mouvement non autorisé{cc.end}"); }
             }
+        }
+
+        static bool Verif2(int x, int y)
+        {
+            foreach(var f in Antv2.fourmis)
+            {
+                if (f[0] == y && f[1] == x)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
 
