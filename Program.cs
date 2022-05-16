@@ -806,24 +806,32 @@ namespace Projet_CSharp_S2
         {
             if (array.Length > 1)
             {
-                int middleIndex = array.Length/2;
+                int middleIndex = array.Length / 2;
 
                 int[][] leftSide = new int[middleIndex][];
-                //(int[][]) array.Take(middleIndex);
-                int[][] rightSide = (int[][])array.Skip(middleIndex).Take(array.Length-1);
+                int[][] rightSide = new int[array.Length - middleIndex][];
+                for (int i = 0; i < middleIndex; i++)
+                {
+                    leftSide[i] = array[i];
+                }
+
+                for (int i = 0; i < array.Length - middleIndex; i++)
+                {
+                    rightSide[i] = array[i + middleIndex];
+                }
 
                 OrdreV2(leftSide);
                 OrdreV2(rightSide);
 
                 int leftIndex = 0, rightIndex = 0, globalIndex = 0;
 
-                while(leftIndex < leftSide.Length && rightIndex < rightSide.Length)
+                while (leftIndex < leftSide.Length && rightIndex < rightSide.Length)
                 {
                     if (leftSide[leftIndex][3] < rightSide[rightIndex][3])
                     {
                         array[globalIndex] = leftSide[leftIndex];
                         leftIndex++;
-      }
+                    }
                     else
                     {
                         array[globalIndex] = rightSide[rightIndex];
@@ -837,7 +845,7 @@ namespace Projet_CSharp_S2
                     array[globalIndex] = leftSide[leftIndex];
                     leftIndex++;
                     globalIndex++;
-    }
+                }
                 while (rightIndex < rightSide.Length)
                 {
                     array[globalIndex] = rightSide[rightIndex];
@@ -865,7 +873,14 @@ namespace Projet_CSharp_S2
 
         static void DeplacementCirculaire(string[,] mat,int tours, int nb_fourmi)
         {
+            if (tours < nb_fourmi)
+            {
+                Antv2.fourmis[tours][4] = 1;
+            }
             OrdrePassageFourmi();
+
+            //plus rapide si optimisé !
+            //OrdreV2(Antv2.fourmis);
             for (int i = 0; i < Antv2.fourmis.Length; i++)
             {
                 if (Antv2.fourmis[i][4] == 1)
@@ -985,13 +1000,11 @@ namespace Projet_CSharp_S2
 
                     
                     }
-                    AffichageMatrice(mat);
+                    //Affichage lent
+                    //AffichageMatrice(mat);
                 }
-<<<<<<< Updated upstream
-                
-=======
->>>>>>> Stashed changes
             }
+            //affichage rapide
             AffichageMatrice(mat);
         }
 
